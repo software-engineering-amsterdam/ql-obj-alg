@@ -12,7 +12,9 @@ decl : ID ':' STRING TYPE assign?;
 
 assign: LP expr RP;
 
-ifstat : 'if' LP expr RP LB stat* RB ('else' LB stat* RB)?;
+ifstat : 'if' LP expr RP LB stat* RB (elsestat)?;
+
+elsestat : 'else' LB stat* RB;
 
 expr: 	LP expr RP 				#Bracket
 		| expr MUL expr 		#MUL
