@@ -1,6 +1,7 @@
+import operations.typechecker.FormTypeChecker;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-
 
 import antlr4.generatedcode.QLLexer;
 import antlr4.generatedcode.QLParser;
@@ -9,8 +10,6 @@ import antlr4.objalgconverter.QLObjAlgConverterVisitor;
 
 import java.io.*;
 import java.lang.reflect.Method;
-
-import typechecker.FormTypeChecker;
 
 
 public class RunQLVisitor {
