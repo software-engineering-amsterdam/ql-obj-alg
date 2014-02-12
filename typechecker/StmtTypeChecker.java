@@ -24,6 +24,15 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 		mem.push(new HashMap<String,String>());
 	}
 	
+	protected String getTypeByName(String name){
+		Iterator<HashMap<String,String>> it = mem.iterator();
+		while(it.hasNext()){
+			if(it.next().containsKey(name))
+				return mem.peek().get(name);
+		}
+		return null;
+	}
+
 	@Override
 	public Type lit(int x) {
 		return new Type(){
@@ -55,11 +64,9 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	public Type var(final String s) {
 		return new Type(){
 			public String type(){
-				Iterator<HashMap<String,String>> it = mem.iterator();
-				while(it.hasNext()){
-					if(it.next().containsKey(s))
-						return mem.peek().get(s);
-				}
+				String t = getTypeByName(s);
+				if(t != null)
+					return t;
 				errors.add("Undefined variable: "+s);
 				return "undefined";
 			}
@@ -279,12 +286,9 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	public Stmt decl(final String id, String label, final String type) {
 		return new Stmt(){
 			public void check(){
-				Iterator<HashMap<String,String>> it = mem.iterator();
-				while(it.hasNext()){
-					if(it.next().containsKey(id)){
-						errors.add("Variable already defined: "+id);
-						return;
-					}
+				if(getTypeByName(id)!=null){
+					errors.add("Variable already defined: "+id);
+					return;
 				}
 				mem.peek().put(id, type);
 			}
@@ -295,18 +299,14 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	public Stmt decl(final String id, String label, final String type, final Type e) {
 		return new Stmt(){
 			public void check(){
-				boolean found = false;
-				Iterator<HashMap<String,String>> it = mem.iterator();
-				while(it.hasNext()){
-					if(it.next().containsKey(id)){
-						found = true;
-						errors.add("Variable already defined: "+id);
-					}
-				}
-				if(!found)
+				String t = getTypeByName(id);
+				if(t != null)
+					errors.add("Variable already defined: "+id);
+				else{
 					mem.peek().put(id, type);
-				if(!e.type().equals(type))
-					errors.add("Wrong type in assignment: "+id);
+					if(!e.type().equals(type))
+						errors.add("Wrong type in assignment: "+id);
+				}
 			}
 		};
 	}
