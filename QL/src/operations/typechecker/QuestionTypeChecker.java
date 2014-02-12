@@ -9,30 +9,22 @@ import objectalgebra.QuestionAlg;
 
 public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 
-	Stack<HashMap<String, String>> mem = new Stack<HashMap<String,String>>();
+	HashMap<String, String> mem;
 	HashSet<String> errors = new HashSet<String>();
+	
+	public QuestionTypeChecker(HashMap<String,String> mem){
+		this.mem = mem;
+	}
 	
 	public HashSet<String> getErrors(){
 		return this.errors;
 	}
 	
 	public HashMap<String, String> getMem(){
-		return this.mem.peek();
+		return this.mem;
 	}
 	
-	public QuestionTypeChecker(){
-		mem.push(new HashMap<String,String>());
-	}
-
-	protected String getTypeByName(String name){
-		Iterator<HashMap<String,String>> it = mem.iterator();
-		while(it.hasNext()){
-			if(it.next().containsKey(name))
-				return mem.peek().get(name);
-		}
-		return null;
-	}
-	
+		
 	@Override
 	public Type lit(int x) {
 		return new Type(){
@@ -64,7 +56,7 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 	public Type var(final String s) {
 		return new Type(){
 			public String type(){
-				String t = getTypeByName(s);
+				String t = mem.get(s);
 				if(t != null)
 					return t;
 				errors.add("Undefined variable: "+s);
@@ -248,11 +240,8 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 			public void check(){
 				if(!cond.type().equals("boolean"))
 					errors.add("Wrong type in if-then condition");
-				if(b != null){
-					mem.push(new HashMap<String,String>());
+				if(b != null)
 					b.check();
-					mem.pop();
-				}
 			}
 		};
 	}
@@ -264,14 +253,10 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 				if(!cond.type().equals("boolean"))
 					errors.add("Wrong type in if-then-else condition");
 				if(b1!=null){
-					mem.push(new HashMap<String,String>());
 					b1.check();
-					mem.pop();
 				}
 				if(b2 != null){
-					mem.push(new HashMap<String,String>());
 					b2.check();
-					mem.pop();
 				}
 			}
 		};
@@ -293,11 +278,11 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 	public Question decl(final String id, String label, final String type) {
 		return new Question(){
 			public void check(){
-				if(getTypeByName(id)!=null){
+				if(mem.get(id)!=null){
 					errors.add("Variable already defined: "+id);
 					return;
 				}
-				mem.peek().put(id, type);
+				mem.put(id, type);
 			}
 		};
 	}
@@ -306,11 +291,11 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 	public Question decl(final String id, String label, final String type, final Type e) {
 		return new Question(){
 			public void check(){
-				String t = getTypeByName(id);
+				String t = mem.get(id);
 				if(t != null)
 					errors.add("Variable already defined: "+id);
 				else{
-					mem.peek().put(id, type);
+					mem.put(id, type);
 					if(!e.type().equals(type))
 						errors.add("Wrong type in assignment: "+id);
 				}	

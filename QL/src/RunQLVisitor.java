@@ -10,6 +10,7 @@ import antlr4.objalgconverter.QLObjAlgConverterVisitor;
 
 import java.io.*;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 
 public class RunQLVisitor {
@@ -28,7 +29,7 @@ public class RunQLVisitor {
         QLParser parser = new QLParser(tokens);
         ParseTree tree = parser.forms();
 
-        FormTypeChecker tc = new FormTypeChecker();
+        FormTypeChecker tc = new FormTypeChecker(new HashMap<String,String>());
         QLVisitor loader = new QLObjAlgConverterVisitor(tc);
         Object f = loader.visit(tree);
 

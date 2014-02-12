@@ -9,23 +9,20 @@ import objectalgebra.FormAlg;
 
 public class FormTypeChecker extends QuestionTypeChecker implements FormAlg<Type, Question, Form> {
 
-	public FormTypeChecker(){
-		mem.push(new HashMap<String,String>());
-
+	public FormTypeChecker(HashMap<String, String> mem){
+		super(mem);
 	}
 
 	@Override
 	public Form form(final String id, final Question s) {
 		return new Form(){
 			public void checkForm(){
-				String type = getTypeByName(id);
+				String type = mem.get(id);
 				if(type != null)
 					errors.add("Form id already defined: "+id);
 				else
-					mem.peek().put(id,"form");
-				mem.push(new HashMap<String,String>());
+					mem.put(id,"form");
 				s.check();
-				mem.pop();
 			}
 		};
 	}
