@@ -1,13 +1,13 @@
-package typechecker;
+package operations.typechecker;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
 
-import objectalgebra.StmtAlg;
+import objectalgebra.QuestionAlg;
 
-public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
+public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 
 	Stack<HashMap<String, String>> mem = new Stack<HashMap<String,String>>();
 	HashSet<String> errors = new HashSet<String>();
@@ -20,7 +20,7 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 		return this.mem.peek();
 	}
 	
-	public StmtTypeChecker(){
+	public QuestionTypeChecker(){
 		mem.push(new HashMap<String,String>());
 	}
 
@@ -243,8 +243,8 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	}
 
 	@Override
-	public Stmt iff(final Type cond, final Stmt b) {
-		return new Stmt(){
+	public Question iff(final Type cond, final Question b) {
+		return new Question(){
 			public void check(){
 				if(!cond.type().equals("boolean"))
 					errors.add("Wrong type in if-then condition");
@@ -258,8 +258,8 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	}
 
 	@Override
-	public Stmt iffelse(final Type cond, final Stmt b1, final Stmt b2) {
-		return new Stmt(){
+	public Question iffelse(final Type cond, final Question b1, final Question b2) {
+		return new Question(){
 			public void check(){
 				if(!cond.type().equals("boolean"))
 					errors.add("Wrong type in if-then-else condition");
@@ -278,8 +278,8 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	}
 
 	@Override
-	public Stmt comp(final Stmt s1, final Stmt s2) {
-		return new Stmt(){
+	public Question comp(final Question s1, final Question s2) {
+		return new Question(){
 			public void check(){
 				if(s1 != null)
 					s1.check();
@@ -290,8 +290,8 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	}
 
 	@Override
-	public Stmt decl(final String id, String label, final String type) {
-		return new Stmt(){
+	public Question decl(final String id, String label, final String type) {
+		return new Question(){
 			public void check(){
 				if(getTypeByName(id)!=null){
 					errors.add("Variable already defined: "+id);
@@ -303,8 +303,8 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	}
 
 	@Override
-	public Stmt decl(final String id, String label, final String type, final Type e) {
-		return new Stmt(){
+	public Question decl(final String id, String label, final String type, final Type e) {
+		return new Question(){
 			public void check(){
 				String t = getTypeByName(id);
 				if(t != null)

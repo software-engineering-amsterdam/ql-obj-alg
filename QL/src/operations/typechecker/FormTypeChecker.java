@@ -7,7 +7,7 @@ import java.util.Stack;
 
 import objectalgebra.FormAlg;
 
-public class FormTypeChecker extends StmtTypeChecker implements FormAlg<Type, Stmt, Form> {
+public class FormTypeChecker extends QuestionTypeChecker implements FormAlg<Type, Question, Form> {
 
 	public FormTypeChecker(){
 		mem.push(new HashMap<String,String>());
@@ -15,7 +15,7 @@ public class FormTypeChecker extends StmtTypeChecker implements FormAlg<Type, St
 	}
 
 	@Override
-	public Form form(final String id, final Stmt s) {
+	public Form form(final String id, final Question s) {
 		return new Form(){
 			public void checkForm(){
 				String type = getTypeByName(id);

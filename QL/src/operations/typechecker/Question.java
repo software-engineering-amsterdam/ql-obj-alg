@@ -1,5 +1,5 @@
 package operations.typechecker;
 
-public interface Stmt {
+public interface Question {
 	void check();
 }
