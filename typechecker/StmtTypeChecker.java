@@ -23,7 +23,7 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	public StmtTypeChecker(){
 		mem.push(new HashMap<String,String>());
 	}
-	
+
 	protected String getTypeByName(String name){
 		Iterator<HashMap<String,String>> it = mem.iterator();
 		while(it.hasNext()){
@@ -32,7 +32,7 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public Type lit(int x) {
 		return new Type(){
@@ -248,9 +248,11 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 			public void check(){
 				if(!cond.type().equals("boolean"))
 					errors.add("Wrong type in if-then condition");
-				mem.push(new HashMap<String,String>());
-				b.check();
-				mem.pop();
+				if(b != null){
+					mem.push(new HashMap<String,String>());
+					b.check();
+					mem.pop();
+				}
 			}
 		};
 	}
@@ -261,13 +263,16 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 			public void check(){
 				if(!cond.type().equals("boolean"))
 					errors.add("Wrong type in if-then-else condition");
-				mem.push(new HashMap<String,String>());
-				b1.check();
-				mem.pop();
-				
-				mem.push(new HashMap<String,String>());
-				b2.check();
-				mem.pop();
+				if(b1!=null){
+					mem.push(new HashMap<String,String>());
+					b1.check();
+					mem.pop();
+				}
+				if(b2 != null){
+					mem.push(new HashMap<String,String>());
+					b2.check();
+					mem.pop();
+				}
 			}
 		};
 	}
@@ -276,8 +281,10 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 	public Stmt comp(final Stmt s1, final Stmt s2) {
 		return new Stmt(){
 			public void check(){
-				s1.check();
-				s2.check();
+				if(s1 != null)
+					s1.check();
+				if(s2 != null)
+					s2.check();
 			}
 		};
 	}
@@ -306,7 +313,7 @@ public class StmtTypeChecker implements StmtAlg<Type, Stmt> {
 					mem.peek().put(id, type);
 					if(!e.type().equals(type))
 						errors.add("Wrong type in assignment: "+id);
-				}
+				}	
 			}
 		};
 	}
