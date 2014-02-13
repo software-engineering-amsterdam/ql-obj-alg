@@ -283,7 +283,7 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 	}
 
 	@Override
-	public Question decl(final String id, String label, final String type) {
+	public Question decl(final String id, final String label, final String type) {
 		return new Question(){
 			public void check(){
 				String t = mem.get(id);
@@ -291,13 +291,18 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 					errors.add("Conflicting type of question "+ id + "("+t+","+type+")");
 					return;
 				}
+				if(labels.contains(label)){
+					warnings.add("Duplicate label: "+label);
+				}
+				else
+					labels.add(label);
 				mem.put(id, type);
 			}
 		};
 	}
 
 	@Override
-	public Question decl(final String id, String label, final String type, final Type e) {
+	public Question decl(final String id, final String label, final String type, final Type e) {
 		return new Question(){
 			public void check(){
 				String t = mem.get(id);
@@ -308,7 +313,12 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 					mem.put(id, type);
 					if(!e.type().equals(type))
 						errors.add("Wrong type in assignment: "+id);
-				}	
+				}
+				if(labels.contains(label)){
+					warnings.add("Duplicate label: "+label);
+				}
+				else
+					labels.add(label);
 			}
 		};
 	}
