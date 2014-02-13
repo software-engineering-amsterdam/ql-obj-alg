@@ -1,6 +1,6 @@
-package objectalgebra;
+package ql_obj_alg.objectAlgebra;
 
-public interface Value {
+public interface IValue {
 	Integer getInteger();
 	Boolean getBoolean();
 	String  getString();

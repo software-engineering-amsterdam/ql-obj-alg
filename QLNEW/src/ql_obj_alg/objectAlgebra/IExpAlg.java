@@ -1,6 +1,6 @@
-package objectalgebra;
+package ql_obj_alg.objectAlgebra;
 
-public interface ExpAlg<A> {
+public interface IExpAlg<A> {
 	A lit(int x);
 	A bool(boolean b);
 	A string(String s);
