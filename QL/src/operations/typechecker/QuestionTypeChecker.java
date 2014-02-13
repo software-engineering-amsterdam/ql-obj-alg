@@ -2,28 +2,37 @@ package operations.typechecker;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.List;
 
 import objectalgebra.QuestionAlg;
 
 public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 
-	HashMap<String, String> mem;
-	HashSet<String> errors = new HashSet<String>();
+	//contains the type of variables
+	HashMap<String, String> mem = new HashMap<String,String>(); 
+	//contains undefined variables along with their associations
+	HashMap<String,StringBuffer> undefinedShouldBe = new HashMap<String,StringBuffer>(); 
 	
-	public QuestionTypeChecker(HashMap<String,String> mem){
-		this.mem = mem;
+	List<String> errors = new LinkedList<String>();
+	List<String> warnings = new LinkedList<String>();
+	HashSet<String> labels = new HashSet<String>();
+	
+	public List<String> getErrors(){
+		return this.errors;
 	}
 	
-	public HashSet<String> getErrors(){
-		return this.errors;
+	public List<String> getWarnings(){
+		return this.warnings;
 	}
 	
 	public HashMap<String, String> getMem(){
 		return this.mem;
 	}
 	
+	public HashMap<String, StringBuffer> getUndefined(){
+		return this.undefinedShouldBe;
+	}
 		
 	@Override
 	public Type lit(int x) {
@@ -59,8 +68,7 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 				String t = mem.get(s);
 				if(t != null)
 					return t;
-				errors.add("Undefined variable: "+s);
-				return "undefined";
+				return "";
 			}
 		};
 	}
@@ -278,8 +286,9 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 	public Question decl(final String id, String label, final String type) {
 		return new Question(){
 			public void check(){
-				if(mem.get(id)!=null){
-					errors.add("Variable already defined: "+id);
+				String t = mem.get(id);
+				if(t != null && !t.equals(type)){
+					errors.add("Conflicting type of question "+ id + "("+t+","+type+")");
 					return;
 				}
 				mem.put(id, type);
@@ -292,8 +301,9 @@ public class QuestionTypeChecker implements QuestionAlg<Type, Question> {
 		return new Question(){
 			public void check(){
 				String t = mem.get(id);
-				if(t != null)
-					errors.add("Variable already defined: "+id);
+				if(t != null && !t.equals(type)){
+					errors.add("Conflicting type of question "+ id + "("+t+","+type+")");
+				}
 				else{
 					mem.put(id, type);
 					if(!e.type().equals(type))

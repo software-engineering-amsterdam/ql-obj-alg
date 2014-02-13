@@ -29,7 +29,7 @@ public class RunQLVisitor {
         QLParser parser = new QLParser(tokens);
         ParseTree tree = parser.forms();
 
-        FormTypeChecker tc = new FormTypeChecker(new HashMap<String,String>());
+        FormTypeChecker tc = new FormTypeChecker();
         QLVisitor loader = new QLObjAlgConverterVisitor(tc);
         Object f = loader.visit(tree);
 

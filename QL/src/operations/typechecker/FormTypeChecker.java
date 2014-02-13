@@ -9,9 +9,6 @@ import objectalgebra.FormAlg;
 
 public class FormTypeChecker extends QuestionTypeChecker implements FormAlg<Type, Question, Form> {
 
-	public FormTypeChecker(HashMap<String, String> mem){
-		super(mem);
-	}
 
 	@Override
 	public Form form(final String id, final Question s) {
