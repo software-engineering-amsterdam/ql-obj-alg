@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
 
-import objectalgebra.StmtAlg;
+import objectalgebra.QuestionAlg;
 
-public class StmtPrinter implements StmtAlg<Print, StmtPrint> {
+public class StmtPrinter implements QuestionAlg<Print, StmtPrint> {
 	
 	HashSet<String> errors = new HashSet<String>();
 	

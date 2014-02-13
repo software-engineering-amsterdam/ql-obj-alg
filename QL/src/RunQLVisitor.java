@@ -10,6 +10,7 @@ import antlr4.objalgconverter.QLObjAlgConverterVisitor;
 
 import java.io.*;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 
 public class RunQLVisitor {
@@ -37,7 +38,9 @@ public class RunQLVisitor {
 		method.invoke(f, null);
 
 		System.out.println("Errors: "+tc.getErrors().toString());
+		System.out.println("Warnings"+tc.getWarnings().toString());
 		System.out.println("Memory "+tc.getMem().toString());
+		System.out.println("Undefined "+tc.getUndefined().toString());
    }
 
     
