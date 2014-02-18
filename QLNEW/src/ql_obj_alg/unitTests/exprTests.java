@@ -27,6 +27,12 @@ public class exprTests {
 	public void brackets(){
 		assertEquals("Precedence with brackets","((1 + 1) * 2)",getExpressionStringTree("(1+1)*2"));
 	}
+	@Test
+	public void divAddition(){
+		assertEquals("Multiplication + division","(1 + (2 / 2))",getExpressionStringTree("1+2/2"));
+	}	
+	
+	
 	public static IBuildE getExpressionTree(String expr){
 		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
 		return qlParser.expr().exp;
