@@ -22,4 +22,8 @@ public class VariableDependency {
 			dependOn.addAll(dependecies);
 		}
 	}
+	
+	public HashSet<String> getDependencies(){
+		return this.dependOn;
+	}
 }

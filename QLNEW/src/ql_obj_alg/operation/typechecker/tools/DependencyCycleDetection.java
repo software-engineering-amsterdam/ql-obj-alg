@@ -1,5 +1,6 @@
 package ql_obj_alg.operation.typechecker.tools;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -41,11 +42,19 @@ public class DependencyCycleDetection {
 		}
 		
 		else if(mode.equals(Mode.THISDEPENDON)){
-			dependecyG.addDependecies(var,getCurrentDependencies());
+			dependecyG.addDependecies(var,addCurrentDependencies());
 		}
 	}
+	
+	public Set<String> getIndependent(){
+		return dependecyG.getIndependent();
+	}
+	
+	public HashMap<String,HashSet<String>> getDependencies(){
+		return dependecyG.getDependencies();
+	}
 
-	private Set<String> getCurrentDependencies() {
+	private Set<String> addCurrentDependencies() {
 		Set<String> dependencies = new HashSet<String>();
 		Iterator<HashSet<String>> it = currentDependencies.iterator();
 		while(it.hasNext())
