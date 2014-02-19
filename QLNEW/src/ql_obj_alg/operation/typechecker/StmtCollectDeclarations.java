@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IStmtAlg;
-import ql_obj_alg.operation.typechecker.tools.Type;
+import ql_obj_alg.operation.typechecker.types.Type;
+import ql_obj_alg.operation.typechecker.types.TypeFactory;
 
 public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 		IStmtAlg<IExpType, ITypeCheck> {
@@ -18,8 +19,9 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 	public ITypeCheck iff(final IExpType cond, final ITypeCheck b) {
 		return new ITypeCheck(){
 			public void check(){
+				dcd.setModeNewNodesToDependendOn();
 				Type t = cond.type(); 
-				if(t == null || !t.isBoolean()){
+				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
 				if(b!=null){
@@ -35,7 +37,7 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 		return new ITypeCheck(){
 			public void check(){
 				Type t = cond.type(); 
-				if(t == null || !t.isBoolean()){
+				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
 				if(b1!=null){
@@ -65,8 +67,8 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 		return new ITypeCheck(){
 			public void check(){
 				Type t = mem.get(id);
-				Type newType = new Type(type);
-				if(t != null && !t.equals(newType)){
+				Type newType = TypeFactory.createType(type);
+				if(!t.equals(newType)){
 					errors.add("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
 				}
 				else{
@@ -87,7 +89,7 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 		return new ITypeCheck(){
 			public void check(){
 				Type t = mem.get(id);
-				Type newType = new Type(type);
+				Type newType = TypeFactory.createType(type);
 				if(t != null && !t.equals(newType)){
 					errors.add("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
 				}

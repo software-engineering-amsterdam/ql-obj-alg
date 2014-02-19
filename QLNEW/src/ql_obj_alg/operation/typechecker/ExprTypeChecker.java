@@ -5,21 +5,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
-import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
-import ql_obj_alg.operation.typechecker.tools.Type;
+import ql_obj_alg.operation.typechecker.types.TBoolean;
+import ql_obj_alg.operation.typechecker.types.TInteger;
+import ql_obj_alg.operation.typechecker.types.TString;
+import ql_obj_alg.operation.typechecker.types.TUndefined;
+import ql_obj_alg.operation.typechecker.types.Type;
 
 public class ExprTypeChecker implements IExpAlg<IExpType>{
 	
 	HashMap<String, Type> mem = new HashMap<String,Type>(); 
 	List<String> errors = new LinkedList<String>();
 	List<String> warnings = new LinkedList<String>();
-	DependencyCycleDetection dcd = new DependencyCycleDetection();
 
 	@Override
 	public IExpType lit(int x) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("integer");
+				return new TInteger();
 			}
 		};
 	}
@@ -28,7 +30,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	public IExpType bool(boolean b) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -37,7 +39,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	public IExpType string(String s) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("string");
+				return new TString();
 			}
 		};
 	}
@@ -49,8 +51,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t = mem.get(s);
 				if(t != null)
 					return t;
-				dcd.addVariable(s);
-				return new Type(null);
+				return new TUndefined();
 			}
 		};
 	}
@@ -61,10 +62,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(!t1.isInteger() || !t2.isInteger()){
+				if(!t1.isNumber() || !t2.isNumber()){
 						errors.add("Wrong type in * expression");
 				}
-				return new Type("integer");
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -75,10 +76,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(!t1.isInteger() || !t2.isInteger()){
+				if(!t1.isNumber() || !t2.isNumber()){
 						errors.add("Wrong type in / expression");
 				}
-				return new Type("integer");
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -89,10 +90,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(!t1.isInteger() || !t2.isInteger()){
+				if(!t1.isNumber() || !t2.isNumber()){
 						errors.add("Wrong type in + expression");
 				}
-				return new Type("integer");
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -103,10 +104,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(!t1.isInteger() || !t2.isInteger()){
+				if(!t1.isNumber() || !t2.isNumber()){
 						errors.add("Wrong type in - expression");
 				}
-				return new Type("integer");
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -120,7 +121,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.equals(t2)){
 						errors.add("Incompatible types in == expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -134,7 +135,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.equals(t2)){
 						errors.add("Incompatible types in != expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -145,10 +146,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(!t1.comparable(t2)){
+				if(!t1.isComparable(t2)){
 						errors.add("Incompatible types in < expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -159,10 +160,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(!t1.comparable(t2)){
+				if(!t1.isComparable(t2)){
 						errors.add("Incompatible types in <= expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -173,10 +174,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(!t1.comparable(t2)){
+				if(!t1.isComparable(t2)){
 						errors.add("Incompatible types in > expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -187,10 +188,10 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1.comparable(t2)){
+				if(t1.isComparable(t2)){
 						errors.add("Incompatible types in >= expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -204,7 +205,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t.isBoolean()){
 						errors.add("Wrong type in ! expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -218,7 +219,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.isBoolean() || !t2.isBoolean()){
 						errors.add("Wrong type in && expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -232,7 +233,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.isBoolean() || !t2.isBoolean()){
 						errors.add("Wrong type in || expression");
 				}
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
