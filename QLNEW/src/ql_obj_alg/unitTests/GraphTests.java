@@ -12,9 +12,9 @@ public class GraphTests extends TestCase {
 	@Before
 	protected void setUp() throws Exception {
 		dcd.addVariable("lala");
-		dcd.addNewDependecies();
+		dcd.setModeNewNodesToDependendOn();
 		dcd.addVariable("You depend on me");
-		dcd.addNewDependentNodes();
+		dcd.setModeNewDependentNodes();
 		dcd.addVariable("I depend on");
 	}
 

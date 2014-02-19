@@ -7,6 +7,10 @@
 *.o
 *.so
 
+#eclipse
+QLNEW/.*
+QLNEW/lib/*
+
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source

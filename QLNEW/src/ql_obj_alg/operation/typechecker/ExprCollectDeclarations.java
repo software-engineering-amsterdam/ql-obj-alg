@@ -43,7 +43,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 				Type t = mem.get(s);
 				if(t != null)
 					return t;
-				return null;
+				return new Type(null);
 			}
 		};
 	}

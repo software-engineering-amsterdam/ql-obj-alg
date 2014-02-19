@@ -12,24 +12,28 @@ public class DependencyCycleDetection {
 	DependencyGraph dependecyG = new DependencyGraph();
 	
 	private enum Mode {
-		INDEPENDENT, DEPENDONTHIS, THISDEPENDON;
+		INDEPENDENT, DEPENDONTHIS, THISDEPENDON, DONOTHING;
 	}
 
 	public DependencyCycleDetection() {
 		mode = Mode.INDEPENDENT;
 	}
 	
-	public void addNewDependecies(){
+	public void setModeNewNodesToDependendOn(){
 		mode = Mode.DEPENDONTHIS;
 		currentDependencies.push(new HashSet<String>());
 	}
 	
-	public void addNewDependentNodes(){
+	public void setModeNewDependentNodes(){
 		mode = Mode.THISDEPENDON;
 	}
 	
-	public void addIndependentNodes(){
+	public void setModeNewIndependentNodes(){
 		mode = Mode.INDEPENDENT;
+	}
+	
+	public void setModeDoNothing(){
+		mode = Mode.DONOTHING;
 	}
 	
 	public void addVariable(String var){

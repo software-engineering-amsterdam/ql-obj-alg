@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
 import ql_obj_alg.operation.typechecker.tools.Type;
 
 public class ExprTypeChecker implements IExpAlg<IExpType>{
@@ -12,6 +13,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	HashMap<String, Type> mem = new HashMap<String,Type>(); 
 	List<String> errors = new LinkedList<String>();
 	List<String> warnings = new LinkedList<String>();
+	DependencyCycleDetection dcd = new DependencyCycleDetection();
 
 	@Override
 	public IExpType lit(int x) {
@@ -47,7 +49,8 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t = mem.get(s);
 				if(t != null)
 					return t;
-				return null;
+				dcd.addVariable(s);
+				return new Type(null);
 			}
 		};
 	}
@@ -58,7 +61,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || t2 == null || !t1.isInteger() || !t2.isInteger()){
+				if(!t1.isInteger() || !t2.isInteger()){
 						errors.add("Wrong type in * expression");
 				}
 				return new Type("integer");
@@ -72,7 +75,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || t2 == null || !t1.isInteger() || !t2.isInteger()){
+				if(!t1.isInteger() || !t2.isInteger()){
 						errors.add("Wrong type in / expression");
 				}
 				return new Type("integer");
@@ -86,7 +89,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || t2 == null || !t1.isInteger() || !t2.isInteger()){
+				if(!t1.isInteger() || !t2.isInteger()){
 						errors.add("Wrong type in + expression");
 				}
 				return new Type("integer");
@@ -100,7 +103,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || t2 == null || !t1.isInteger() || !t2.isInteger()){
+				if(!t1.isInteger() || !t2.isInteger()){
 						errors.add("Wrong type in - expression");
 				}
 				return new Type("integer");
@@ -114,7 +117,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || !t1.equals(t2)){
+				if(!t1.equals(t2)){
 						errors.add("Incompatible types in == expression");
 				}
 				return new Type("boolean");
@@ -128,7 +131,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1==null || !t1.equals(t2)){
+				if(!t1.equals(t2)){
 						errors.add("Incompatible types in != expression");
 				}
 				return new Type("boolean");
@@ -142,7 +145,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || !t1.comparable(t2)){
+				if(!t1.comparable(t2)){
 						errors.add("Incompatible types in < expression");
 				}
 				return new Type("boolean");
@@ -156,7 +159,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || !t1.comparable(t2)){
+				if(!t1.comparable(t2)){
 						errors.add("Incompatible types in <= expression");
 				}
 				return new Type("boolean");
@@ -170,7 +173,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || !t1.comparable(t2)){
+				if(!t1.comparable(t2)){
 						errors.add("Incompatible types in > expression");
 				}
 				return new Type("boolean");
@@ -184,7 +187,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || t1.comparable(t2)){
+				if(t1.comparable(t2)){
 						errors.add("Incompatible types in >= expression");
 				}
 				return new Type("boolean");
@@ -198,7 +201,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 		return new IExpType(){
 			public Type type(){
 				Type t = a.type(); 
-				if(t == null || !t.isBoolean()){
+				if(!t.isBoolean()){
 						errors.add("Wrong type in ! expression");
 				}
 				return new Type("boolean");
@@ -212,7 +215,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || t2 == null || !t1.isBoolean() || !t2.isBoolean()){
+				if(!t1.isBoolean() || !t2.isBoolean()){
 						errors.add("Wrong type in && expression");
 				}
 				return new Type("boolean");
@@ -226,7 +229,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
-				if(t1 == null || t2 == null || !t1.isBoolean() || !t2.isBoolean()){
+				if(!t1.isBoolean() || !t2.isBoolean()){
 						errors.add("Wrong type in || expression");
 				}
 				return new Type("boolean");
