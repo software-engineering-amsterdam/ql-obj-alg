@@ -1,9 +1,11 @@
 package ql_obj_alg.operation.typechecker;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.operation.typechecker.types.Type;
 
 public class FormCollectDeclarations extends StmtCollectDeclarations implements
 		IFormAlg<IExpType, ITypeCheck, ITypeCheck> {
@@ -31,5 +33,14 @@ public class FormCollectDeclarations extends StmtCollectDeclarations implements
 			}
 		};
 	}
+	
+	public HashMap<String,Type> getMemory(){
+		return mem;
+	}
+	
+	public HashSet<String>  getForms(){
+		return forms;
+	}
+
 
 }

@@ -68,7 +68,7 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 			public void check(){
 				Type t = mem.get(id);
 				Type newType = TypeFactory.createType(type);
-				if(!t.equals(newType)){
+				if(t!= null && !t.equals(newType)){
 					errors.add("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
 				}
 				else{
