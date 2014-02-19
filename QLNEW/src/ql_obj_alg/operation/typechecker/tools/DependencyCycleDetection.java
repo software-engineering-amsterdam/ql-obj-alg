@@ -65,4 +65,13 @@ public class DependencyCycleDetection {
 			dependencies.addAll(it.next());
 		return dependencies;
 	}
+	
+	public void revert(){
+		if(currentDependencies.isEmpty())
+			setModeNewIndependentNodes();
+		else{
+			currentDependencies.pop();
+			this.setModeNewDependentNodes();
+		}
+	}
 }
