@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.typechecker.types;
 
-public class TInteger extends Type {
+public class TInteger extends TNumber {
 
 	@Override
 	public boolean isComparable(Type t) {
@@ -53,5 +53,13 @@ public class TInteger extends Type {
 	@Override
 	public int hashCode(){
 		return "integer".hashCode();
+	}
+
+	@Override
+	public TNumber merge(TNumber n) {
+		if (n.isNumber())
+			return n;
+		else
+			return this;		
 	}
 }
