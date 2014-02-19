@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
 import ql_obj_alg.operation.typechecker.tools.Type;
 
 public class ExprTypeChecker implements IExpAlg<IExpType>{
@@ -12,6 +13,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	HashMap<String, Type> mem = new HashMap<String,Type>(); 
 	List<String> errors = new LinkedList<String>();
 	List<String> warnings = new LinkedList<String>();
+	DependencyCycleDetection dcd = new DependencyCycleDetection();
 
 	@Override
 	public IExpType lit(int x) {
@@ -47,6 +49,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t = mem.get(s);
 				if(t != null)
 					return t;
+				dcd.addVariable(s);
 				return new Type(null);
 			}
 		};
