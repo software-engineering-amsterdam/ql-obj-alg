@@ -54,22 +54,22 @@ public class QLParser extends Parser {
 
 		FormBuilder formBuilder = new FormBuilder();
 		
-		protected IBuildS composeStmt(List<QLParser.StatContext> list){
+		protected IBuildS composeStmt(List<QLParser.StatContext> StmtList){
 			List<IBuildS> listStmt = new ArrayList<IBuildS>();
-			for(QLParser.StatContext stmt : list)
+			for(QLParser.StatContext stmt : StmtList)
 			{
 				listStmt.add(stmt.stmt);
 			}
 			return formBuilder.comb(listStmt);
 		}
 		
-		protected IBuildF composeForms(List<QLParser.FormContext> list){
-			QLParser.FormContext form = list.remove(0);
-			if(list.isEmpty()){
-				return form.frm;
+		protected IBuildF composeForms(List<QLParser.FormContext> FormList){
+			List<IBuildF> listForm = new ArrayList<IBuildF>();
+			for(QLParser.FormContext form : FormList)
+			{
+				listForm.add(form.frm);
 			}
-			else 
-				return formBuilder.forms(form.frm,composeForms(list));
+			return formBuilder.forms(listForm);
 		}
 		
 

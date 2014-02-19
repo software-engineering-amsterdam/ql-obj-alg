@@ -1,5 +1,7 @@
 package ql_obj_alg.operation.printer;
 
+import java.util.List;
+
 import ql_obj_alg.objectAlgebra.IFormAlg;
 
 public class FormPrinter extends StmtPrinter implements IFormAlg<IPrint, IPrint, IPrint> {
@@ -17,10 +19,14 @@ public class FormPrinter extends StmtPrinter implements IFormAlg<IPrint, IPrint,
 	}
 
 	@Override
-	public IPrint forms(final IPrint f1, final IPrint f2) {
+	public IPrint forms(final List<IPrint> formList) {
 		return new IPrint(){
 			public String print(){
-				return f1.print() + " " + f2.print();
+				String result = "";
+				for(IPrint form : formList){
+					result += form.print() + "\n\n";
+				}
+				return result;
 			}
 		};
 	}
