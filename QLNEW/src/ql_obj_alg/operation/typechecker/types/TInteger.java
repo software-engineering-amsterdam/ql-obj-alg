@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.typechecker.tools;
+package ql_obj_alg.operation.typechecker.types;
 
 public class TInteger extends Type {
 

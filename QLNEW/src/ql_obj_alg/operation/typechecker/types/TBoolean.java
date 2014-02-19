@@ -1,17 +1,17 @@
-package ql_obj_alg.operation.typechecker.tools;
+package ql_obj_alg.operation.typechecker.types;
 
-public class TString extends Type {
+public class TBoolean extends Type {
 
 	@Override
 	public boolean isComparable(Type t) {
 		if(t == null)
 			return false;
-		return t.isAlphanumeric();
+		return t.isBoolean();
 	}
-
+	
 	@Override
 	public boolean isOrd() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -21,12 +21,12 @@ public class TString extends Type {
 
 	@Override
 	public boolean isAlphanumeric() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean isBoolean() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class TString extends Type {
 	public boolean isUndefined() {
 		return false;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
@@ -52,6 +52,6 @@ public class TString extends Type {
 	
 	@Override
 	public int hashCode(){
-		return "string".hashCode();
+		return "boolean".hashCode();
 	}
 }
