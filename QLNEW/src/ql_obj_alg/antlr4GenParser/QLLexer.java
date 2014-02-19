@@ -2,6 +2,8 @@
 
 package ql_obj_alg.antlr4GenParser;
 import ql_obj_alg.operation.builder.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

@@ -1,6 +1,8 @@
 package ql_obj_alg.operation.printer;
 
 
+import java.util.List;
+
 import ql_obj_alg.objectAlgebra.IStmtAlg;
 
 public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint> {
@@ -25,10 +27,14 @@ public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint>
 	}
 
 	@Override
-	public IPrint comp(final IPrint s1, final IPrint s2) {
+	public IPrint comb(final List<IPrint> stmtList) {
 		return new IPrint(){
 			public String print(){
-				return s1.print() + " " + s2.print();
+				String result = "";
+				for(IPrint stmt : stmtList){
+					result += stmt.print() + " ";
+				}
+				return result.trim();
 			}
 		};
 	}

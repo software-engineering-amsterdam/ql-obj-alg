@@ -1,4 +1,4 @@
-package ql_obj_alg.unitTests;
+package ql_obj_alg.unitTests.Tree;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -31,11 +31,16 @@ public class exprTests {
 	public void divAddition(){
 		assertEquals("Multiplication + division","(1 + (2 / 2))",getExpressionStringTree("1+2/2"));
 	}	
+
 	
-	
-	public static IBuildE getExpressionTree(String expr){
-		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
+	private static IBuildE getExpressionTree(String expr){
+		QLParser qlParser = getParser(expr);
 		return qlParser.expr().exp;
+	}
+	
+	private static QLParser getParser(String expr) {
+		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
+		return qlParser;
 	}
 	
 	public static String getExpressionStringTree(String expr){
