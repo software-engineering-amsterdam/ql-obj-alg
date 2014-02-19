@@ -32,6 +32,10 @@ public class DependencyCycleDetection {
 		mode = Mode.INDEPENDENT;
 	}
 	
+	public void setModeDoNothing(){
+		mode = Mode.DONOTHING;
+	}
+	
 	public void addVariable(String var){
 		if(mode.equals(Mode.INDEPENDENT)){
 			dependecyG.setIndependent(var);
