@@ -8,13 +8,20 @@ import java.util.Set;
 public class DependencyGraph {
 	HashMap<String,VariableDependency> variables = new HashMap<String,VariableDependency>();
 
-	public void setIndependent(String var) {
-		getNode(var).removeDepedencies();
+	public void setValueIndependent(String var) {
+		getNode(var).removeValueDepedencies();
 	}
 
+	public void setDefinitionIndependent(String var) {
+		getNode(var).removeDefinitionDepedencies();
+	}
 
-	public void addDependecies(String var, Set<String> currentDependencies) {
-		getNode(var).addDependencies(currentDependencies);
+	public void addDefinitionDependecies(String var, Set<String> currentDependencies) {
+		getNode(var).addDefinitionDependencies(currentDependencies);
+	}
+
+	public void addValueDependecies(String var, Set<String> currentDependencies) {
+		getNode(var).addValueDependencies(currentDependencies);
 	}
 	
 	private VariableDependency getNode(String var){

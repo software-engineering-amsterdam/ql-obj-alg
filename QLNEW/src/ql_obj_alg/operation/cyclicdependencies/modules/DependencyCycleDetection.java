@@ -7,58 +7,40 @@ import java.util.Set;
 import java.util.Stack;
 
 public class DependencyCycleDetection {
-	Mode mode;
 	Stack<HashSet<String>> currentDependencies = new Stack<HashSet<String>>();
-	DependencyGraph dependecyG = new DependencyGraph();
+	DependencyGraph dependencyG = new DependencyGraph();
 	
-	private enum Mode {
-		INDEPENDENT, DEPENDONTHIS, THISDEPENDON, DONOTHING;
+	public void addNodeToDependOn(String var){
+		currentDependencies.peek().add(var);
 	}
 
-	public DependencyCycleDetection() {
-		mode = Mode.INDEPENDENT;
+	public void addNodesToDependOn(HashSet<String> vars){
+		currentDependencies.peek().addAll(vars);
 	}
 	
-	public void setModeNewNodesToDependendOn(){
-		mode = Mode.DEPENDONTHIS;
-		currentDependencies.push(new HashSet<String>());
+	public void addDefinitionDependentNode(String var){
+		if(currentDependencies.isEmpty())
+			dependencyG.setDefinitionIndependent(var);
+		else
+			dependencyG.addDefinitionDependecies(var,getCurrentDependencies());
 	}
 	
-	public void setModeNewDependentNodes(){
-		mode = Mode.THISDEPENDON;
-	}
-	
-	public void setModeNewIndependentNodes(){
-		mode = Mode.INDEPENDENT;
-	}
-	
-	public void setModeDoNothing(){
-		mode = Mode.DONOTHING;
-	}
-	
-	public void addVariable(String var){
-		if(mode.equals(Mode.INDEPENDENT)){
-			dependecyG.setIndependent(var);
-		}
-		
-		else if(mode.equals(Mode.DEPENDONTHIS)){
-			currentDependencies.peek().add(var);
-		}
-		
-		else if(mode.equals(Mode.THISDEPENDON)){
-			dependecyG.addDependecies(var,addCurrentDependencies());
-		}
+	public void addValueDependentNode(String var, HashSet<String> dependencies){
+		if(dependencies.isEmpty())
+			dependencyG.setValueIndependent(var);
+		else
+			dependencyG.addValueDependecies(var,dependencies);
 	}
 	
 	public Set<String> getIndependent(){
-		return dependecyG.getIndependent();
+		return dependencyG.getIndependent();
 	}
 	
 	public HashMap<String,HashSet<String>> getDependencies(){
-		return dependecyG.getDependencies();
+		return dependencyG.getDependencies();
 	}
 
-	private Set<String> addCurrentDependencies() {
+	private Set<String> getCurrentDependencies() {
 		Set<String> dependencies = new HashSet<String>();
 		Iterator<HashSet<String>> it = currentDependencies.iterator();
 		while(it.hasNext())
@@ -67,18 +49,14 @@ public class DependencyCycleDetection {
 	}
 	
 	public void revert(){
-		if(currentDependencies.isEmpty())
-			setModeNewIndependentNodes();
-		else{
-			currentDependencies.pop();
-			if(currentDependencies.isEmpty())
-				setModeNewIndependentNodes();
-			else
-				this.setModeNewDependentNodes();
-		}
+		currentDependencies.pop();
 	}
 	
 	public DependencyGraph getGraph(){
-		return dependecyG;
+		return dependencyG;
+	}
+
+	public void addValueIndependentNode(String var) {
+		dependencyG.setValueIndependent(var);		
 	}
 }
