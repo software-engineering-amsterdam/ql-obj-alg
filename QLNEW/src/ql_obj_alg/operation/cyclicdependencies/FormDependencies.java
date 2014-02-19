@@ -1,5 +1,7 @@
 package ql_obj_alg.operation.cyclicdependencies;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IFormAlg;
@@ -27,6 +29,8 @@ public class FormDependencies extends StmtDependencies implements
 		};
 	}
 	
-	
+	public HashMap<String, HashSet<String>> getDependencies(){
+		return dcd.getDependencies();
+	}
 
 }

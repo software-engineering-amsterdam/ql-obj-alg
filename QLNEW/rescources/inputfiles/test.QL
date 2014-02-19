@@ -12,7 +12,7 @@ if (privateDebt && valueResidue) {
 }
 if(sellingPrice){
 privateDebt: "Private debts for the sold house:" integer 
-valueResidue: "Value residue:" integer(sellingPrice - privateDebt)	
+valueResidue: "Value residue:" integer
 }
 valueResidue: "Value residue:" integer(sellingPrice - privateDebt)
 

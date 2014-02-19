@@ -23,7 +23,7 @@ public class VariableDependency {
 	}
 	
 	public boolean isDependent(){
-		if(!isAlreadyDefined() && !hasAlreadyValue())
+		if(!isAlreadyDefined() || !hasAlreadyValue())
 			return true;
 		return false;
 	}
