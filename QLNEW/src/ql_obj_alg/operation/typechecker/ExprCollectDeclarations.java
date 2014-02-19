@@ -4,7 +4,11 @@ import java.util.HashMap;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
 import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
-import ql_obj_alg.operation.typechecker.tools.Type;
+import ql_obj_alg.operation.typechecker.types.TBoolean;
+import ql_obj_alg.operation.typechecker.types.TInteger;
+import ql_obj_alg.operation.typechecker.types.TString;
+import ql_obj_alg.operation.typechecker.types.TUndefined;
+import ql_obj_alg.operation.typechecker.types.Type;
 
 public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 
@@ -15,7 +19,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType lit(int x) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("integer");
+				return new TInteger();
 			}
 		};
 	}
@@ -24,7 +28,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType bool(boolean b) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -33,7 +37,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType string(String s) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("string");
+				return new TString();
 			}
 		};
 	}
@@ -46,7 +50,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 				if(t != null)
 					return t;
 				dcd.addVariable(s);
-				return new Type(null);
+				return new TUndefined();
 			}
 		};
 	}
@@ -55,7 +59,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType mul(final IExpType a1,final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("integer");
+				return new TInteger();
 			}
 		};
 	}
@@ -64,7 +68,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType div(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("integer");
+				return new TInteger();
 			}
 		};
 	}
@@ -73,7 +77,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType add(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("integer");
+				return new TInteger();
 			}
 		};
 	}
@@ -82,7 +86,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType sub(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("integer");
+				return new TInteger();
 			}
 		};
 	}
@@ -91,7 +95,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType eq(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -100,7 +104,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType neq(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -109,7 +113,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType lt(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -118,7 +122,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType leq(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -127,7 +131,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType gt(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -136,7 +140,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType geq(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -146,7 +150,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType not(final IExpType a) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -155,7 +159,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType and(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
@@ -164,7 +168,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType or(final IExpType a1, final IExpType a2) {
 		return new IExpType(){
 			public Type type(){
-				return new Type("boolean");
+				return new TBoolean();
 			}
 		};
 	}
