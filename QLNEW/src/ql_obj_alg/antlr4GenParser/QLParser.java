@@ -2,6 +2,8 @@
 
 package ql_obj_alg.antlr4GenParser;
 import ql_obj_alg.operation.builder.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -53,14 +55,12 @@ public class QLParser extends Parser {
 		FormBuilder formBuilder = new FormBuilder();
 		
 		protected IBuildS composeStmt(List<QLParser.StatContext> list){
-			if(list.isEmpty())
-				return null;
-			QLParser.StatContext stat = list.remove(0);
-			if(list.isEmpty()){
-				return stat.stmt;
+			List<IBuildS> listStmt = new ArrayList<IBuildS>();
+			for(QLParser.StatContext stmt : list)
+			{
+				listStmt.add(stmt.stmt);
 			}
-			else 
-				return formBuilder.comp(stat.stmt,composeStmt(list));
+			return formBuilder.comb(listStmt);
 		}
 		
 		protected IBuildF composeForms(List<QLParser.FormContext> list){
@@ -333,6 +333,7 @@ public class QLParser extends Parser {
 		public StatContext stat;
 		public List<StatContext> b = new ArrayList<StatContext>();
 		public ElsestatContext c;
+		public ElsestatContext elsestat;
 		public StatContext stat(int i) {
 			return getRuleContext(StatContext.class,i);
 		}
@@ -386,11 +387,11 @@ public class QLParser extends Parser {
 			_la = _input.LA(1);
 			if (_la==4) {
 				{
-				setState(68); ((IfstatContext)_localctx).c = elsestat();
+				setState(68); ((IfstatContext)_localctx).c = ((IfstatContext)_localctx).elsestat = elsestat();
 				}
 			}
 
-			if(((IfstatContext)_localctx).c != null){ ((IfstatContext)_localctx).stmt =  formBuilder.iffelse(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b),((IfstatContext)_localctx).c.stmt);} else { ((IfstatContext)_localctx).stmt =  formBuilder.iff(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b));};
+			if(((IfstatContext)_localctx).c != null){ ((IfstatContext)_localctx).stmt =  formBuilder.iffelse(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b),((IfstatContext)_localctx).elsestat.stmt);} else { ((IfstatContext)_localctx).stmt =  formBuilder.iff(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b));};
 			}
 		}
 		catch (RecognitionException re) {

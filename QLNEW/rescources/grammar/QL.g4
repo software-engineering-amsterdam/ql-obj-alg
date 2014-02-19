@@ -5,20 +5,20 @@ import CommonLexerRules,Op;
 @header{
 package ql_obj_alg.antlr4GenParser;
 import ql_obj_alg.operation.builder.*;
+import java.util.ArrayList;
+import java.util.List;
 }
 
 @parser::members{
 	FormBuilder formBuilder = new FormBuilder();
 	
 	protected IBuildS composeStmt(List<QLParser.StatContext> list){
-		if(list.isEmpty())
-			return null;
-		QLParser.StatContext stat = list.remove(0);
-		if(list.isEmpty()){
-			return stat.stmt;
+		List<IBuildS> listStmt = ArrayList<IBuildS>();
+		for(QLParser.StatContext stmt : list)
+		{
+			listStmt.add(stmt.stmt);
 		}
-		else 
-			return formBuilder.comp(stat.stmt,composeStmt(list));
+		return formBuilder.comb(listStmt);
 	}
 	
 	protected IBuildF composeForms(List<QLParser.FormContext> list){
@@ -43,20 +43,20 @@ stat returns [IBuildS stmt]:
 		| ifstat {$stmt = $ifstat.stmt;};
 
 question returns [IBuildS stmt]: 
-		ID ':' STRING TYPE b=assign? {if($b.exp != null){ $stmt = formBuilder.question($ID.text,$STRING.text,$TYPE.text,$assign.exp);} else {$stmt = formBuilder.question($ID.text,$STRING.text,$TYPE.text);};};
+		ID ':' STRING TYPE b=assign? {if($b.ctx != null){ $stmt = formBuilder.question($ID.text,$STRING.text,$TYPE.text,$assign.exp);} else {$stmt = formBuilder.question($ID.text,$STRING.text,$TYPE.text);};};
 
 assign returns [IBuildE exp]: 
 		LP a=expr RP	{$exp = $a.exp;};
 
 ifstat returns [IBuildS stmt]: 
-		'if' LP a=expr RP LB b+=stat* RB c=elsestat? {if($c.stmt != null){ $stmt = formBuilder.iffelse($a.exp,composeStmt($b),$elsestat.stmt);} else { $stmt = formBuilder.iff($a.exp,composeStmt($b));};};
+		'if' LP a=expr RP LB b+=stat* RB c=elsestat? {if($c.ctx != null){ $stmt = formBuilder.iffelse($a.exp,composeStmt($b),$elsestat.stmt);} else { $stmt = formBuilder.iff($a.exp,composeStmt($b));};};
 
 elsestat returns [IBuildS stmt]:
 		'else' LB a+=stat* RB		{$stmt = composeStmt($a);};
 
 //precedence http://introcs.cs.princeton.edu/java/11precedence/
 expr returns [IBuildE exp]: 	
-		LP a=expr RP 				{$exp = $a.exp;} 
+		LP a=expr RP 				{$exp = $a.exp;}
 		| NOT a=expr 				{$exp = formBuilder.not($a.exp);} 
 		| a=expr MUL b=expr 		{$exp = formBuilder.mul($a.exp,$b.exp);} 
 		| a=expr DIV b=expr  		{$exp = formBuilder.div($a.exp,$b.exp);} 
