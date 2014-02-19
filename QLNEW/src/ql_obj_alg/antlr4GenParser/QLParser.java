@@ -276,7 +276,7 @@ public class QLParser extends Parser {
 				}
 			}
 
-			if(((QuestionContext)_localctx).b.exp != null){ ((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),(((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null),((QuestionContext)_localctx).assign.exp);} else {((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),(((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null));};
+			if(((QuestionContext)_localctx).b != null){ ((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),(((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null),((QuestionContext)_localctx).assign.exp);} else {((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),(((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null));};
 			}
 		}
 		catch (RecognitionException re) {
@@ -333,7 +333,6 @@ public class QLParser extends Parser {
 		public StatContext stat;
 		public List<StatContext> b = new ArrayList<StatContext>();
 		public ElsestatContext c;
-		public ElsestatContext elsestat;
 		public StatContext stat(int i) {
 			return getRuleContext(StatContext.class,i);
 		}
@@ -387,11 +386,11 @@ public class QLParser extends Parser {
 			_la = _input.LA(1);
 			if (_la==4) {
 				{
-				setState(68); ((IfstatContext)_localctx).c = ((IfstatContext)_localctx).elsestat = elsestat();
+				setState(68); ((IfstatContext)_localctx).c = elsestat();
 				}
 			}
 
-			if(((IfstatContext)_localctx).c.stmt != null){ ((IfstatContext)_localctx).stmt =  formBuilder.iffelse(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b),((IfstatContext)_localctx).elsestat.stmt);} else { ((IfstatContext)_localctx).stmt =  formBuilder.iff(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b));};
+			if(((IfstatContext)_localctx).c != null){ ((IfstatContext)_localctx).stmt =  formBuilder.iffelse(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b),((IfstatContext)_localctx).c.stmt);} else { ((IfstatContext)_localctx).stmt =  formBuilder.iff(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b));};
 			}
 		}
 		catch (RecognitionException re) {

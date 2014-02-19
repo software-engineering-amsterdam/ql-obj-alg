@@ -6,29 +6,62 @@ public class StmtBuilder extends ExprBuilder implements IStmtAlg<IBuildE,IBuildS
 
 	@Override
 	public IBuildS iff(final IBuildE cond, final IBuildS b) {
-		return new IBuildS(){
-			public <E,S> S build(IStmtAlg<E,S> alg) {
-				return alg.iff(cond.build(alg), b.build(alg));
-			}
-		};
+		if(b != null){
+			return new IBuildS(){
+				public <E,S> S build(IStmtAlg<E,S> alg) {
+					return alg.iff(cond.build(alg), b.build(alg));
+				}
+			};
+		}
+		return null;
 	}
 
 	@Override
 	public IBuildS iffelse(final IBuildE cond, final IBuildS b1, final IBuildS b2) {
-		return new IBuildS(){
-			public <E,S> S build(IStmtAlg<E,S> alg) {
-				return alg.iffelse(cond.build(alg), b1.build(alg), b2.build(alg));
-			}
-		};
+		if(b1 != null & b2!= null){
+			return new IBuildS(){
+				public <E,S> S build(IStmtAlg<E,S> alg) {
+					return alg.iffelse(cond.build(alg), b1.build(alg), b2.build(alg));
+				}
+			};
+		}else if(b1 != null && b2 == null){
+			return new IBuildS(){
+				public <E,S> S build(IStmtAlg<E,S> alg) {
+					return alg.iff(cond.build(alg), b1.build(alg));
+				}
+			};			
+		}else if(b2 != null && b1 == null){
+			return new IBuildS(){
+				public <E,S> S build(IStmtAlg<E,S> alg) {
+					return alg.iff(alg.not(cond.build(alg)), b2.build(alg));
+				}
+			};				
+		}
+		return null;
 	}
 
 	@Override
 	public IBuildS comp(final IBuildS s1, final IBuildS s2) {
-		return new IBuildS(){
-			public <E,S> S build(IStmtAlg<E,S> alg) {
-				return alg.comp(s1.build(alg), s2.build(alg));
-			}
-		};
+		if(s1 != null && s2 != null){
+			return new IBuildS(){
+				public <E,S> S build(IStmtAlg<E,S> alg) {
+					return alg.comp(s1.build(alg), s2.build(alg));
+				}
+			};
+		}else if(s1 != null && s2 == null){
+			return new IBuildS(){
+				public <E,S> S build(IStmtAlg<E,S> alg) {
+					return s1.build(alg);
+				}
+			};			
+		}else if(s2 != null && s1 == null){
+			return new IBuildS(){
+				public <E,S> S build(IStmtAlg<E,S> alg) {
+					return s2.build(alg);
+				}
+			};			
+		}
+		return null;
 	}
 
 	@Override
@@ -48,5 +81,4 @@ public class StmtBuilder extends ExprBuilder implements IStmtAlg<IBuildE,IBuildS
 			}
 		};
 	}
-
 }

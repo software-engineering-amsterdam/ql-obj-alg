@@ -37,7 +37,7 @@ public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint>
 	public IPrint question(final String id,final  String label, final String type) {
 		return new IPrint(){
 			public String print(){
-				return "(" + id + " " + label + " " + type + ")" ;
+				return "(" + id + " " + label + " " + type + ") \n" ;
 			}
 		};
 	}
@@ -46,7 +46,7 @@ public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint>
 	public IPrint question(final String id, final String label, final String type, final IPrint e) {
 		return new IPrint(){
 			public String print(){
-				return "(" + id + " " + label + " " + type + " " + e.print() + ")" ;
+				return "(" + id + " " + label + " " + type + " " + e.print() + ") \n" ;
 			}
 		};
 	}
