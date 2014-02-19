@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IStmtAlg;
-import ql_obj_alg.operation.printer.IPrint;
 import ql_obj_alg.operation.typechecker.types.Type;
 import ql_obj_alg.operation.typechecker.types.TypeFactory;
 
@@ -20,16 +19,13 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 	public ITypeCheck iff(final IExpType cond, final ITypeCheck b) {
 		return new ITypeCheck(){
 			public void check(){
-				dcd.setModeNewNodesToDependendOn();
 				Type t = cond.type(); 
 				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
-				dcd.setModeNewDependentNodes();
 				if(b!=null){
 					b.check();
 				}
-				dcd.revert();
 			}
 		};
 	}
@@ -39,16 +35,13 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 			final ITypeCheck b2) {
 		return new ITypeCheck(){
 			public void check(){
-				dcd.setModeNewNodesToDependendOn();
 				Type t = cond.type(); 
 				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
-				dcd.setModeNewDependentNodes();
 				if(b1!=null){
 					b1.check();
 				}
-				dcd.revert();
 				if(b2 != null){
 					b2.check();
 				}
