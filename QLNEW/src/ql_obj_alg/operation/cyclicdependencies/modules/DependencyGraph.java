@@ -52,7 +52,7 @@ public class DependencyGraph {
 		while(it.hasNext()){
 			String var = it.next();
 			VariableDependency vd = variables.get(var);
-			if(!vd.isIndependent())
+			if(vd.isDependent())
 				dependent.put(var,vd.getDependencies());
 		}
 		return dependent;

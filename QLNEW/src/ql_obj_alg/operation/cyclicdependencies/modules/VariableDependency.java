@@ -17,7 +17,13 @@ public class VariableDependency {
 	}
 	
 	public boolean isIndependent(){
-		if(definitionDependency == null && valueDependency == null)
+		if(isAlreadyDefined() && hasAlreadyValue())
+			return true;
+		return false;
+	}
+	
+	public boolean isDependent(){
+		if(!isAlreadyDefined() && !hasAlreadyValue())
 			return true;
 		return false;
 	}
@@ -28,7 +34,7 @@ public class VariableDependency {
 		return false;
 	}
 	
-	private boolean isAlreadyValue() {
+	private boolean hasAlreadyValue() {
 		if(valueDependency == null)
 			return true;
 		return false;
@@ -41,7 +47,7 @@ public class VariableDependency {
 	}
 	
 	public void addValueDependencies(Collection<String> dependecies){
-		if(!this.isAlreadyValue()){
+		if(!this.hasAlreadyValue()){
 			valueDependency.addAll(dependecies);
 		}
 	}
@@ -56,8 +62,10 @@ public class VariableDependency {
 	
 	public HashSet<String> getDependencies(){
 		HashSet<String> dependencies = new HashSet<String>();
-		dependencies.addAll(valueDependency);
-		dependencies.addAll(definitionDependency);
+		if(!isAlreadyDefined())
+			dependencies.addAll(definitionDependency);
+		if(!hasAlreadyValue())
+			dependencies.addAll(valueDependency);
 		return dependencies;
 	}
 }

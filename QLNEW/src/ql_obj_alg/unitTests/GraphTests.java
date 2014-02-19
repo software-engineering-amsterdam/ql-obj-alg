@@ -11,8 +11,9 @@ public class GraphTests extends TestCase {
 	DependencyCycleDetection dcd = new DependencyCycleDetection();
 	@Before
 	protected void setUp() throws Exception {
-		dcd.newDefinitionDependencyLevel();
 		dcd.addDefinitionDependentNode("lala");
+		dcd.addValueIndependentNode("lala");
+		dcd.newDefinitionDependencyLevel();
 		dcd.addNodeToDependOn("You depend on me");
 		dcd.addDefinitionDependentNode("I depend on");
 	}

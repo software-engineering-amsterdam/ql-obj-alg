@@ -1,12 +1,8 @@
 package ql_obj_alg.operation.cyclicdependencies;
 
-
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IFormAlg;
-import ql_obj_alg.operation.typechecker.types.Type;
 
 public class FormDependencies extends StmtDependencies implements
 		IFormAlg<IExpDependency, IDependencyGraph, IDependencyGraph> {
@@ -30,5 +26,7 @@ public class FormDependencies extends StmtDependencies implements
 			}
 		};
 	}
+	
+	
 
 }
