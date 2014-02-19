@@ -83,6 +83,13 @@ public class Type {
 		return false;
 	}
 	
+	public boolean isUndefined(){
+		if(type == null)
+			return true;
+		
+		return false;
+	}
+	
 	public String toString(){
 		return this.type;
 	}
