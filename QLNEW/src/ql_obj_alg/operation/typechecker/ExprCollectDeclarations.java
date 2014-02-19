@@ -3,11 +3,13 @@ package ql_obj_alg.operation.typechecker;
 import java.util.HashMap;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
 import ql_obj_alg.operation.typechecker.tools.Type;
 
 public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 
 	HashMap<String, Type> mem = new HashMap<String,Type>(); 
+	DependencyCycleDetection dcd = new DependencyCycleDetection();
 	
 	@Override
 	public IExpType lit(int x) {
@@ -43,6 +45,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 				Type t = mem.get(s);
 				if(t != null)
 					return t;
+				dcd.addVariable(s);
 				return new Type(null);
 			}
 		};

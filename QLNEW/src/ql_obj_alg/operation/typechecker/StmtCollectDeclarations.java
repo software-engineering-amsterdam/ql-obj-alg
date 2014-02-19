@@ -18,6 +18,7 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 	public ITypeCheck iff(final IExpType cond, final ITypeCheck b) {
 		return new ITypeCheck(){
 			public void check(){
+				dcd.setModeNewNodesToDependendOn();
 				Type t = cond.type(); 
 				if(t == null || !t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");

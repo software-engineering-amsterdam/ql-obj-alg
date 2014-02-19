@@ -13,7 +13,6 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	HashMap<String, Type> mem = new HashMap<String,Type>(); 
 	List<String> errors = new LinkedList<String>();
 	List<String> warnings = new LinkedList<String>();
-	DependencyCycleDetection dcd = new DependencyCycleDetection();
 
 	@Override
 	public IExpType lit(int x) {
@@ -49,7 +48,6 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t = mem.get(s);
 				if(t != null)
 					return t;
-				dcd.addVariable(s);
 				return new Type(null);
 			}
 		};
