@@ -3,6 +3,7 @@ package ql_obj_alg.operation.typechecker;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IFormAlg;
 import ql_obj_alg.operation.typechecker.types.Type;
@@ -25,11 +26,12 @@ public class FormCollectDeclarations extends StmtCollectDeclarations implements
 	}
 
 	@Override
-	public ITypeCheck forms(final ITypeCheck f1, final ITypeCheck f2) {
+	public ITypeCheck forms(final List<ITypeCheck> listForms) {
 		return new ITypeCheck(){
 			public void check(){
-				f1.check();
-				f2.check();
+				for(ITypeCheck form : listForms){
+					form.check();
+				}
 			}
 		};
 	}
