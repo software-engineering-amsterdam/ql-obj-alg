@@ -3,8 +3,7 @@ package ql_obj_alg.operation.cyclicdependencies;
 import java.util.HashSet;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
-import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
-
+import ql_obj_alg.operation.cyclicdependencies.modules.DependencyCycleDetection;
 
 public class ExprDependencies implements IExpAlg<IExpDependency>{
 
