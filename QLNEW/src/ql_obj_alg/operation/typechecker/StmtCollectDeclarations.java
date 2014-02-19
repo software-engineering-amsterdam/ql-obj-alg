@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IStmtAlg;
+import ql_obj_alg.operation.printer.IPrint;
 import ql_obj_alg.operation.typechecker.types.Type;
 import ql_obj_alg.operation.typechecker.types.TypeFactory;
 
@@ -51,13 +52,12 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 	}
 
 	@Override
-	public ITypeCheck comp(final ITypeCheck s1, final ITypeCheck s2) {
+	public ITypeCheck comb(final List<ITypeCheck> stmtList) {
 		return new ITypeCheck(){
 			public void check(){
-				if(s1 != null)
-					s1.check();
-				if(s2 != null)
-					s2.check();
+				for(ITypeCheck stmt : stmtList){
+					stmt.check();
+				}
 			}
 		};
 	}
