@@ -1,6 +1,8 @@
 package ql_obj_alg.objectAlgebra;
 
+import java.util.List;
+
 public interface IFormAlg<E, S, F> extends IStmtAlg<E,S> {
 	F form(String id, S s);
-	F forms(F f1,F f2);
+	F forms(List<F> listForms);
 }
