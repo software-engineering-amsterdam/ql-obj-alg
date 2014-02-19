@@ -59,4 +59,9 @@ public class DependencyCycleDetection {
 	public void addValueIndependentNode(String var) {
 		dependencyG.setValueIndependent(var);		
 	}
+
+	public void newDefinitionDependencyLevel() {
+		currentDependencies.push(new HashSet<String>());
+		
+	}
 }

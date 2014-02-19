@@ -11,11 +11,10 @@ public class GraphTests extends TestCase {
 	DependencyCycleDetection dcd = new DependencyCycleDetection();
 	@Before
 	protected void setUp() throws Exception {
-		dcd.addVariable("lala");
-		dcd.setModeNewNodesToDependendOn();
-		dcd.addVariable("You depend on me");
-		dcd.setModeNewDependentNodes();
-		dcd.addVariable("I depend on");
+		dcd.newDefinitionDependencyLevel();
+		dcd.addDefinitionDependentNode("lala");
+		dcd.addNodeToDependOn("You depend on me");
+		dcd.addDefinitionDependentNode("I depend on");
 	}
 
 	@Test
