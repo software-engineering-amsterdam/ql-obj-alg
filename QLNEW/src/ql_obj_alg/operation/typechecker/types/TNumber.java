@@ -36,7 +36,4 @@ public abstract class TNumber extends Type {
 	public boolean isUndefined() {
 		return false;
 	}
-	
-	public abstract TNumber merge(TNumber n);
-
 }

@@ -15,4 +15,8 @@ public abstract class Type {
 	public abstract boolean isDate();
 	
 	public abstract boolean isUndefined();
+	
+	public abstract Type merge(Type t);
+	
+	public abstract String toString();
 }

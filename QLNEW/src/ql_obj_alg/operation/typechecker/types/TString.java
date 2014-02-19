@@ -54,4 +54,16 @@ public class TString extends Type {
 	public int hashCode(){
 		return "string".hashCode();
 	}
+
+	@Override
+	public Type merge(Type t) {
+		if(t.isAlphanumeric())
+			return t;
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "string";
+	}
 }

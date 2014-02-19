@@ -54,4 +54,14 @@ public class TBoolean extends Type {
 	public int hashCode(){
 		return "boolean".hashCode();
 	}
+
+	@Override
+	public Type merge(Type t) {
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "boolean";
+	}
 }

@@ -56,10 +56,15 @@ public class TInteger extends TNumber {
 	}
 
 	@Override
-	public TNumber merge(TNumber n) {
+	public Type merge(Type n) {
 		if (n.isNumber())
 			return n;
 		else
 			return this;		
+	}
+
+	@Override
+	public String toString() {
+		return "integer";
 	}
 }

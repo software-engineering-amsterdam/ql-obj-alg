@@ -37,4 +37,14 @@ public class TUndefined extends Type {
 		return true;
 	}
 
+	@Override
+	public Type merge(Type t) {
+		return t;
+	}
+	
+	@Override
+	public String toString(){
+		return "undefined";
+	}
+
 }
