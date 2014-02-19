@@ -25,6 +25,7 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
+				dcd.setModeNewDependentNodes();
 				if(b!=null){
 					b.check();
 				}
