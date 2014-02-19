@@ -3,7 +3,7 @@ package ql_obj_alg.unitTests;
 import org.junit.Before;
 import org.junit.Test;
 
-import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
+import ql_obj_alg.operation.cyclicdependencies.modules.DependencyCycleDetection;
 import junit.framework.TestCase;
 
 public class GraphTests extends TestCase {
