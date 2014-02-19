@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
 import ql_obj_alg.operation.typechecker.tools.DependencyCycleDetection;
+import ql_obj_alg.operation.typechecker.tools.DependencyGraph;
 import ql_obj_alg.operation.typechecker.types.TBoolean;
 import ql_obj_alg.operation.typechecker.types.TInteger;
 import ql_obj_alg.operation.typechecker.types.TString;
@@ -15,6 +16,9 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	HashMap<String, Type> mem = new HashMap<String,Type>(); 
 	DependencyCycleDetection dcd = new DependencyCycleDetection();
 	
+	public DependencyGraph getGraph(){
+		return dcd.getGraph();
+	}
 	@Override
 	public IExpType lit(int x) {
 		return new IExpType(){

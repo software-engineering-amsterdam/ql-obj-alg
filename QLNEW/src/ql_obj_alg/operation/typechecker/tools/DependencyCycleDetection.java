@@ -74,4 +74,8 @@ public class DependencyCycleDetection {
 			this.setModeNewDependentNodes();
 		}
 	}
+	
+	public DependencyGraph getGraph(){
+		return dependecyG;
+	}
 }

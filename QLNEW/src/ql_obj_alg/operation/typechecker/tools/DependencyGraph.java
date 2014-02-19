@@ -50,4 +50,11 @@ public class DependencyGraph {
 		}
 		return dependent;
 	}
+
+
+	public void print() {
+		for (String key : variables.keySet()) {
+		    System.out.println(key+" : "+variables.get(key).getDependencies().toString());
+		}		
+	}
 }

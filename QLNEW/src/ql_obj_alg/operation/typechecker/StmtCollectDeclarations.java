@@ -29,6 +29,7 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 				if(b!=null){
 					b.check();
 				}
+				dcd.revert();
 			}
 		};
 	}
@@ -38,13 +39,16 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 			final ITypeCheck b2) {
 		return new ITypeCheck(){
 			public void check(){
+				dcd.setModeNewNodesToDependendOn();
 				Type t = cond.type(); 
 				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
+				dcd.setModeNewDependentNodes();
 				if(b1!=null){
 					b1.check();
 				}
+				dcd.revert();
 				if(b2 != null){
 					b2.check();
 				}

@@ -3,11 +3,14 @@ hasSoldHouse: "Did you sell a house in 2010?" boolean
 hasBoughtHouse: "Did you by a house in 2010?" boolean
 hasMaintLoan: "Did you enter a loan for maintenance/reconstruction?" boolean
 //HELLOHHHH
-if (hasSoldHouse) {
-
-}else{
-sellingPrice: "Price the house was sold for:" integer
-privateDebt: "Private debts for the sold house:" integer 
-valueResidue: "Value residue:" integer(sellingPrice - privateDebt)
+if (privateDebt && valueResidue) {
+	sellingPrice: "Price the house was sold for:" integer
 }
+if(sellingPrice){
+privateDebt: "Private debts for the sold house:" integer 
+valueResidue: "Value residue:" integer(sellingPrice - privateDebt)	
+}
+sellingPrice: "Price the house was sold for:" integer
+valueResidue: "Value residue:" integer(sellingPrice - privateDebt)
+
 }
