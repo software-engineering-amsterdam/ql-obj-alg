@@ -57,13 +57,13 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 	public ITypeCheck question(final String id, final String label, final String type) {
 		return new ITypeCheck(){
 			public void check(){
-				Type t = mem.get(id);
+				Type t = memory.get(id);
 				Type newType = TypeFactory.createType(type);
-				if(t!= null && !t.equals(newType)){
+				if(t != null && !t.equals(newType)){
 					reporting.addError("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
 				}
 				else{
-					mem.put(id, newType);
+					memory.put(id, newType);
 				}
 				if(labels.contains(label)){
 					reporting.addWarning("Duplicate label: "+label);
@@ -79,13 +79,13 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 			final IExpType e) {
 		return new ITypeCheck(){
 			public void check(){
-				Type t = mem.get(id);
+				Type t = memory.get(id);
 				Type newType = TypeFactory.createType(type);
-				if(t!= null && !t.equals(newType)){
+				if(t != null && !t.equals(newType)){
 					reporting.addError("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
 				}
 				else{
-					mem.put(id, newType);
+					memory.put(id, newType);
 				}
 				if(labels.contains(label)){
 					reporting.addWarning("Duplicate label: "+label);

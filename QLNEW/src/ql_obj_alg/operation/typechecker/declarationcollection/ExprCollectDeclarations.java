@@ -12,7 +12,7 @@ import ql_obj_alg.operation.typechecker.types.Type;
 
 public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 
-	HashMap<String, Type> mem = new HashMap<String,Type>(); 
+	HashMap<String, Type> memory = new HashMap<String,Type>(); 
 	
 	@Override
 	public IExpType lit(int x) {
@@ -45,7 +45,7 @@ public class ExprCollectDeclarations implements IExpAlg<IExpType>{
 	public IExpType var(final String s) {
 		return new IExpType(){
 			public Type type(){
-				Type t = mem.get(s);
+				Type t = memory.get(s);
 				if(t != null)
 					return t;
 				return new TUndefined();

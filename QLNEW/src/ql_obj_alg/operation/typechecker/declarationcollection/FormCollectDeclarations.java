@@ -45,6 +45,6 @@ public class FormCollectDeclarations extends StmtCollectDeclarations implements
 	}
 	
 	public HashMap<String,Type> getMemory(){
-		return mem;
+		return memory;
 	}
 }
