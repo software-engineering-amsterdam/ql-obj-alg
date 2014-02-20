@@ -7,7 +7,6 @@ import org.junit.Test;
 import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.operation.printer.FormPrinter;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 
@@ -16,6 +15,7 @@ public class frmTests {
 	@Test(expected=NullPointerException.class)
 	public void EmptyForm() {
 		ITest formAlg = getTestAlgebraObject("form testform { }");
+		assertTrue(formAlg.isForm().isTrue());
 	}
 	
 	private static ITest getTestAlgebraObject(String expr){
@@ -33,10 +33,5 @@ public class frmTests {
 		//Errors printing removed for the null pointer exceptions
 		qlParser.removeErrorListeners();
 		return qlParser;
-	}
-	
-	private static void printTree(String expr){
-		IBuildF exp = getFormTree(expr);
-		System.out.println(exp.build(new FormPrinter()).print());
 	}
 }

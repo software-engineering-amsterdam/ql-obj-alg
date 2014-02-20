@@ -9,7 +9,6 @@ import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
-import ql_obj_alg.operation.printer.ExprPrinter;
 
 public class exprTests {
 	
@@ -59,9 +58,5 @@ public class exprTests {
 		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
 		return qlParser;
 	}
-	
-	private static void printTree(String expr){
-		IBuildE exp = getExpressionTree(expr);
-		System.out.println(exp.build(new ExprPrinter()).print());
-	}
+
 }
