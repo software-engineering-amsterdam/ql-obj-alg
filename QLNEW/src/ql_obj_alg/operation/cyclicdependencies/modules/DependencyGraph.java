@@ -46,6 +46,10 @@ public class DependencyGraph {
 		return independent;
 	}
 	
+	public Set<String> getNodes(){
+		return variables.keySet();
+	}
+	
 	public HashMap<String,HashSet<String>> getDependencies(){
 		HashMap<String,HashSet<String>> dependent = new HashMap<String,HashSet<String>>();
 		Iterator<String> it = variables.keySet().iterator();
@@ -63,5 +67,9 @@ public class DependencyGraph {
 		for (String key : variables.keySet()) {
 		    System.out.println(key+" : "+variables.get(key).getDependencies());
 		}		
+	}
+
+	public Set<String> getNodeDependencies(String var) {
+		return getNode(var).getDependencies();
 	}
 }
