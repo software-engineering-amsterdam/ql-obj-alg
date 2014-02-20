@@ -1,11 +1,12 @@
 package ql_obj_alg.unitTests.Tree;
 
 
-import junit.framework.TestCase;
-
+import static org.junit.Assert.*;
 import ql_obj_alg.errors.error_reporting.BailErrorStrategy;
+
 import org.junit.Test;
 	
+
 
 import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.antlr4GenParser.QLParser;
@@ -13,7 +14,7 @@ import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 
-public class exprTests extends TestCase {
+public class exprTests {
 	
 	@Test
 	public void testAdditionMultiplication() {

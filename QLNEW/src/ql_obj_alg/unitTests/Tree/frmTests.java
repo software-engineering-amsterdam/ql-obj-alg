@@ -1,18 +1,21 @@
 package ql_obj_alg.unitTests.Tree;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import ql_obj_alg.antlr4GenParser.QLParser;
+import ql_obj_alg.errors.error_reporting.BailErrorStrategy;
 import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 
-public class frmTests extends TestCase {
+import org.antlr.v4.runtime.RecognitionException;
 
-	@Test(expected=NullPointerException.class)
+public class frmTests{
+
+	@Test(expected=RecognitionException.class)
 	public void testEmptyForm() {
 		ITest formAlg = getTestAlgebraObject("form testform { }");
 		assertTrue(formAlg.isForm().isTrue());
@@ -30,6 +33,7 @@ public class frmTests extends TestCase {
 	
 	private static QLParser getParser(String expr) {
 		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
+		qlParser.setErrorHandler(new BailErrorStrategy());		
 		//Errors printing removed for the null pointer exceptions
 		qlParser.removeErrorListeners();
 		return qlParser;
