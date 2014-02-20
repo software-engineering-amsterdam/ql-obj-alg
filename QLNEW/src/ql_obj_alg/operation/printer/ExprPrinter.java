@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.printer;
 
-import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 
 public class ExprPrinter implements IExpAlg<IPrint> {
 	@Override

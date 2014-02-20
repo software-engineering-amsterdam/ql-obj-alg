@@ -3,7 +3,7 @@ package ql_obj_alg.operation.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import ql_obj_alg.objectAlgebra.IStmtAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
 public class StmtBuilder extends ExprBuilder implements IStmtAlg<IBuildE,IBuildS> {
 

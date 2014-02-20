@@ -2,7 +2,7 @@ package ql_obj_alg.unitTests.Tree.TestAlgebra;
 
 import java.util.List;
 
-import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 
 
 public class Tester implements IFormAlg<ITest,ITest,ITest> {

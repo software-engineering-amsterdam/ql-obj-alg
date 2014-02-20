@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
-import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.typechecker.types.Type;
 
 public class FormTypeChecker extends StmtTypeChecker implements

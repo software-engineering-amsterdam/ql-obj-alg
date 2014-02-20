@@ -2,7 +2,7 @@ package ql_obj_alg.operation.cyclicdependencies;
 
 import java.util.HashSet;
 
-import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.operation.cyclicdependencies.modules.FillDependencyGraph;
 
 public class ExprDependencies implements IExpAlg<IExpDependency>{

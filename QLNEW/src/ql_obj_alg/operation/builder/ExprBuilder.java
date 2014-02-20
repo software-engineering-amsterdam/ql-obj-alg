@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.builder;
 
-import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 
 public class ExprBuilder implements IExpAlg<IBuildE>{
 	

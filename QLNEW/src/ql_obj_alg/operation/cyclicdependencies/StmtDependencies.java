@@ -2,7 +2,7 @@ package ql_obj_alg.operation.cyclicdependencies;
 
 import java.util.List;
 
-import ql_obj_alg.objectAlgebra.IStmtAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
 public class StmtDependencies extends ExprDependencies implements
 		IStmtAlg<IExpDependency, IDependencyGraph> {

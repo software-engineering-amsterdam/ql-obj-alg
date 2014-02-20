@@ -4,7 +4,7 @@ package ql_obj_alg.operation.typechecker.declarationcollection;
 import java.util.HashMap;
 import java.util.List;
 
-import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.typechecker.IExpType;
 import ql_obj_alg.operation.typechecker.types.Type;
 

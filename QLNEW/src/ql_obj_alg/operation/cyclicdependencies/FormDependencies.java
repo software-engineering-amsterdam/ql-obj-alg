@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.cyclicdependencies.modules.DependencyGraph;
 
 public class FormDependencies extends StmtDependencies implements

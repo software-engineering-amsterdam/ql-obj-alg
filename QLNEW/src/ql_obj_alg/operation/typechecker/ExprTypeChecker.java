@@ -3,7 +3,7 @@ package ql_obj_alg.operation.typechecker;
 import java.util.HashMap;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
-import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.operation.typechecker.types.TBoolean;
 import ql_obj_alg.operation.typechecker.types.TInteger;
 import ql_obj_alg.operation.typechecker.types.TString;

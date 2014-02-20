@@ -2,7 +2,7 @@ package ql_obj_alg.operation.typechecker.declarationcollection;
 
 import java.util.HashMap;
 
-import ql_obj_alg.objectAlgebra.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.operation.typechecker.IExpType;
 import ql_obj_alg.operation.typechecker.types.TBoolean;
 import ql_obj_alg.operation.typechecker.types.TInteger;

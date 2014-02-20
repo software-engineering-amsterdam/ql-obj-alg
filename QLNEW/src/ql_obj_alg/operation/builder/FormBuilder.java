@@ -3,7 +3,7 @@ package ql_obj_alg.operation.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 
 public class FormBuilder extends StmtBuilder implements IFormAlg<IBuildE,IBuildS,IBuildF> {
 

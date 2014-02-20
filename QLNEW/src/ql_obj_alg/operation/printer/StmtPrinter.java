@@ -3,7 +3,7 @@ package ql_obj_alg.operation.printer;
 
 import java.util.List;
 
-import ql_obj_alg.objectAlgebra.IStmtAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
 public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint> {
 
