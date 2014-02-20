@@ -1,4 +1,4 @@
-package ql_obj_alg.unitTests.TestAlgebra;
+package ql_obj_alg.unitTests.Tree.TestAlgebra;
 
 import java.util.List;
 

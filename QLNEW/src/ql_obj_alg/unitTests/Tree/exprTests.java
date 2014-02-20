@@ -2,14 +2,13 @@ package ql_obj_alg.unitTests.Tree;
 
 import static org.junit.Assert.*;
 
-
 import org.junit.Test;
 
 import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.operation.builder.IBuildE;
-import ql_obj_alg.unitTests.TestAlgebra.ITest;
-import ql_obj_alg.unitTests.TestAlgebra.Tester;
+import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
+import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 import ql_obj_alg.operation.printer.ExprPrinter;
 
 public class exprTests {

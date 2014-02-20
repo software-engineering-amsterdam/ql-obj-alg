@@ -8,8 +8,8 @@ import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.printer.FormPrinter;
-import ql_obj_alg.unitTests.TestAlgebra.ITest;
-import ql_obj_alg.unitTests.TestAlgebra.Tester;
+import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
+import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 
 public class frmTests {
 

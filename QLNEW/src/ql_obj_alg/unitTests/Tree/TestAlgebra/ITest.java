@@ -1,4 +1,4 @@
-package ql_obj_alg.unitTests.TestAlgebra;
+package ql_obj_alg.unitTests.Tree.TestAlgebra;
 
 public interface ITest {
 	ITest isLit();
