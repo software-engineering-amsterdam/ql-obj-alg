@@ -8,9 +8,12 @@ public class FormTypeChecker extends StmtTypeChecker implements
 		IFormAlg<IExpType, ITypeCheck, ITypeCheck> {
 
 	@Override
-	public ITypeCheck form(String id, ITypeCheck s) {
-		// TODO Auto-generated method stub
-		return null;
+	public ITypeCheck form(String id, final ITypeCheck s) {
+		return new ITypeCheck(){
+			public void check(){
+				s.check();
+			}
+		};
 	}
 
 	@Override

@@ -1,4 +1,6 @@
-package ql_obj_alg.unitTests.TestAlgebra;
+package ql_obj_alg.unitTests.Tree.TestAlgebra;
+
+import java.util.List;
 
 public class Test implements ITest {
 	static final ITest FALSE = new ITest() {
@@ -88,6 +90,13 @@ public class Test implements ITest {
 		this.args = args;
 	}
 	
+	public Test(List<ITest> listStatements) {
+		if(!listStatements.isEmpty()){
+			this.args = new ITest[listStatements.size()];
+			this.args = listStatements.toArray(this.args);
+		}
+	}
+
 	@Override
 	public ITest isLit() {
 		return FALSE;
