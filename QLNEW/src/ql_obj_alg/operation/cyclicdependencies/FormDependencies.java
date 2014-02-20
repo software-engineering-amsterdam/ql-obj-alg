@@ -35,7 +35,8 @@ public class FormDependencies extends StmtDependencies implements
 					form.dependencies();
 				}
 				CyclicDependencyDetection detectCycles = new CyclicDependencyDetection(dcd.getGraph());
-				detectCycles.addCyclesInErrorList(report);
+				for(String error : detectCycles.listOfStringCycles())
+					report.addError("Cyclic dependency: "+error);
 			}
 		};
 	}
