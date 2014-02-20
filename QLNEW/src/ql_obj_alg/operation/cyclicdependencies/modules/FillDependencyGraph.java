@@ -35,14 +35,7 @@ public class FillDependencyGraph {
 	}
 	
 	public void addValueDependentNode(String var, HashSet<String> dependencies){
-		if(dependencies.isEmpty() && currentDependencies.isEmpty())
-			dependencyG.setValueIndependent(var);
-		else
 			dependencyG.addValueDependecies(var,dependencies);
-	}
-	
-	public void addValueIndependentNode(String var) {
-		dependencyG.setValueIndependent(var);		
 	}
 	
 	public Set<String> getIndependent(){

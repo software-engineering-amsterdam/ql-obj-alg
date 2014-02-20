@@ -3,8 +3,6 @@ package ql_obj_alg.operation.cyclicdependencies.modules;
 import java.util.LinkedList;
 import java.util.List;
 
-import ql_obj_alg.errors.error_reporting.ErrorReporting;
-
 public class CyclicDependencyDetection {
 	DependencyGraph dependencyG;
 	Path path = new Path();
@@ -59,9 +57,11 @@ public class CyclicDependencyDetection {
 		return output.toString();
 	}
 	
-	public void addCyclesInErrorList(ErrorReporting report){
+	public List<String> listOfStringCycles(){
+		List<String> result = new LinkedList<String>();
 		for(List<String> cycle : cycles){
-			report.addError("Cyclic Dependency: "+cycleToString(cycle));
+			result.add(cycleToString(cycle));
 		}
+		return result;
 	}
 }
