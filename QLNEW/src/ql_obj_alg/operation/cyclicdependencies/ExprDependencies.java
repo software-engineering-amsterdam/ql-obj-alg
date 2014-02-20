@@ -3,11 +3,11 @@ package ql_obj_alg.operation.cyclicdependencies;
 import java.util.HashSet;
 
 import ql_obj_alg.objectAlgebra.IExpAlg;
-import ql_obj_alg.operation.cyclicdependencies.modules.DependencyCycleDetection;
+import ql_obj_alg.operation.cyclicdependencies.modules.FillDependencyGraph;
 
 public class ExprDependencies implements IExpAlg<IExpDependency>{
 
-	DependencyCycleDetection dcd = new DependencyCycleDetection();
+	FillDependencyGraph dcd = new FillDependencyGraph();
 	
 	@Override
 	public IExpDependency lit(int x) {

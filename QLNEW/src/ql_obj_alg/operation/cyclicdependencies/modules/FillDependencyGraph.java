@@ -6,9 +6,18 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 
-public class DependencyCycleDetection {
+public class FillDependencyGraph {
 	Stack<HashSet<String>> currentDependencies = new Stack<HashSet<String>>();
 	DependencyGraph dependencyG = new DependencyGraph();
+	
+	public void newDefinitionDependencyLevel() {
+		currentDependencies.push(new HashSet<String>());
+		
+	}
+	
+	public void revert(){
+		currentDependencies.pop();
+	}
 	
 	public void addNodeToDependOn(String var){
 		currentDependencies.peek().add(var);
@@ -26,10 +35,14 @@ public class DependencyCycleDetection {
 	}
 	
 	public void addValueDependentNode(String var, HashSet<String> dependencies){
-		if(dependencies.isEmpty())
+		if(dependencies.isEmpty() && currentDependencies.isEmpty())
 			dependencyG.setValueIndependent(var);
 		else
 			dependencyG.addValueDependecies(var,dependencies);
+	}
+	
+	public void addValueIndependentNode(String var) {
+		dependencyG.setValueIndependent(var);		
 	}
 	
 	public Set<String> getIndependent(){
@@ -48,20 +61,8 @@ public class DependencyCycleDetection {
 		return dependencies;
 	}
 	
-	public void revert(){
-		currentDependencies.pop();
-	}
 	
 	public DependencyGraph getGraph(){
 		return dependencyG;
-	}
-
-	public void addValueIndependentNode(String var) {
-		dependencyG.setValueIndependent(var);		
-	}
-
-	public void newDefinitionDependencyLevel() {
-		currentDependencies.push(new HashSet<String>());
-		
 	}
 }

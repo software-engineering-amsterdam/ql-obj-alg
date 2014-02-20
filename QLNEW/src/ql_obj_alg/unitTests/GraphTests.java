@@ -3,12 +3,12 @@ package ql_obj_alg.unitTests;
 import org.junit.Before;
 import org.junit.Test;
 
-import ql_obj_alg.operation.cyclicdependencies.modules.DependencyCycleDetection;
+import ql_obj_alg.operation.cyclicdependencies.modules.FillDependencyGraph;
 import junit.framework.TestCase;
 
 public class GraphTests extends TestCase {
 
-	DependencyCycleDetection dcd = new DependencyCycleDetection();
+	FillDependencyGraph dcd = new FillDependencyGraph();
 	@Before
 	protected void setUp() throws Exception {
 		dcd.addDefinitionDependentNode("lala");
