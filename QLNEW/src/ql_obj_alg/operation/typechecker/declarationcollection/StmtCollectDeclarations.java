@@ -1,10 +1,12 @@
-package ql_obj_alg.operation.typechecker;
+package ql_obj_alg.operation.typechecker.declarationcollection;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IStmtAlg;
+import ql_obj_alg.operation.typechecker.IExpType;
+import ql_obj_alg.operation.typechecker.ITypeCheck;
 import ql_obj_alg.operation.typechecker.types.Type;
 import ql_obj_alg.operation.typechecker.types.TypeFactory;
 
