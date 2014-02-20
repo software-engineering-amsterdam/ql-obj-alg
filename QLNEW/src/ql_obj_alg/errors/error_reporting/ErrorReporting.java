@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.errors;
+package ql_obj_alg.errors.error_reporting;
 
 import java.util.LinkedList;
 import java.util.List;

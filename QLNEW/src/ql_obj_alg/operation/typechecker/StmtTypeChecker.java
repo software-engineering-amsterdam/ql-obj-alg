@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.objectAlgebra.IStmtAlg;
-import ql_obj_alg.operation.errors.ErrorReporting;
 import ql_obj_alg.operation.typechecker.types.Type;
 import ql_obj_alg.operation.typechecker.types.TypeFactory;
 
