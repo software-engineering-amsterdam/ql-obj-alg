@@ -6,12 +6,18 @@ import java.util.HashSet;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.operation.errors.ErrorReporting;
 import ql_obj_alg.operation.typechecker.IExpType;
 import ql_obj_alg.operation.typechecker.ITypeCheck;
 import ql_obj_alg.operation.typechecker.types.Type;
 
 public class FormCollectDeclarations extends StmtCollectDeclarations implements
 		IFormAlg<IExpType, ITypeCheck, ITypeCheck> {
+	
+	public FormCollectDeclarations(ErrorReporting reporting) {
+		super(reporting);
+	}
+
 	HashSet<String> forms = new HashSet<String>();
 
 	@Override
@@ -19,7 +25,7 @@ public class FormCollectDeclarations extends StmtCollectDeclarations implements
 		return new ITypeCheck(){
 			public void check(){
 				if(forms.contains(id))
-					errors.add("Form id already defined: "+id);
+					reporting.addError("Form id already defined: "+id);
 				else
 					forms.add(id);
 				s.check();
@@ -41,10 +47,4 @@ public class FormCollectDeclarations extends StmtCollectDeclarations implements
 	public HashMap<String,Type> getMemory(){
 		return mem;
 	}
-	
-	public HashSet<String>  getForms(){
-		return forms;
-	}
-
-
 }
