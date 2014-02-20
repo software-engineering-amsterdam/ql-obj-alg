@@ -1,16 +1,11 @@
 package ql_obj_alg.operation.cyclicdependencies.modules;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
 public class DependencyCycleDetection {
 	DependencyGraph dependencyG;
-	Stack<String> path = new Stack<String>();
-	Set<String> inPath = new HashSet<String>();
-	Set<String> visited = new HashSet<String>();
+	Path path = new Path();
 	List<LinkedList<String>> cycles = new LinkedList<LinkedList <String>>();
 	
 	public DependencyCycleDetection(DependencyGraph dependencyG){
@@ -21,37 +16,30 @@ public class DependencyCycleDetection {
 	public void initiateDFS(){
 		Object[] nodes = dependencyG.getNodes().toArray();
 		for(int i = 0; i < nodes.length; i++){
-			if(!visited.contains(nodes[i])){
-				visit((String) nodes[i]);
+			String node = (String) nodes[i];
+			if(!path.alreadyVisited(node)){
+				visit(node);
 			}
 		}
 	}
 	
 	private void visit(String node) {
-		if(inPath.contains(node)){
+		if(path.contains(node)){
 			saveCycle(node);
 			return;
 		}
-		if(visited.contains(node))
+		if(path.alreadyVisited(node))
 			return;
-		visited.add(node);
-		path.push(node);
-		inPath.add(node);
+		path.add(node);
 		for(String edge : dependencyG.getNodeDependencies(node)){
-				String copyEdge = new String(edge);
-				visit(copyEdge);
+				visit(edge);
 		}
 		
-		path.pop();
-		inPath.remove(node);
+		path.remove(node);
 	}
 
 	private void saveCycle(String node) {
-		LinkedList<String> cycle = new LinkedList<String>();
-		for(int i = path.indexOf(node); i < path.size(); i++){
-			cycle.add(path.elementAt(i));
-		}
-		cycles.add(cycle);
+		cycles.add(path.getCycle(node));
 	}
 	
 	public void printCycles(){
