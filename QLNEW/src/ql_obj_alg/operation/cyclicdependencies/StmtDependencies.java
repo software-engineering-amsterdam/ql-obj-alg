@@ -49,7 +49,6 @@ public class StmtDependencies extends ExprDependencies implements
 		return new IDependencyGraph(){
 			public void dependencies(){
 				dcd.addDefinitionDependentNode(id);
-				dcd.addValueIndependentNode(id);
 			}
 		};
 	}

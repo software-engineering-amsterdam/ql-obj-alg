@@ -11,10 +11,6 @@ public class VariableDependency {
 	public void removeDefinitionDepedencies(){
 		definitionDependency = null;
 	}
-
-	public void removeValueDepedencies(){
-		valueDependency = null;
-	}
 	
 	public boolean isIndependent(){
 		if(isAlreadyDefined() && hasAlreadyValue())
@@ -29,15 +25,11 @@ public class VariableDependency {
 	}
 	
 	public boolean isAlreadyDefined(){
-		if(definitionDependency == null)
-			return true;
-		return false;
+		return definitionDependency == null;
 	}
 	
 	private boolean hasAlreadyValue() {
-		if(valueDependency == null)
-			return true;
-		return false;
+		return valueDependency.isEmpty();
 	}
 	
 	public void addDefinitionDependencies(Collection<String> dependecies){
@@ -47,9 +39,7 @@ public class VariableDependency {
 	}
 	
 	public void addValueDependencies(Collection<String> dependecies){
-		if(!this.hasAlreadyValue()){
 			valueDependency.addAll(dependecies);
-		}
 	}
 
 	public HashSet<String> getDefinitionDependencies(){

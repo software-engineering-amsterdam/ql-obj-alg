@@ -8,9 +8,6 @@ import java.util.Set;
 public class DependencyGraph {
 	HashMap<String,VariableDependency> variables = new HashMap<String,VariableDependency>();
 
-	public void setValueIndependent(String var) {
-		getNode(var).removeValueDepedencies();
-	}
 
 	public void setDefinitionIndependent(String var) {
 		getNode(var).removeDefinitionDepedencies();
