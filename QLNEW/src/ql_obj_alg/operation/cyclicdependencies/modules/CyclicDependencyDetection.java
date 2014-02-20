@@ -3,12 +3,14 @@ package ql_obj_alg.operation.cyclicdependencies.modules;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DependencyCycleDetection {
+import ql_obj_alg.errors.error_reporting.ErrorReporting;
+
+public class CyclicDependencyDetection {
 	DependencyGraph dependencyG;
 	Path path = new Path();
 	List<LinkedList<String>> cycles = new LinkedList<LinkedList <String>>();
 	
-	public DependencyCycleDetection(DependencyGraph dependencyG){
+	public CyclicDependencyDetection(DependencyGraph dependencyG){
 		this.dependencyG = dependencyG;
 		initiateDFS();
 	}
@@ -44,15 +46,22 @@ public class DependencyCycleDetection {
 	
 	public void printCycles(){
 		for(List<String> cycle : cycles){
-			printCycle(cycle);
+			System.out.println(cycleToString(cycle));
 		}
 	}
 
-	private void printCycle(List<String> cycle) {
+	private String cycleToString(List<String> cycle) {
 		StringBuffer output = new StringBuffer();
 		for(String node : cycle){
 			output.append(node + " -> ");
 		}
-		System.out.println(output.toString());
+		output.append(cycle.get(0));
+		return output.toString();
+	}
+	
+	public void addCyclesInErrorList(ErrorReporting report){
+		for(List<String> cycle : cycles){
+			report.addError("Cyclic Dependency: "+cycleToString(cycle));
+		}
 	}
 }
