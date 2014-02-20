@@ -25,7 +25,7 @@ public class Tester implements IFormAlg<ITest,ITest,ITest> {
 
 	@Override
 	public ITest comb(List<ITest> listStatements) {
-		return new Test((ITest[]) listStatements.toArray()){
+		return new Test(listStatements){
 			@Override
 			public ITest isComb(){return this;}
 		};

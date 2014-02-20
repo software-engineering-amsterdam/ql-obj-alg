@@ -18,6 +18,25 @@ public class stmtTests {
 		ITest question = getTestAlgebraObject("hasSoldHouse \"Did you sell a house in 2010?\" boolean");
 		assertTrue(question.isQuestion().isTrue());
 	}
+	
+	@Test
+	public void normalQuestionWithAssign(){
+		ITest question = getTestAlgebraObject("hasSoldHouse \"Did you sell a house in 2010?\" boolean (5)");
+		assertTrue(question.isQuestionWithAssign().isTrue());
+	}	
+	
+	@Test
+	public void emptyIf(){
+		ITest question = getTestAlgebraObject("if (true) then {}");
+		assertTrue(question.isIff().isTrue());
+	}	
+
+	@Test
+	public void emptyIfelse(){
+		ITest question = getTestAlgebraObject("if (true) then {} else {}");
+		assertTrue(question.isIffelse().isTrue());
+	}	
+		
 	@Test(expected=NullPointerException.class)
 	public void trueCannotBeAnQuestionID(){
 		ITest question = getTestAlgebraObject("true \"Did you sell a house in 2010?\" boolean");
@@ -49,6 +68,7 @@ public class stmtTests {
 	
 	private static QLParser getParser(String expr) {
 		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
+		//Errrors removed for the null pointer exception
 		qlParser.removeErrorListeners();
 		return qlParser;
 	}
