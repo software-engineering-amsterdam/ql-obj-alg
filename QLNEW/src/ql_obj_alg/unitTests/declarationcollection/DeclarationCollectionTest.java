@@ -20,7 +20,7 @@ public class DeclarationCollectionTest extends TestCase{
 
 	@Before
 	public void setUp() throws Exception {
-
+		fcd = new FormCollectDeclarations();
 	}
 
 	@Test
@@ -32,7 +32,6 @@ public class DeclarationCollectionTest extends TestCase{
     	
     	IBuildF form = qlParser.forms().frm;
     	
-		fcd = new FormCollectDeclarations();
 		form.build(fcd).collect();
 		
 		memory = fcd.getMemory();
