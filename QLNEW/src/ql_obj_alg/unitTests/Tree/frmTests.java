@@ -1,6 +1,6 @@
 package ql_obj_alg.unitTests.Tree;
 
-import static org.junit.Assert.*;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 
@@ -10,10 +10,10 @@ import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 
-public class frmTests {
+public class frmTests extends TestCase {
 
 	@Test(expected=NullPointerException.class)
-	public void EmptyForm() {
+	public void testEmptyForm() {
 		ITest formAlg = getTestAlgebraObject("form testform { }");
 		assertTrue(formAlg.isForm().isTrue());
 	}
