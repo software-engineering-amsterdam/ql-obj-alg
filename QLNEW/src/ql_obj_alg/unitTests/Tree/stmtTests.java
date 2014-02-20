@@ -55,7 +55,6 @@ public class stmtTests {
 		ITest question = getTestAlgebraObject("else \"Did you sell a house in 2010?\" boolean");
 	}
 		
-	
 	private static ITest getTestAlgebraObject(String expr){
 		IBuildS exprBuilder = getStmtTree(expr);
 		return exprBuilder.build(new Tester());		
@@ -68,7 +67,7 @@ public class stmtTests {
 	
 	private static QLParser getParser(String expr) {
 		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
-		//Errrors removed for the null pointer exception
+		//Errors printing removed for the null pointer exceptions
 		qlParser.removeErrorListeners();
 		return qlParser;
 	}
