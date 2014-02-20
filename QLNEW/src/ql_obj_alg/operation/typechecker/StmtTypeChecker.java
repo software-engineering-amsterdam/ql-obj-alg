@@ -20,9 +20,7 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
-				if(b!=null){
-					b.check();
-				}
+				b.check();
 			}
 		};
 	}
@@ -36,12 +34,8 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 				if(!t.isBoolean()){
 						errors.add("Wrong type in if-then-else condition");
 				}
-				if(b1!=null){
-					b1.check();
-				}
-				if(b2 != null){
-					b2.check();
-				}
+				b1.check();
+				b2.check();
 			}
 		};
 	}
