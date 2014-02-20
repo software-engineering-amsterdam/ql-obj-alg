@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IFormAlg;
+import ql_obj_alg.operation.cyclicdependencies.modules.DependencyGraph;
 
 public class FormDependencies extends StmtDependencies implements
 		IFormAlg<IExpDependency, IDependencyGraph, IDependencyGraph> {
@@ -31,6 +32,10 @@ public class FormDependencies extends StmtDependencies implements
 	
 	public HashMap<String, HashSet<String>> getDependencies(){
 		return dcd.getDependencies();
+	}
+
+	public DependencyGraph getGraph() {
+		return dcd.getGraph();
 	}
 
 }
