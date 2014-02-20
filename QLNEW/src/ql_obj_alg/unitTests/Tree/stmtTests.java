@@ -7,7 +7,6 @@ import org.junit.Test;
 import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildS;
-import ql_obj_alg.operation.printer.StmtPrinter;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 
