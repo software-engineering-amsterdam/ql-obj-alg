@@ -1,97 +1,73 @@
 package ql_obj_alg.operation.typechecker.declarationcollection;
 
-import java.util.HashSet;
 import java.util.List;
 
 import ql_obj_alg.objectAlgebra.IStmtAlg;
-import ql_obj_alg.operation.errors.ErrorReporting;
 import ql_obj_alg.operation.typechecker.IExpType;
-import ql_obj_alg.operation.typechecker.ITypeCheck;
 import ql_obj_alg.operation.typechecker.types.Type;
 import ql_obj_alg.operation.typechecker.types.TypeFactory;
 
 public class StmtCollectDeclarations extends ExprCollectDeclarations implements
-		IStmtAlg<IExpType, ITypeCheck> {
+		IStmtAlg<IExpType, ICollect> {
 	
-	HashSet<String> labels = new HashSet<String>();
-	ErrorReporting reporting;
 	
-	public StmtCollectDeclarations(ErrorReporting reporting){
-		this.reporting = reporting;
-	}
 
 	@Override
-	public ITypeCheck iff(final IExpType cond, final ITypeCheck b) {
-		return new ITypeCheck(){
-			public void check(){
+	public ICollect iff(final IExpType cond, final ICollect b) {
+		return new ICollect(){
+			public void collect(){
 				cond.type();
-				b.check();
+				b.collect();
 			}
 		};
 	}
 
 	@Override
-	public ITypeCheck iffelse(final IExpType cond, final ITypeCheck b1,
-			final ITypeCheck b2) {
-		return new ITypeCheck(){
-			public void check(){
+	public ICollect iffelse(final IExpType cond, final ICollect b1,
+			final ICollect b2) {
+		return new ICollect(){
+			public void collect(){
 				cond.type(); 
-				b1.check();
-				b2.check();
+				b1.collect();
+				b2.collect();
 			}
 		};
 	}
 
 	@Override
-	public ITypeCheck comb(final List<ITypeCheck> stmtList) {
-		return new ITypeCheck(){
-			public void check(){
-				for(ITypeCheck stmt : stmtList){
-					stmt.check();
+	public ICollect comb(final List<ICollect> stmtList) {
+		return new ICollect(){
+			public void collect(){
+				for(ICollect stmt : stmtList){
+					stmt.collect();
 				}
 			}
 		};
 	}
 
 	@Override
-	public ITypeCheck question(final String id, final String label, final String type) {
-		return new ITypeCheck(){
-			public void check(){
+	public ICollect question(final String id, final String label, final String type) {
+		return new ICollect(){
+			public void collect(){
 				Type t = memory.get(id);
 				Type newType = TypeFactory.createType(type);
-				if(t != null && !t.equals(newType)){
-					reporting.addError("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
+				if(t == null){
+					memory.put(id, newType);			
 				}
-				else{
-					memory.put(id, newType);
-				}
-				if(labels.contains(label)){
-					reporting.addWarning("Duplicate label: "+label);
-				}
-				else
-					labels.add(label);
 			}
 		};
 	}
 
 	@Override
-	public ITypeCheck question(final String id, final String label, final String type,
+	public ICollect question(final String id, final String label, final String type,
 			final IExpType e) {
-		return new ITypeCheck(){
-			public void check(){
+		return new ICollect(){
+			public void collect(){
 				Type t = memory.get(id);
 				Type newType = TypeFactory.createType(type);
-				if(t != null && !t.equals(newType)){
-					reporting.addError("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
+				if(t == null){
+					memory.put(id, newType);			
 				}
-				else{
-					memory.put(id, newType);
-				}
-				if(labels.contains(label)){
-					reporting.addWarning("Duplicate label: "+label);
-				}
-				else
-					labels.add(label);
 			}
 		};
 	}
