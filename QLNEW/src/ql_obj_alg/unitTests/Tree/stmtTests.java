@@ -74,6 +74,7 @@ public class stmtTests{
 	
 	private static QLParser getParser(String expr) {
 		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
+		qlParser.removeErrorListeners();
 		qlParser.setErrorHandler(new BailErrorStrategy());
 		return qlParser;
 	}
