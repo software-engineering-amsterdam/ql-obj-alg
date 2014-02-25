@@ -33,7 +33,7 @@ public class CyclicDependenciesTest{
 	}
 
 	@Test
-	public void testValueDependency() {
+	public void testValueDependencyCycle() {
 		
 		target = "variable";
 		String input = "form id {\n "+target+": \"label\" integer ("+target+") \n "+target+": \"label\" integer \n}";
@@ -55,7 +55,7 @@ public class CyclicDependenciesTest{
 	}
 	
 	@Test
-	public void testDefinitionDependency() {
+	public void testDefinitionDependencyCycle() {
 		String x = "X";
 		String y = "Y";
 		String input = "form id {\n if("+x+"){\n "+y+": \"label1\" boolean\n} if("+y+"){\n "+x+": \"label2\" boolean\n}\n}";
@@ -76,7 +76,7 @@ public class CyclicDependenciesTest{
 	}
 	
 	@Test
-	public void testNestedDependency() {
+	public void testNestedDependencyCycle() {
 		String x1 = "X1";
 		String x2 = "X2";
 		String x3 = "X3";
@@ -99,7 +99,6 @@ public class CyclicDependenciesTest{
     	
 		form.build(fd).dependencies();
 		List<String> errors = report.getErrors();
-		System.out.println(errors);
 		
 		assertEquals(2,errors.size());
 		
@@ -115,12 +114,39 @@ public class CyclicDependenciesTest{
 	}
 	
 	@Test
-	public void testBothDependencies() {
-		fail();
+	public void testBothDependenciesCycle() {
+		String x1 = "X1";
+		String x2 = "X2";
+		String x3 = "X3";
+		String x4 = "X4";
+		String input = "form id {\n "
+				+ "if("+x1+"){\n"
+					+ x2+": \"label2\" boolean ("+x3+")\n"
+					+ "if("+x2+"){\n"
+						+ x3+": \"label1\" boolean "
+					+ "}\n"
+				+"}"
+				+ "if("+x3+"){\n "
+					+x4+": \"label3\" boolean"
+				+ "\n}"
+				+ x1 +": \"label 4\" integer ("+x4+")"
+				+ "\n}";
+
+    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	
+    	IBuildF form = qlParser.forms().frm;
+    	
+		form.build(fd).dependencies();
+		List<String> errors = report.getErrors();
+		System.out.println(errors);
+
+		assertEquals(3,errors.size());
+		
+		//TODO
 	}
 	
 	@Test
-	public void testDefinitionIndependent() {
+	public void testDefinitionDependencyNoCycle() {
 		String x = "X";
 		String y = "Y";
 		String input = "form id {\n if("+x+"){\n "+y+": \"label1\" boolean\n} if("+y+"){\n "+x+": \"label2\" boolean\n}"+x+": \"label2\" boolean\n}";
@@ -136,9 +162,9 @@ public class CyclicDependenciesTest{
 	}
 	
 	@Test
-	public void testValueIndependent() {
+	public void testValueDependencyNoCycle() {
 		target = "variable";
-		String input = "form id {\n "+target+": \"label\" integer ("+target+") "+target+": \"label\" integer \n}";
+		String input = "form id {\n "+target+": \"label\" integer (undefined) \n}";
 
     	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
     	
@@ -152,7 +178,30 @@ public class CyclicDependenciesTest{
 	
 	@Test
 	public void testIndependent(){
-		fail();
+		String x1 = "X1";
+		String x2 = "X2";
+		String x3 = "X3";
+		String x4 = "X4";
+		String input = "form id {\n "
+				+ "if("+x1+"){\n"
+					+ x2+": \"label2\" boolean ("+x1+")\n"
+					+ "if("+x2+"){\n"
+						+ x3+": \"label1\" boolean "
+					+ "}\n"
+				+"}"
+				+ "if("+x3+"){\n "
+					+x4+": \"label3\" boolean"
+				+ "\n}"
+				+ "\n}";
+
+    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	
+    	IBuildF form = qlParser.forms().frm;
+    	
+		form.build(fd).dependencies();
+		List<String> errors = report.getErrors();
+		
+		assertTrue(errors.isEmpty());
 	}
 
 }
