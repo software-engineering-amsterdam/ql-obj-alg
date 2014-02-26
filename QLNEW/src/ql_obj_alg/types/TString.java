@@ -44,7 +44,7 @@ public class TString extends Type {
 		if(obj == null)
 			return false;
 		
-		if(getClass() == obj.getClass())
+		if(obj instanceof TString)
 			return true;
 		
 		return false;

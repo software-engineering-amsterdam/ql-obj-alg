@@ -14,6 +14,9 @@ public class TypeFactory {
 		else if(type.equals("string")){
 			return new TString();
 		}
-		return new TUndefined();
+		else{
+			assert(false) : "Unknown type";
+			return null;
+		}
 	}
 }

@@ -44,7 +44,7 @@ public class TBoolean extends Type {
 		if(obj == null)
 			return false;
 		
-		if(getClass() == obj.getClass())
+		if(obj instanceof TBoolean)
 			return true;
 		
 		return false;
