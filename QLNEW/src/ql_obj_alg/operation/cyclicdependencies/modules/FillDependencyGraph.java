@@ -1,8 +1,8 @@
 package ql_obj_alg.operation.cyclicdependencies.modules;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -42,7 +42,7 @@ public class FillDependencyGraph {
 		return dependencyG.getIndependent();
 	}
 	
-	public HashMap<String,HashSet<String>> getDependencies(){
+	public Map<String,HashSet<String>> getDependencies(){
 		return dependencyG.getDependencies();
 	}
 
@@ -53,7 +53,6 @@ public class FillDependencyGraph {
 			dependencies.addAll(it.next());
 		return dependencies;
 	}
-	
 	
 	public DependencyGraph getGraph(){
 		return dependencyG;
