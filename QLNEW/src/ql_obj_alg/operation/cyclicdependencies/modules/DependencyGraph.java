@@ -3,10 +3,11 @@ package ql_obj_alg.operation.cyclicdependencies.modules;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 public class DependencyGraph {
-	HashMap<String,VariableDependency> variables = new HashMap<String,VariableDependency>();
+	Map<String,VariableDependency> variables = new HashMap<String,VariableDependency>();
 
 
 	public void setDefinitionIndependent(String var) {
@@ -47,8 +48,8 @@ public class DependencyGraph {
 		return variables.keySet();
 	}
 	
-	public HashMap<String,HashSet<String>> getDependencies(){
-		HashMap<String,HashSet<String>> dependent = new HashMap<String,HashSet<String>>();
+	public Map<String,HashSet<String>> getDependencies(){
+		Map<String,HashSet<String>> dependent = new HashMap<String,HashSet<String>>();
 		Iterator<String> it = variables.keySet().iterator();
 		while(it.hasNext()){
 			String var = it.next();
