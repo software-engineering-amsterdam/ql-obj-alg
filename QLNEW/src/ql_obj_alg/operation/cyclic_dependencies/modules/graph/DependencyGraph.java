@@ -1,12 +1,12 @@
-package ql_obj_alg.operation.cyclicdependencies.modules.graph;
+package ql_obj_alg.operation.cyclic_dependencies.modules.graph;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import ql_obj_alg.operation.cyclicdependencies.modules.Dependencies;
-import ql_obj_alg.operation.cyclicdependencies.modules.VariableDependency;
+import ql_obj_alg.operation.cyclic_dependencies.modules.Dependencies;
+import ql_obj_alg.operation.cyclic_dependencies.modules.VariableDependency;
 
 public class DependencyGraph {
 	Map<String,VariableDependency> variables = new HashMap<String,VariableDependency>();

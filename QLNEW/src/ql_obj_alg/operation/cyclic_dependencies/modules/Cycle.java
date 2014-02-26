@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.cyclicdependencies.modules;
+package ql_obj_alg.operation.cyclic_dependencies.modules;
 
 import java.util.LinkedList;
 import java.util.List;

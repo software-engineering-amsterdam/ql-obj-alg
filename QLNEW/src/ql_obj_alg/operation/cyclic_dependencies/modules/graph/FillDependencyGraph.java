@@ -1,8 +1,8 @@
-package ql_obj_alg.operation.cyclicdependencies.modules.graph;
+package ql_obj_alg.operation.cyclic_dependencies.modules.graph;
 
 import java.util.Stack;
 
-import ql_obj_alg.operation.cyclicdependencies.modules.Dependencies;
+import ql_obj_alg.operation.cyclic_dependencies.modules.Dependencies;
 
 public class FillDependencyGraph {
 	Stack<Dependencies> currentDependencies = new Stack<Dependencies>();

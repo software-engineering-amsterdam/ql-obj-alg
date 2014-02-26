@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.operation.cyclicdependencies.FormDependencies;
+import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 

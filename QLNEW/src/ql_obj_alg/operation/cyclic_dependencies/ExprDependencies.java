@@ -1,8 +1,8 @@
-package ql_obj_alg.operation.cyclicdependencies;
+package ql_obj_alg.operation.cyclic_dependencies;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
-import ql_obj_alg.operation.cyclicdependencies.modules.Dependencies;
-import ql_obj_alg.operation.cyclicdependencies.modules.graph.FillDependencyGraph;
+import ql_obj_alg.operation.cyclic_dependencies.modules.Dependencies;
+import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
 
 public class ExprDependencies implements IExpAlg<IExpDependency>{
 
