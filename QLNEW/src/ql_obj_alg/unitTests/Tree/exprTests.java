@@ -2,10 +2,11 @@ package ql_obj_alg.unitTests.Tree;
 
 
 import static org.junit.Assert.*;
-import ql_obj_alg.errors.error_reporting.BailErrorStrategy;
+import ql_obj_alg.errors.parseErrorStrategy.BailErrorStrategy;
 
 import org.junit.Test;
 	
+
 
 
 import ql_obj_alg.mainParser.mainParser;

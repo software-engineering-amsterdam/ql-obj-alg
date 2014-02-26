@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ql_obj_alg.antlr4GenParser.QLParser;
-import ql_obj_alg.errors.error_reporting.BailErrorStrategy;
+import ql_obj_alg.errors.parseErrorStrategy.BailErrorStrategy;
 
 import org.antlr.v4.runtime.RecognitionException;
 

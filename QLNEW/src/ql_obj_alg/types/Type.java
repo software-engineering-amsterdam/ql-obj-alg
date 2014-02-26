@@ -19,4 +19,5 @@ public abstract class Type {
 	public abstract Type merge(Type t);
 	
 	public abstract String toString();
+	
 }
