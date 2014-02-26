@@ -1,7 +1,9 @@
-package ql_obj_alg.operation.cyclicdependencies.modules;
+package ql_obj_alg.operation.cyclicdependencies.modules.graph;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import ql_obj_alg.operation.cyclicdependencies.modules.Cycle;
 
 public class CyclicDependencyDetection {
 	DependencyGraph dependencyG;

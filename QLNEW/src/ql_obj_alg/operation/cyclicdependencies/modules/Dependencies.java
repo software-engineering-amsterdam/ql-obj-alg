@@ -15,7 +15,7 @@ public class Dependencies {
 		return nodes == null;
 	}
 	
-	public boolean dependencyUnknown(){
+	public boolean isEmpty(){
 		return nodes.isEmpty();
 	}
 	

@@ -1,6 +1,6 @@
 package ql_obj_alg.unitTests.declarationcollection;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -16,7 +16,7 @@ import ql_obj_alg.types.Type;
 public class DeclarationCollectionTest extends TestCase{
 
 	FormCollectDeclarations fcd;
-	private HashMap<String,Type> memory;
+	private Map<String,Type> memory;
 
 	@Before
 	public void setUp() throws Exception {

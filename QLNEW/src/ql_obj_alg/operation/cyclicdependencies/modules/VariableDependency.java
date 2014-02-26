@@ -1,6 +1,5 @@
 package ql_obj_alg.operation.cyclicdependencies.modules;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class VariableDependency {
@@ -12,12 +11,6 @@ public class VariableDependency {
 		definitionDependency.setIndependent();
 	}
 	
-	public boolean isIndependent(){
-		if(isAlreadyDefined() && hasAlreadyValue())
-			return true;
-		return false;
-	}
-	
 	public boolean isDependent(){
 		return (!isAlreadyDefined() || !hasAlreadyValue());
 	}
@@ -27,12 +20,12 @@ public class VariableDependency {
 	}
 	
 	private boolean hasAlreadyValue() {
-		return valueDependency.dependencyUnknown();
+		return valueDependency.isEmpty();
 	}
 	
-	public void addDefinitionDependencies(Collection<String> dependecies){
+	public void addDefinitionDependencies(Dependencies dependencies){
 		if(!this.isAlreadyDefined()){
-			definitionDependency.addAll(dependecies);
+			definitionDependency.addAll(dependencies);
 		}
 	}
 	

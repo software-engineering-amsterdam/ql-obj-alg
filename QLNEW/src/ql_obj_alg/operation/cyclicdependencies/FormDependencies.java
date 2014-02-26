@@ -1,13 +1,11 @@
 package ql_obj_alg.operation.cyclicdependencies;
 
 import java.util.List;
-import java.util.Map;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
-import ql_obj_alg.operation.cyclicdependencies.modules.CyclicDependencyDetection;
-import ql_obj_alg.operation.cyclicdependencies.modules.Dependencies;
-import ql_obj_alg.operation.cyclicdependencies.modules.DependencyGraph;
+import ql_obj_alg.operation.cyclicdependencies.modules.graph.CyclicDependencyDetection;
+import ql_obj_alg.operation.cyclicdependencies.modules.graph.DependencyGraph;
 
 public class FormDependencies extends StmtDependencies implements
 		IFormAlg<IExpDependency, IDependencyGraph, IDependencyGraph> {
@@ -30,7 +28,7 @@ public class FormDependencies extends StmtDependencies implements
 	@Override
 	public IDependencyGraph forms(final List<IDependencyGraph> listForms) {
 		return new IDependencyGraph(){
-			public void dependencies(){
+			public void dependencies(){				
 				for(IDependencyGraph form : listForms){
 					form.dependencies();
 				}
@@ -40,10 +38,6 @@ public class FormDependencies extends StmtDependencies implements
 					report.addError("Cyclic dependency: "+error);
 			}
 		};
-	}
-	
-	public Map<String, Dependencies> getDependencies(){
-		return dcd.getDependencies();
 	}
 
 	public DependencyGraph getGraph() {

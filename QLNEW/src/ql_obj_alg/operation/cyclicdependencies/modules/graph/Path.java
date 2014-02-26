@@ -1,8 +1,10 @@
-package ql_obj_alg.operation.cyclicdependencies.modules;
+package ql_obj_alg.operation.cyclicdependencies.modules.graph;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
+
+import ql_obj_alg.operation.cyclicdependencies.modules.Cycle;
 
 public class Path {
 	private Stack<String> path = new Stack<String>();

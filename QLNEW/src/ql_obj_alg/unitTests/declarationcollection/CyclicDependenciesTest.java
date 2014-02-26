@@ -137,7 +137,6 @@ public class CyclicDependenciesTest{
     	
 		form.build(fd).dependencies();
 		List<String> errors = report.getErrors();
-		System.out.println(errors);
 
 		assertEquals(3,errors.size());
 		

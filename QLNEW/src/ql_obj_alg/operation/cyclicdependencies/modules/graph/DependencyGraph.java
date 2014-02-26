@@ -1,10 +1,12 @@
-package ql_obj_alg.operation.cyclicdependencies.modules;
+package ql_obj_alg.operation.cyclicdependencies.modules.graph;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import ql_obj_alg.operation.cyclicdependencies.modules.Dependencies;
+import ql_obj_alg.operation.cyclicdependencies.modules.VariableDependency;
 
 public class DependencyGraph {
 	Map<String,VariableDependency> variables = new HashMap<String,VariableDependency>();
@@ -14,34 +16,28 @@ public class DependencyGraph {
 		getNode(var).removeDefinitionDepedencies();
 	}
 
-	public void addDefinitionDependecies(String var, Set<String> currentDependencies) {
-		getNode(var).addDefinitionDependencies(currentDependencies);
+	public void addDefinitionDependecies(String var, Dependencies dependencies) {
+		VariableDependency vd = getNode(var);
+		if(dependencies.isEmpty())
+			vd.removeDefinitionDepedencies();
+		else
+			vd.addDefinitionDependencies(dependencies);
+		variables.put(var, vd);
 	}
 
 	public void addValueDependecies(String var, Dependencies currentDependencies) {
-		getNode(var).addValueDependencies(currentDependencies);
+		VariableDependency vd = getNode(var);
+		vd.addValueDependencies(currentDependencies);
+		variables.put(var, vd);
 	}
 	
 	private VariableDependency getNode(String var){
 		VariableDependency vd = variables.get(var);
 		if(vd == null){
 			vd = new VariableDependency();
-			variables.put(var, vd);
+//			variables.put(var, vd);
 		}
 		return vd;
-	}
-
-
-	public Set<String> getIndependent() {
-		Set<String> independent = new HashSet<String>();
-		Iterator<String> it = variables.keySet().iterator();
-		while(it.hasNext()){
-			String var = it.next();
-			VariableDependency vd = variables.get(var);
-			if(vd.isIndependent())
-				independent.add(var);
-		}
-		return independent;
 	}
 	
 	public Set<String> getNodes(){
