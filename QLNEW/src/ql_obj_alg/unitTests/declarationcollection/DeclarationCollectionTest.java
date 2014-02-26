@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.typechecker.declarationcollection.FormCollectDeclarations;
-import ql_obj_alg.parsers.antlr4GenParser.QLParser;
+import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.types.Type;
 

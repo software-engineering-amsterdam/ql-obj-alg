@@ -17,7 +17,7 @@ import org.antlr.v4.runtime.*;
 
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.printer.*;
-import ql_obj_alg.parsers.antlr4GenParser.*;
+import ql_obj_alg.parsers.antlr4_generated_parser.*;
 
 public class Parser {
     public static void main(String[] args) throws Exception {

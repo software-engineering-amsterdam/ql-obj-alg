@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ql_obj_alg.errors.parseErrorStrategy.BailErrorStrategy;
+import ql_obj_alg.errors.parse_error_strategy.BailErrorStrategy;
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.parsers.antlr4GenParser.QLParser;
+import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
-import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
-import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
+import ql_obj_alg.unitTests.Tree.test_algebra.ITest;
+import ql_obj_alg.unitTests.Tree.test_algebra.Tester;
 
 import org.antlr.v4.runtime.RecognitionException;
 
