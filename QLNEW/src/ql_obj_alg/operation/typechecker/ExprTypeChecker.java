@@ -5,9 +5,9 @@ import java.util.Map;
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.types.TBoolean;
+import ql_obj_alg.types.TError;
 import ql_obj_alg.types.TInteger;
 import ql_obj_alg.types.TString;
-import ql_obj_alg.types.TUndefined;
 import ql_obj_alg.types.Type;
 
 public class ExprTypeChecker implements IExpAlg<IExpType>{
@@ -55,7 +55,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(t != null)
 					return t;
 				report.addError("Variable "+s+" is undefined.");
-				return new TUndefined();
+				return new TError();
 			}
 		};
 	}

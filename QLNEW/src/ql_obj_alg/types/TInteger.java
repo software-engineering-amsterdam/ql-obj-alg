@@ -67,4 +67,24 @@ public class TInteger extends TNumber {
 	public String toString() {
 		return "integer";
 	}
+
+	@Override
+	public Type merge(TBoolean t) {
+		return new TError();
+	}
+
+	@Override
+	public Type merge(TInteger t) {
+		return this;
+	}
+
+	@Override
+	public Type merge(TString t) {
+		return new TError();
+	}
+
+	@Override
+	public Type merge(TError t) {
+		return t;
+	}
 }

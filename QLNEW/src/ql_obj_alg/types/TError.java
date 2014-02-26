@@ -1,6 +1,6 @@
 package ql_obj_alg.types;
 
-public class TUndefined extends Type {
+public class TError extends Type {
 
 	@Override
 	public boolean isComparable(Type t) {
@@ -34,17 +34,37 @@ public class TUndefined extends Type {
 
 	@Override
 	public boolean isUndefined() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public Type merge(Type t) {
-		return t;
+		return t.merge(this);
 	}
-	
+
 	@Override
-	public String toString(){
-		return "undefined";
+	public String toString() {
+		return "type error";
+	}
+
+	@Override
+	public Type merge(TBoolean t) {
+		return this;
+	}
+
+	@Override
+	public Type merge(TInteger t) {
+		return this;
+	}
+
+	@Override
+	public Type merge(TString t) {
+		return this;
+	}
+
+	@Override
+	public Type merge(TError t) {
+		return this;
 	}
 
 }

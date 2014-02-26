@@ -66,4 +66,24 @@ public class TString extends Type {
 	public String toString() {
 		return "string";
 	}
+
+	@Override
+	public Type merge(TBoolean t) {
+		return new TError();
+	}
+
+	@Override
+	public Type merge(TInteger t) {
+		return new TError();
+	}
+
+	@Override
+	public Type merge(TString t) {
+		return this;
+	}
+
+	@Override
+	public Type merge(TError t) {
+		return t;
+	}
 }

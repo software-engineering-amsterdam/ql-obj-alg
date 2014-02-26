@@ -57,11 +57,31 @@ public class TBoolean extends Type {
 
 	@Override
 	public Type merge(Type t) {
-		return this;
+		return t.merge(this);
 	}
 
 	@Override
 	public String toString() {
 		return "boolean";
+	}
+
+	@Override
+	public Type merge(TBoolean t) {
+		return t;
+	}
+
+	@Override
+	public Type merge(TInteger t) {
+		return new TError();
+	}
+
+	@Override
+	public Type merge(TString t) {
+		return new TError();
+	}
+
+	@Override
+	public Type merge(TError t) {
+		return t;
 	}
 }

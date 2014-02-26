@@ -18,6 +18,13 @@ public abstract class Type {
 	
 	public abstract Type merge(Type t);
 	
-	public abstract String toString();
+	public abstract Type merge(TBoolean t);
 	
+	public abstract Type merge(TInteger t);
+	
+	public abstract Type merge(TString t);
+	
+	public abstract Type merge(TError t);
+	
+	public abstract String toString();
 }
