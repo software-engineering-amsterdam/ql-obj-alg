@@ -26,7 +26,7 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 			public void check(){
 				Type t = cond.type(); 
 				if(!t.isBoolean()){
-						report.addError("Wrong type in if-then condition");
+						report.addError("Wrong type in if-then condition, expected boolean, got "+t.toString()+".");
 				}
 				b.check();
 			}
@@ -40,7 +40,7 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 			public void check(){
 				Type t = cond.type(); 
 				if(!t.isBoolean()){
-						report.addError("Wrong type in if-then-else condition");
+						report.addError("Wrong type in if-then-else condition, expected boolean, got "+t.toString()+".");
 				}
 				b1.check();
 				b2.check();
@@ -67,7 +67,7 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 				if(t == null) 
 					assert(false) : "Missing question with id "+id+" from memory.";
 				if(!t.equals(type)){
-					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type.toString()+")");
+					report.addError("Conflicting types of question "+ id + ", initially declared "+t.toString()+", redeclared "+type.toString()+".");
 				}
 				if(labels.contains(label)){
 					report.addWarning("Duplicate label: "+label);
@@ -89,7 +89,7 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 
 				Type exprType = e.type(); 
 				if(!exprType.equals(type)){
-					report.addError("Conflicting type in assignment, got "+ exprType.toString() + ", was expecting "+type.toString()+".");
+					report.addError("Conflicting type in question "+id+" assignment, expecting "+type.toString()+", got "+ exprType.toString() + ".");
 				}
 
 			}

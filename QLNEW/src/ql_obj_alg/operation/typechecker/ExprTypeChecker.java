@@ -67,7 +67,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in * expression, got "+t1.toString()+" * "+t2.toString()+".");
+						report.addError("Wrong type in * expression, expected numeric types, got "+t1.toString()+" * "+t2.toString()+".");
 				}
 				return t1.merge(t2);
 			}
@@ -81,7 +81,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in / expression, got "+t1.toString()+" / "+t2.toString()+".");
+						report.addError("Wrong type in / expression, expected numeric types, got "+t1.toString()+" / "+t2.toString()+".");
 				}
 				return t1.merge(t2);
 			}
@@ -95,7 +95,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in + expression, got "+t1.toString()+" + "+t2.toString()+".");
+						report.addError("Wrong type in + expression, expected numeric types, got "+t1.toString()+" + "+t2.toString()+".");
 				}
 				return t1.merge(t2);
 			}
@@ -109,7 +109,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in - expression, got "+t1.toString()+" - "+t2.toString()+".");
+						report.addError("Wrong type in - expression, expected numeric types, got "+t1.toString()+" - "+t2.toString()+".");
 				}
 				return t1.merge(t2);
 			}
@@ -151,7 +151,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isComparable(t2)){
-						report.addError("Incompatible types in < expression, got "+t1.toString()+" < "+t2.toString()+".");
+						report.addError("Incompatible types in < expression, expected comparable types, got "+t1.toString()+" < "+t2.toString()+".");
 				}
 				return new TBoolean();
 			}
@@ -165,7 +165,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isComparable(t2)){
-						report.addError("Incompatible types in <= expression, got "+t1.toString()+" <= "+t2.toString()+".");
+						report.addError("Incompatible types in <= expression, expected comparable types, got "+t1.toString()+" <= "+t2.toString()+".");
 				}
 				return new TBoolean();
 			}
@@ -179,7 +179,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isComparable(t2)){
-						report.addError("Incompatible types in > expression, got "+t1.toString()+" > "+t2.toString()+".");
+						report.addError("Incompatible types in > expression, expected comparable types, got "+t1.toString()+" > "+t2.toString()+".");
 				}
 				return new TBoolean();
 			}
@@ -193,7 +193,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(t1.isComparable(t2)){
-						report.addError("Incompatible types in >= expression, got "+t1.toString()+" >= "+t2.toString()+".");
+						report.addError("Incompatible types in >= expression, expected comparable types, got "+t1.toString()+" >= "+t2.toString()+".");
 				}
 				return new TBoolean();
 			}
@@ -207,7 +207,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(){
 				Type t = a.type(); 
 				if(!t.isBoolean()){
-						report.addError("Wrong type in ! expression, got "+t.toString()+" was expecting boolean.");
+						report.addError("Wrong type in ! expression, expected boolean, got "+t.toString()+".");
 				}
 				return new TBoolean();
 			}
@@ -221,7 +221,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isBoolean() || !t2.isBoolean()){
-						report.addError("Wrong type in && expression, got "+t1.toString()+" && "+t2.toString()+".");
+						report.addError("Wrong type in && expression, expected boolean, got "+t1.toString()+" && "+t2.toString()+".");
 				}
 				return new TBoolean();
 			}
@@ -235,7 +235,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(); 
 				Type t2 = a2.type();
 				if(!t1.isBoolean() || !t2.isBoolean()){
-						report.addError("Wrong type in || expression, got "+t1.toString()+" || "+t2.toString()+".");
+						report.addError("Wrong type in || expression, expexted boolean, got "+t1.toString()+" || "+t2.toString()+".");
 				}
 				return new TBoolean();
 			}
