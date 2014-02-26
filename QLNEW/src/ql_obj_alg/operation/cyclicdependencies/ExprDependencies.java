@@ -1,8 +1,7 @@
 package ql_obj_alg.operation.cyclicdependencies;
 
-import java.util.HashSet;
-
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.operation.cyclicdependencies.modules.Dependencies;
 import ql_obj_alg.operation.cyclicdependencies.modules.FillDependencyGraph;
 
 public class ExprDependencies implements IExpAlg<IExpDependency>{
@@ -12,8 +11,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency lit(int x) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				return new HashSet<String>();
+			public Dependencies dependency(){
+				return new Dependencies();
 			}
 		};
 	}
@@ -21,8 +20,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency bool(boolean b) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				return new HashSet<String>();
+			public Dependencies dependency(){
+				return new Dependencies();
 			}
 		};
 	}
@@ -30,8 +29,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency string(String s) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				return new HashSet<String>();
+			public Dependencies dependency(){
+				return new Dependencies();
 			}
 		};
 	}
@@ -39,8 +38,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency var(final String s) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.add(s);
 				return newDependencies;
 			}
@@ -50,8 +49,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency mul(final IExpDependency a1,final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -62,8 +61,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency div(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -74,8 +73,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency add(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -86,8 +85,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency sub(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -98,8 +97,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency eq(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -110,8 +109,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency neq(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -122,8 +121,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency lt(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -134,8 +133,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency leq(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -146,8 +145,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency gt(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -158,8 +157,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency geq(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -171,8 +170,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency not(final IExpDependency a) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a.dependency());
 				return newDependencies;
 			}
@@ -182,8 +181,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency and(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;
@@ -194,8 +193,8 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency or(final IExpDependency a1, final IExpDependency a2) {
 		return new IExpDependency(){
-			public HashSet<String> dependency(){
-				HashSet<String> newDependencies = new HashSet<String>();
+			public Dependencies dependency(){
+				Dependencies newDependencies = new Dependencies();
 				newDependencies.addAll(a1.dependency());
 				newDependencies.addAll(a2.dependency());
 				return newDependencies;

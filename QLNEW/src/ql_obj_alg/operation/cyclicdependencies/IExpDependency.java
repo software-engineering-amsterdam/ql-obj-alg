@@ -1,7 +1,7 @@
 package ql_obj_alg.operation.cyclicdependencies;
 
-import java.util.HashSet;
+import ql_obj_alg.operation.cyclicdependencies.modules.Dependencies;
 
 public interface IExpDependency {
-	HashSet<String> dependency();
+	Dependencies dependency();
 }
