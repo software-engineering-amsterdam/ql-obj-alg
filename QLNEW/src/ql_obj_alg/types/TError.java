@@ -4,7 +4,7 @@ public class TError extends Type {
 
 	@Override
 	public boolean isComparable(Type t) {
-		return false;
+		return true;
 	}
 
 	@Override
