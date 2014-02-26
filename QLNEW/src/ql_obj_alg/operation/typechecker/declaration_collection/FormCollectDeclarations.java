@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.typechecker.declarationcollection;
+package ql_obj_alg.operation.typechecker.declaration_collection;
 
 
 import java.util.List;
