@@ -6,14 +6,13 @@ import java.util.List;
 public class CyclicDependencyDetection {
 	DependencyGraph dependencyG;
 	Path path = new Path();
-	List<LinkedList<String>> cycles = new LinkedList<LinkedList <String>>();
+	List<Cycle> cycles = new LinkedList<Cycle>();
 	
 	public CyclicDependencyDetection(DependencyGraph dependencyG){
 		this.dependencyG = dependencyG;
-		initiateDFS();
 	}
 	
-	public void initiateDFS(){
+	public void detectCycles(){
 		Object[] nodes = dependencyG.getNodes().toArray();
 		for(int i = 0; i < nodes.length; i++){
 			String node = (String) nodes[i];
@@ -28,8 +27,10 @@ public class CyclicDependencyDetection {
 			saveCycle(node);
 			return;
 		}
+		
 		if(path.alreadyVisited(node))
 			return;
+		
 		path.add(node);
 		for(String edge : dependencyG.getNodeDependencies(node)){
 				visit(edge);
@@ -43,24 +44,16 @@ public class CyclicDependencyDetection {
 	}
 	
 	public void printCycles(){
-		for(List<String> cycle : cycles){
-			System.out.println(cycleToString(cycle));
+		for(Cycle cycle : cycles){
+			System.out.println(cycle.toString());
 		}
 	}
 
-	private String cycleToString(List<String> cycle) {
-		StringBuffer output = new StringBuffer();
-		for(String node : cycle){
-			output.append(node + " -> ");
-		}
-		output.append(cycle.get(0));
-		return output.toString();
-	}
 	
 	public List<String> listOfStringCycles(){
 		List<String> result = new LinkedList<String>();
-		for(List<String> cycle : cycles){
-			result.add(cycleToString(cycle));
+		for(Cycle cycle : cycles){
+			result.add(cycle.toString());
 		}
 		return result;
 	}
