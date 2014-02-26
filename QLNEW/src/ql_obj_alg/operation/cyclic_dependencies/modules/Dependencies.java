@@ -20,18 +20,23 @@ public class Dependencies {
 	}
 	
 	public void add(String node){
-		nodes.add(node);
+		if(!isIndependent())
+			nodes.add(node);
 	}
 	
 	public void addAll(Collection<String> dependencies){
-		this.nodes.addAll(dependencies);
+		if(!isIndependent())
+			this.nodes.addAll(dependencies);
 	}
 	
 	public void addAll(Dependencies dependencies){
-		this.nodes.addAll(dependencies.toSet());
+		if(!isIndependent())
+			nodes.addAll(dependencies.toSet());
 	}
 	
 	public Set<String> toSet(){
-		return nodes;
+		if(!isIndependent())
+			return nodes;
+		return new HashSet<String>();
 	}
 }
