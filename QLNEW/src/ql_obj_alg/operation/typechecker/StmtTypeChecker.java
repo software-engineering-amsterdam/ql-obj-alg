@@ -1,7 +1,9 @@
 package ql_obj_alg.operation.typechecker;
 
-import java.util.HashMap;
+
+import java.util.Map;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
@@ -11,10 +13,10 @@ import ql_obj_alg.types.Type;
 public class StmtTypeChecker extends ExprTypeChecker implements
 		IStmtAlg<IExpType, ITypeCheck> {
 	
-	HashSet<String> labels = new HashSet<String>();
+	Set<String> labels = new HashSet<String>();
 
 	
-	public StmtTypeChecker(HashMap<String, Type> memory, ErrorReporting report) {
+	public StmtTypeChecker(Map<String, Type> memory, ErrorReporting report) {
 		super(memory, report);
 	}
 
@@ -62,7 +64,9 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 		return new ITypeCheck(){
 			public void check(){
 				Type t = memory.get(id);
-				if(t != null && !t.equals(type)){
+				if(t == null) 
+					assert(false);
+				if(!t.equals(type)){
 					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type.toString()+")");
 				}
 				if(labels.contains(label)){
@@ -79,20 +83,15 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 			final IExpType e) {
 		return new ITypeCheck(){
 			public void check(){
-				Type t = memory.get(id);
-				if(t != null && !t.equals(type)){
-					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type.toString()+")");
-				}
+
+				ITypeCheck ordQuestion = question(id,label,type);
+				ordQuestion.check();
+
 				Type exprType = e.type(); 
-				if(!exprType.equals(t)){
-					report.addError("Conflicting type in assignment, got "+ exprType.toString() + ", was expecting "+t.toString()+".");
+				if(!exprType.equals(type)){
+					report.addError("Conflicting type in assignment, got "+ exprType.toString() + ", was expecting "+type.toString()+".");
 				}
-					
-				if(labels.contains(label)){
-					report.addWarning("Duplicate label: "+label);
-				}
-				else
-					labels.add(label);
+
 			}
 		};
 	}

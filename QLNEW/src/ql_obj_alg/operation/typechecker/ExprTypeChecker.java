@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.typechecker;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
@@ -12,10 +12,10 @@ import ql_obj_alg.types.Type;
 
 public class ExprTypeChecker implements IExpAlg<IExpType>{
 	
-	HashMap<String, Type> memory; 
+	Map<String, Type> memory; 
 	ErrorReporting report;
 	
-	public ExprTypeChecker(HashMap<String, Type> memory, ErrorReporting report){
+	public ExprTypeChecker(Map<String, Type> memory, ErrorReporting report){
 		this.memory = memory;
 		this.report = report;
 	}
