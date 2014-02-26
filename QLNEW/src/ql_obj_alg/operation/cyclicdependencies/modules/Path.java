@@ -1,7 +1,6 @@
 package ql_obj_alg.operation.cyclicdependencies.modules;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 
@@ -29,8 +28,8 @@ public class Path {
 		inPath.remove(node);
 	}
 
-	public LinkedList<String> getCycle(String node) {
-		LinkedList<String> cycle = new LinkedList<String>();
+	public Cycle getCycle(String node) {
+		Cycle cycle = new Cycle();
 		for(int i = path.indexOf(node); i < path.size(); i++){
 			cycle.add(path.elementAt(i));
 		}	
