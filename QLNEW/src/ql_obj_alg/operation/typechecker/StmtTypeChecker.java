@@ -65,7 +65,7 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 			public void check(){
 				Type t = memory.get(id);
 				if(t == null) 
-					assert(false);
+					assert(false) : "Missing question with id "+id+" from memory.";
 				if(!t.equals(type)){
 					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type.toString()+")");
 				}

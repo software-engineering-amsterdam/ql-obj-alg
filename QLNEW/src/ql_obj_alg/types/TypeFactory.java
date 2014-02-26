@@ -15,7 +15,7 @@ public class TypeFactory {
 			return new TString();
 		}
 		else{
-			assert(false) : "Unknown type";
+			assert(false) : "Unknown type :"+type+".";
 			return null;
 		}
 	}
