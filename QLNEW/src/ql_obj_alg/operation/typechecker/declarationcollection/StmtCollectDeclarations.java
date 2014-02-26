@@ -1,32 +1,34 @@
 package ql_obj_alg.operation.typechecker.declarationcollection;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
-import ql_obj_alg.operation.typechecker.IExpType;
+import ql_obj_alg.operation.noop.ExprNoop;
+import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.types.Type;
 
-public class StmtCollectDeclarations extends ExprCollectDeclarations implements
-		IStmtAlg<IExpType, ICollect> {
+
+public class StmtCollectDeclarations extends ExprNoop implements
+		IStmtAlg<INoop,ICollect > {
 	
-	
+	Map<String, Type> memory = new HashMap<String,Type>(); 	
 
 	@Override
-	public ICollect iff(final IExpType cond, final ICollect b) {
+	public ICollect iff(final INoop cond, final ICollect b) {
 		return new ICollect(){
 			public void collect(){
-				cond.type();
 				b.collect();
 			}
 		};
 	}
 
 	@Override
-	public ICollect iffelse(final IExpType cond, final ICollect b1,
+	public ICollect iffelse(final INoop cond, final ICollect b1,
 			final ICollect b2) {
 		return new ICollect(){
 			public void collect(){
-				cond.type(); 
 				b1.collect();
 				b2.collect();
 			}
@@ -58,7 +60,7 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 
 	@Override
 	public ICollect question(final String id, final String label, final Type type,
-			final IExpType e) {
+			final INoop e) {
 		return new ICollect(){
 			public void collect(){
 				Type t = memory.get(id);

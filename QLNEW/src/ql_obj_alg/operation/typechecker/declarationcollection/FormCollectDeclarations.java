@@ -1,15 +1,15 @@
 package ql_obj_alg.operation.typechecker.declarationcollection;
 
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
-import ql_obj_alg.operation.typechecker.IExpType;
+import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.types.Type;
 
 public class FormCollectDeclarations extends StmtCollectDeclarations implements
-		IFormAlg<IExpType, ICollect, ICollect> {
+		IFormAlg<INoop, ICollect, ICollect> {
 
 	@Override
 	public ICollect form(final String id, final ICollect s) {
@@ -31,7 +31,7 @@ public class FormCollectDeclarations extends StmtCollectDeclarations implements
 		};
 	}
 	
-	public HashMap<String,Type> getMemory(){
+	public Map<String,Type> getMemory(){
 		return memory;
 	}
 }
