@@ -34,17 +34,13 @@ public class TBoolean extends Type {
 		return false;
 	}
 
-	@Override
-	public boolean isUndefined() {
-		return false;
-	}
 	
 	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof TBoolean)
+		if(obj instanceof TBoolean || obj instanceof TError)
 			return true;
 		
 		return false;

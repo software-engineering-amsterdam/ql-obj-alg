@@ -35,16 +35,11 @@ public class TString extends Type {
 	}
 
 	@Override
-	public boolean isUndefined() {
-		return false;
-	}
-
-	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof TString)
+		if(obj instanceof TString || obj instanceof TError)
 			return true;
 		
 		return false;

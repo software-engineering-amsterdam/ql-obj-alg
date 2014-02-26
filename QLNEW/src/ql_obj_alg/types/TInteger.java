@@ -30,11 +30,6 @@ public class TInteger extends TNumber {
 	}
 
 	@Override
-	public boolean isUndefined() {
-		return false;
-	}
-
-	@Override
 	public boolean isBoolean() {
 		return false;
 	}
@@ -44,7 +39,7 @@ public class TInteger extends TNumber {
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof TInteger)
+		if(obj instanceof TInteger || obj instanceof TError)
 			return true;
 		
 		return false;
@@ -56,11 +51,8 @@ public class TInteger extends TNumber {
 	}
 
 	@Override
-	public Type merge(Type n) {
-		if (n.isNumber())
-			return n;
-		else
-			return this;		
+	public Type merge(Type t) {
+		return t.merge(this);
 	}
 
 	@Override

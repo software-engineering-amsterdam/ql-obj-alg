@@ -31,9 +31,4 @@ public abstract class TNumber extends Type {
 	public boolean isDate() {
 		return false;
 	}
-
-	@Override
-	public boolean isUndefined() {
-		return false;
-	}
 }

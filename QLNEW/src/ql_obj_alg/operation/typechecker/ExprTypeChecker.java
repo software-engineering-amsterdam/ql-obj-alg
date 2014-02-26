@@ -125,7 +125,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.equals(t2)){
 						report.addError("Incompatible types in == expression, got "+t1.toString()+" == "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -139,7 +139,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.equals(t2)){
 						report.addError("Incompatible types in != expression, got "+t1.toString()+" != "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -153,7 +153,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.isComparable(t2)){
 						report.addError("Incompatible types in < expression, expected comparable types, got "+t1.toString()+" < "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -167,7 +167,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.isComparable(t2)){
 						report.addError("Incompatible types in <= expression, expected comparable types, got "+t1.toString()+" <= "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -181,7 +181,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.isComparable(t2)){
 						report.addError("Incompatible types in > expression, expected comparable types, got "+t1.toString()+" > "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -195,7 +195,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(t1.isComparable(t2)){
 						report.addError("Incompatible types in >= expression, expected comparable types, got "+t1.toString()+" >= "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -209,7 +209,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t.isBoolean()){
 						report.addError("Wrong type in ! expression, expected boolean, got "+t.toString()+".");
 				}
-				return new TBoolean();
+				return t;
 			}
 		};
 	}
@@ -223,7 +223,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.isBoolean() || !t2.isBoolean()){
 						report.addError("Wrong type in && expression, expected boolean, got "+t1.toString()+" && "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}
@@ -237,7 +237,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.isBoolean() || !t2.isBoolean()){
 						report.addError("Wrong type in || expression, expexted boolean, got "+t1.toString()+" || "+t2.toString()+".");
 				}
-				return new TBoolean();
+				return t1.merge(t2);
 			}
 		};
 	}

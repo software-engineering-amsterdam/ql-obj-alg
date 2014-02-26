@@ -9,32 +9,27 @@ public class TError extends Type {
 
 	@Override
 	public boolean isOrd() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isNumber() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAlphanumeric() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isBoolean() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isDate() {
-		return false;
-	}
-
-	@Override
-	public boolean isUndefined() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -67,4 +62,12 @@ public class TError extends Type {
 		return this;
 	}
 
+	public boolean equals(Object obj){
+		if(obj == null)
+			return false;
+		
+		if(obj instanceof Type)
+			return true;
+		return false;
+	}
 }
