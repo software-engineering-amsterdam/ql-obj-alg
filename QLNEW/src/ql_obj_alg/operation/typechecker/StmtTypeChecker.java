@@ -59,13 +59,12 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 	}
 
 	@Override
-	public ITypeCheck question(final String id, final String label, final String type) {
+	public ITypeCheck question(final String id, final String label, final Type type) {
 		return new ITypeCheck(){
 			public void check(){
 				Type t = memory.get(id);
-				Type newType = TypeFactory.createType(type);
-				if(t != null && !t.equals(newType)){
-					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
+				if(t != null && !t.equals(type)){
+					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type.toString()+")");
 				}
 				if(labels.contains(label)){
 					report.addWarning("Duplicate label: "+label);
@@ -77,14 +76,13 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 	}
 
 	@Override
-	public ITypeCheck question(final String id, final String label, final String type,
+	public ITypeCheck question(final String id, final String label, final Type type,
 			final IExpType e) {
 		return new ITypeCheck(){
 			public void check(){
 				Type t = memory.get(id);
-				Type newType = TypeFactory.createType(type);
-				if(t != null && !t.equals(newType)){
-					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type+")");
+				if(t != null && !t.equals(type)){
+					report.addError("Conflicting type of question "+ id + "("+t.toString()+","+type.toString()+")");
 				}
 				Type exprType = e.type(); 
 				if(!exprType.equals(t)){
