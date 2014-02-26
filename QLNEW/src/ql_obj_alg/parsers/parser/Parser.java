@@ -7,7 +7,7 @@
  * Visit http://www.pragmaticprogrammer.com/titles/tpantlr2 for more book information.
 ***/
 // import ANTLR's runtime libraries
-package ql_obj_alg.mainParser;
+package ql_obj_alg.parsers.parser;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,10 +16,10 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.antlr4GenParser.*;
 import ql_obj_alg.operation.printer.*;
+import ql_obj_alg.parsers.antlr4_generated_parser.*;
 
-public class mainParser {
+public class Parser {
     public static void main(String[] args) throws Exception {
     	QLParser qlParser = parse(getInputStream(new FileInputStream(args[0])));
     	IBuildF form = qlParser.forms().frm;

@@ -1,20 +1,20 @@
-package ql_obj_alg.operation.typechecker.types;
+package ql_obj_alg.types;
 
-public class TUndefined extends Type {
+public abstract class TNumber extends Type {
 
 	@Override
 	public boolean isComparable(Type t) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isOrd() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isNumber() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -34,17 +34,6 @@ public class TUndefined extends Type {
 
 	@Override
 	public boolean isUndefined() {
-		return true;
+		return false;
 	}
-
-	@Override
-	public Type merge(Type t) {
-		return t;
-	}
-	
-	@Override
-	public String toString(){
-		return "undefined";
-	}
-
 }

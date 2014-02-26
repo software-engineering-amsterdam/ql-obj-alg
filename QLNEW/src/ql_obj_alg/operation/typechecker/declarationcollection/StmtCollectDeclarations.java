@@ -4,8 +4,7 @@ import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.typechecker.IExpType;
-import ql_obj_alg.operation.typechecker.types.Type;
-import ql_obj_alg.operation.typechecker.types.TypeFactory;
+import ql_obj_alg.types.Type;
 
 public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 		IStmtAlg<IExpType, ICollect> {
@@ -46,27 +45,25 @@ public class StmtCollectDeclarations extends ExprCollectDeclarations implements
 	}
 
 	@Override
-	public ICollect question(final String id, final String label, final String type) {
+	public ICollect question(final String id, final String label, final Type type) {
 		return new ICollect(){
 			public void collect(){
 				Type t = memory.get(id);
-				Type newType = TypeFactory.createType(type);
 				if(t == null){
-					memory.put(id, newType);			
+					memory.put(id, type);			
 				}
 			}
 		};
 	}
 
 	@Override
-	public ICollect question(final String id, final String label, final String type,
+	public ICollect question(final String id, final String label, final Type type,
 			final IExpType e) {
 		return new ICollect(){
 			public void collect(){
 				Type t = memory.get(id);
-				Type newType = TypeFactory.createType(type);
 				if(t == null){
-					memory.put(id, newType);			
+					memory.put(id, type);			
 				}
 			}
 		};

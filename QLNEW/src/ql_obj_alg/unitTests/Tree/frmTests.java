@@ -4,16 +4,19 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ql_obj_alg.antlr4GenParser.QLParser;
-import ql_obj_alg.mainParser.mainParser;
+import ql_obj_alg.errors.parse_error_strategy.BailErrorStrategy;
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
-import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
+import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
+import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.unitTests.Tree.test_algebra.ITest;
+import ql_obj_alg.unitTests.Tree.test_algebra.Tester;
 
-public class frmTests {
+import org.antlr.v4.runtime.RecognitionException;
 
-	@Test(expected=NullPointerException.class)
-	public void EmptyForm() {
+public class frmTests{
+
+	@Test(expected=RecognitionException.class)
+	public void testEmptyForm() {
 		ITest formAlg = getTestAlgebraObject("form testform { }");
 		assertTrue(formAlg.isForm().isTrue());
 	}
@@ -29,7 +32,8 @@ public class frmTests {
 	}
 	
 	private static QLParser getParser(String expr) {
-		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
+		QLParser qlParser = Parser.parse(Parser.getInputStream(expr));
+		qlParser.setErrorHandler(new BailErrorStrategy());		
 		//Errors printing removed for the null pointer exceptions
 		qlParser.removeErrorListeners();
 		return qlParser;

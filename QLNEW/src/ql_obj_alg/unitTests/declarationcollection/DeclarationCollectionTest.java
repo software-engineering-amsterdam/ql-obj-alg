@@ -7,11 +7,11 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import ql_obj_alg.antlr4GenParser.QLParser;
-import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.typechecker.declarationcollection.FormCollectDeclarations;
-import ql_obj_alg.operation.typechecker.types.Type;
+import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
+import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.types.Type;
 
 public class DeclarationCollectionTest extends TestCase{
 
@@ -28,7 +28,7 @@ public class DeclarationCollectionTest extends TestCase{
 		
 		String input = "form id {\n duplicate: \"label 1\" boolean \n correctDuplicate: \"label 3 \" integer \n correctDuplicate: \"label 4 \" integer \n \n duplicate: \"label 2\" string}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	

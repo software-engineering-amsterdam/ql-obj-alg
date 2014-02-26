@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.typechecker.types;
+package ql_obj_alg.types;
 
 public abstract class Type {
 	
@@ -19,4 +19,5 @@ public abstract class Type {
 	public abstract Type merge(Type t);
 	
 	public abstract String toString();
+	
 }
