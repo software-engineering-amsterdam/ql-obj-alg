@@ -15,16 +15,35 @@ import java.io.IOException;
 
 import org.antlr.v4.runtime.*;
 
+import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.operation.builder.IBuildF;
+import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
 import ql_obj_alg.operation.printer.*;
+import ql_obj_alg.operation.typechecker.FormTypeChecker;
+import ql_obj_alg.operation.typechecker.declaration_collection.FormCollectDeclarations;
 import ql_obj_alg.parsers.antlr4_generated_parser.*;
 
 public class Parser {
     public static void main(String[] args) throws Exception {
     	QLParser qlParser = parse(getInputStream(new FileInputStream(args[0])));
     	IBuildF form = qlParser.forms().frm;
-        System.out.println(form.build(new FormPrinter()).print());
+    	typeCheck(form);
+    	printForm(form);
     }
+
+	private static void printForm(IBuildF form) {
+        System.out.println(form.build(new FormPrinter()).print());
+	}
+
+	private static void typeCheck(IBuildF form) {
+		FormCollectDeclarations fcd = new FormCollectDeclarations();
+    	form.build(fcd).collect();
+    	ErrorReporting report = new ErrorReporting();
+    	form.build(new FormTypeChecker(fcd.getMemory(),report)).check();
+    	form.build(new FormDependencies(report)).dependencies();
+    	report.printErrors();
+    	report.printWarnings();
+	}
        
     public static QLParser parse(ANTLRInputStream input){
         QLLexer lexer = new QLLexer(input);
@@ -39,4 +58,6 @@ public class Parser {
     public static ANTLRInputStream getInputStream(FileInputStream fis) throws FileNotFoundException, IOException{
     	return new ANTLRInputStream(fis);
     }
+    
+
 }
