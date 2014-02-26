@@ -32,7 +32,7 @@ public class CyclicDependencyDetection {
 			return;
 		
 		path.add(node);
-		for(String edge : dependencyG.getNodeDependencies(node)){
+		for(String edge : dependencyG.getNodeDependenciesToSet(node)){
 				visit(edge);
 		}
 		
@@ -49,7 +49,6 @@ public class CyclicDependencyDetection {
 		}
 	}
 
-	
 	public List<String> listOfStringCycles(){
 		List<String> result = new LinkedList<String>();
 		for(Cycle cycle : cycles){

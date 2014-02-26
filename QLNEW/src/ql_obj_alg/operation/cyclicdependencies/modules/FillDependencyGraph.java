@@ -11,8 +11,7 @@ public class FillDependencyGraph {
 	DependencyGraph dependencyG = new DependencyGraph();
 	
 	public void newDefinitionDependencyLevel() {
-		currentDependencies.push(new HashSet<String>());
-		
+		currentDependencies.push(new HashSet<String>());		
 	}
 	
 	public void revert(){
@@ -23,8 +22,8 @@ public class FillDependencyGraph {
 		currentDependencies.peek().add(var);
 	}
 
-	public void addNodesToDependOn(HashSet<String> vars){
-		currentDependencies.peek().addAll(vars);
+	public void addNodesToDependOn(Dependencies dependency) {
+		currentDependencies.peek().addAll(dependency.toSet());	
 	}
 	
 	public void addDefinitionDependentNode(String var){
@@ -34,7 +33,7 @@ public class FillDependencyGraph {
 			dependencyG.addDefinitionDependecies(var,getCurrentDependencies());
 	}
 	
-	public void addValueDependentNode(String var, HashSet<String> dependencies){
+	public void addValueDependentNode(String var, Dependencies dependencies){
 			dependencyG.addValueDependecies(var,dependencies);
 	}
 	
@@ -42,7 +41,7 @@ public class FillDependencyGraph {
 		return dependencyG.getIndependent();
 	}
 	
-	public Map<String,HashSet<String>> getDependencies(){
+	public Map<String,Dependencies> getDependencies(){
 		return dependencyG.getDependencies();
 	}
 

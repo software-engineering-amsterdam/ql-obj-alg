@@ -18,7 +18,7 @@ public class DependencyGraph {
 		getNode(var).addDefinitionDependencies(currentDependencies);
 	}
 
-	public void addValueDependecies(String var, Set<String> currentDependencies) {
+	public void addValueDependecies(String var, Dependencies currentDependencies) {
 		getNode(var).addValueDependencies(currentDependencies);
 	}
 	
@@ -48,8 +48,8 @@ public class DependencyGraph {
 		return variables.keySet();
 	}
 	
-	public Map<String,HashSet<String>> getDependencies(){
-		Map<String,HashSet<String>> dependent = new HashMap<String,HashSet<String>>();
+	public Map<String,Dependencies> getDependencies(){
+		Map<String,Dependencies> dependent = new HashMap<String,Dependencies>();
 		Iterator<String> it = variables.keySet().iterator();
 		while(it.hasNext()){
 			String var = it.next();
@@ -67,7 +67,11 @@ public class DependencyGraph {
 		}		
 	}
 
-	public Set<String> getNodeDependencies(String var) {
+	public Dependencies getNodeDependencies(String var) {
 		return getNode(var).getDependencies();
+	}
+	
+	public Set<String> getNodeDependenciesToSet(String var) {
+		return getNode(var).getDependenciesToSet();
 	}
 }

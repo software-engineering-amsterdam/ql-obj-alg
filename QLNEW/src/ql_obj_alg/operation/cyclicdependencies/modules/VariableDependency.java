@@ -1,15 +1,15 @@
 package ql_obj_alg.operation.cyclicdependencies.modules;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 
 public class VariableDependency {
-	HashSet<String> definitionDependency = new HashSet<String>();
-	HashSet<String> valueDependency = new HashSet<String>();
+	Dependencies definitionDependency = new Dependencies();
+	Dependencies valueDependency = new Dependencies();
 
 	
 	public void removeDefinitionDepedencies(){
-		definitionDependency = null;
+		definitionDependency.setIndependent();
 	}
 	
 	public boolean isIndependent(){
@@ -19,17 +19,15 @@ public class VariableDependency {
 	}
 	
 	public boolean isDependent(){
-		if(!isAlreadyDefined() || !hasAlreadyValue())
-			return true;
-		return false;
+		return (!isAlreadyDefined() || !hasAlreadyValue());
 	}
 	
 	public boolean isAlreadyDefined(){
-		return definitionDependency == null;
+		return definitionDependency.isIndependent();
 	}
 	
 	private boolean hasAlreadyValue() {
-		return valueDependency.isEmpty();
+		return valueDependency.dependencyUnknown();
 	}
 	
 	public void addDefinitionDependencies(Collection<String> dependecies){
@@ -38,24 +36,28 @@ public class VariableDependency {
 		}
 	}
 	
-	public void addValueDependencies(Collection<String> dependecies){
-			valueDependency.addAll(dependecies);
+	public void addValueDependencies(Dependencies dependecies){
+			valueDependency.addAll(dependecies.toSet());
 	}
 
-	public HashSet<String> getDefinitionDependencies(){
+	public Dependencies getDefinitionDependencies(){
 		return this.definitionDependency;
 	}
 	
-	public HashSet<String> getValueDependencies(){
+	public Dependencies getValueDependencies(){
 		return this.valueDependency;
 	}
 	
-	public HashSet<String> getDependencies(){
-		HashSet<String> dependencies = new HashSet<String>();
+	public Dependencies getDependencies(){
+		Dependencies dependencies = new Dependencies();
 		if(!isAlreadyDefined())
-			dependencies.addAll(definitionDependency);
+			dependencies.addAll(definitionDependency.toSet());
 		if(!hasAlreadyValue())
-			dependencies.addAll(valueDependency);
+			dependencies.addAll(valueDependency.toSet());
 		return dependencies;
+	}
+
+	public Set<String> getDependenciesToSet() {
+		return getDependencies().toSet();
 	}
 }

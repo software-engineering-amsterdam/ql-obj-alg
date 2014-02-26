@@ -27,7 +27,11 @@ public class Dependencies {
 		this.nodes.addAll(dependencies);
 	}
 	
-	public Set<String> getDependencies(){
+	public void addAll(Dependencies dependencies){
+		this.nodes.addAll(dependencies.toSet());
+	}
+	
+	public Set<String> toSet(){
 		return nodes;
 	}
 }
