@@ -1,6 +1,6 @@
 // Generated from QL.g4 by ANTLR 4.2
 
-package ql_obj_alg.antlr4GenParser;
+package ql_obj_alg.parsers.antlr4GenParser;
 import ql_obj_alg.operation.builder.*;
 import ql_obj_alg.types.TypeFactory;
 import java.util.ArrayList;

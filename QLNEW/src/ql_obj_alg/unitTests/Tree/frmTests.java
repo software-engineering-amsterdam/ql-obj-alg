@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.errors.parseErrorStrategy.BailErrorStrategy;
-import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildF;
+import ql_obj_alg.parsers.antlr4GenParser.QLParser;
+import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.ITest;
 import ql_obj_alg.unitTests.Tree.TestAlgebra.Tester;
 
@@ -32,7 +32,7 @@ public class frmTests{
 	}
 	
 	private static QLParser getParser(String expr) {
-		QLParser qlParser = mainParser.parse(mainParser.getInputStream(expr));
+		QLParser qlParser = Parser.parse(Parser.getInputStream(expr));
 		qlParser.setErrorHandler(new BailErrorStrategy());		
 		//Errors printing removed for the null pointer exceptions
 		qlParser.removeErrorListeners();

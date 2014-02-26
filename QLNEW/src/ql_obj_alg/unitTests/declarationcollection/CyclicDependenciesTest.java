@@ -9,11 +9,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
-import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.cyclicdependencies.FormDependencies;
+import ql_obj_alg.parsers.antlr4GenParser.QLParser;
+import ql_obj_alg.parsers.parser.Parser;
 
 public class CyclicDependenciesTest{
 
@@ -38,7 +38,7 @@ public class CyclicDependenciesTest{
 		target = "variable";
 		String input = "form id {\n "+target+": \"label\" integer ("+target+") \n "+target+": \"label\" integer \n}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	
@@ -60,7 +60,7 @@ public class CyclicDependenciesTest{
 		String y = "Y";
 		String input = "form id {\n if("+x+"){\n "+y+": \"label1\" boolean\n} if("+y+"){\n "+x+": \"label2\" boolean\n}\n}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	
@@ -93,7 +93,7 @@ public class CyclicDependenciesTest{
 				+ "\n}"
 				+ "\n}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	
@@ -132,7 +132,7 @@ public class CyclicDependenciesTest{
 				+ x1 +": \"label 4\" integer ("+x4+")"
 				+ "\n}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	
@@ -151,7 +151,7 @@ public class CyclicDependenciesTest{
 		String y = "Y";
 		String input = "form id {\n if("+x+"){\n "+y+": \"label1\" boolean\n} if("+y+"){\n "+x+": \"label2\" boolean\n}"+x+": \"label2\" boolean\n}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	
@@ -166,7 +166,7 @@ public class CyclicDependenciesTest{
 		target = "variable";
 		String input = "form id {\n "+target+": \"label\" integer (undefined) \n}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	
@@ -194,7 +194,7 @@ public class CyclicDependenciesTest{
 				+ "\n}"
 				+ "\n}";
 
-    	QLParser qlParser = mainParser.parse(mainParser.getInputStream(input));
+    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
     	
     	IBuildF form = qlParser.forms().frm;
     	
