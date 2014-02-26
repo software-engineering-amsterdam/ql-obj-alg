@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.typechecker.types;
+package ql_obj_alg.types;
 
 public abstract class Type {
 	

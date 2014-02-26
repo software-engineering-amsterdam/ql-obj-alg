@@ -6,8 +6,8 @@ import java.util.List;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
-import ql_obj_alg.operation.typechecker.types.Type;
-import ql_obj_alg.operation.typechecker.types.TypeFactory;
+import ql_obj_alg.types.Type;
+import ql_obj_alg.types.TypeFactory;
 
 public class StmtTypeChecker extends ExprTypeChecker implements
 		IStmtAlg<IExpType, ITypeCheck> {

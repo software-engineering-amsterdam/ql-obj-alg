@@ -2,6 +2,7 @@ package ql_obj_alg.operation.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import ql_obj_alg.types.Type;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
@@ -39,7 +40,7 @@ public class StmtBuilder extends ExprBuilder implements IStmtAlg<IBuildE,IBuildS
 	}
 
 	@Override
-	public IBuildS question(final String id, final String label, final String type) {
+	public IBuildS question(final String id, final String label, final Type type) {
 		return new IBuildS(){
 			public <E,S> S build(IStmtAlg<E,S> alg) {
 				return alg.question(id, label, type);
@@ -48,7 +49,7 @@ public class StmtBuilder extends ExprBuilder implements IStmtAlg<IBuildE,IBuildS
 	}
 
 	@Override
-	public IBuildS question(final String id,final  String label,final String type,final IBuildE e) {
+	public IBuildS question(final String id,final  String label,final Type type,final IBuildE e) {
 		return new IBuildS(){
 			public <E,S> S build(IStmtAlg<E,S> alg) {
 				return alg.question(id, label, type, e.build(alg));

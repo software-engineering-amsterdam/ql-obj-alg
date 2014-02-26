@@ -6,7 +6,7 @@ import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.typechecker.IExpType;
-import ql_obj_alg.operation.typechecker.types.Type;
+import ql_obj_alg.types.Type;
 
 public class FormCollectDeclarations extends StmtCollectDeclarations implements
 		IFormAlg<IExpType, ICollect, ICollect> {

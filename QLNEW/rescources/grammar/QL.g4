@@ -5,29 +5,31 @@ import CommonLexerRules,Op;
 @header{
 package ql_obj_alg.antlr4GenParser;
 import ql_obj_alg.operation.builder.*;
+import ql_obj_alg.types.TypeFactory;
 import java.util.ArrayList;
 import java.util.List;
+
 }
 
 @parser::members{
 	FormBuilder formBuilder = new FormBuilder();
 	
-	protected IBuildS composeStmt(List<QLParser.StatContext> list){
-		List<IBuildS> listStmt = ArrayList<IBuildS>();
-		for(QLParser.StatContext stmt : list)
+	protected IBuildS composeStmt(List<QLParser.StatContext> antlr4StmtList){
+		List<IBuildS> stmtList = new ArrayList<IBuildS>();
+		for(QLParser.StatContext stmt : antlr4StmtList)
 		{
-			listStmt.add(stmt.stmt);
+			stmtList.add(stmt.stmt);
 		}
-		return formBuilder.comb(listStmt);
+		return formBuilder.comb(stmtList);
 	}
 	
-	protected IBuildF composeForms(List<QLParser.FormContext> list){
-		QLParser.FormContext form = list.remove(0);
-		if(list.isEmpty()){
-			return form.frm;
+	protected IBuildF composeForms(List<QLParser.FormContext> antlr4FormList){
+		List<IBuildF> formList = new ArrayList<IBuildF>();
+		for(QLParser.FormContext form : antlr4FormList)
+		{
+			formList.add(form.frm);
 		}
-		else 
-			return formBuilder.forms(form.frm,composeForms(list));
+		return formBuilder.forms(formList);
 	}
 	
 }
@@ -43,7 +45,7 @@ stat returns [IBuildS stmt]:
 		| ifstat {$stmt = $ifstat.stmt;};
 
 question returns [IBuildS stmt]: 
-		ID ':' STRING TYPE b=assign? {if($b.ctx != null){ $stmt = formBuilder.question($ID.text,$STRING.text,$TYPE.text,$assign.exp);} else {$stmt = formBuilder.question($ID.text,$STRING.text,$TYPE.text);};};
+		ID ':' STRING TYPE b=assign? {if($b.ctx != null){ $stmt = formBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text),$assign.exp);} else {$stmt = formBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text));};};
 
 assign returns [IBuildE exp]: 
 		LP a=expr RP	{$exp = $a.exp;};

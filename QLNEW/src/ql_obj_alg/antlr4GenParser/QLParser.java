@@ -2,8 +2,10 @@
 
 package ql_obj_alg.antlr4GenParser;
 import ql_obj_alg.operation.builder.*;
+import ql_obj_alg.types.TypeFactory;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -54,22 +56,22 @@ public class QLParser extends Parser {
 
 		FormBuilder formBuilder = new FormBuilder();
 		
-		protected IBuildS composeStmt(List<QLParser.StatContext> StmtList){
-			List<IBuildS> listStmt = new ArrayList<IBuildS>();
-			for(QLParser.StatContext stmt : StmtList)
+		protected IBuildS composeStmt(List<QLParser.StatContext> antlr4StmtList){
+			List<IBuildS> stmtList = new ArrayList<IBuildS>();
+			for(QLParser.StatContext stmt : antlr4StmtList)
 			{
-				listStmt.add(stmt.stmt);
+				stmtList.add(stmt.stmt);
 			}
-			return formBuilder.comb(listStmt);
+			return formBuilder.comb(stmtList);
 		}
 		
-		protected IBuildF composeForms(List<QLParser.FormContext> FormList){
-			List<IBuildF> listForm = new ArrayList<IBuildF>();
-			for(QLParser.FormContext form : FormList)
+		protected IBuildF composeForms(List<QLParser.FormContext> antlr4FormList){
+			List<IBuildF> formList = new ArrayList<IBuildF>();
+			for(QLParser.FormContext form : antlr4FormList)
 			{
-				listForm.add(form.frm);
+				formList.add(form.frm);
 			}
-			return formBuilder.forms(listForm);
+			return formBuilder.forms(formList);
 		}
 		
 
@@ -276,7 +278,7 @@ public class QLParser extends Parser {
 				}
 			}
 
-			if(((QuestionContext)_localctx).b != null){ ((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),(((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null),((QuestionContext)_localctx).assign.exp);} else {((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),(((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null));};
+			if(((QuestionContext)_localctx).b != null){ ((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),TypeFactory.createType((((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null)),((QuestionContext)_localctx).assign.exp);} else {((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),TypeFactory.createType((((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null)));};
 			}
 		}
 		catch (RecognitionException re) {

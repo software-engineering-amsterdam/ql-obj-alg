@@ -2,7 +2,7 @@ package ql_obj_alg.operation.printer;
 
 
 import java.util.List;
-
+import ql_obj_alg.types.Type;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
 public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint> {
@@ -40,19 +40,19 @@ public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint>
 	}
 
 	@Override
-	public IPrint question(final String id,final  String label, final String type) {
+	public IPrint question(final String id,final  String label, final Type type) {
 		return new IPrint(){
 			public String print(){
-				return "(" + id + " " + label + " " + type + ") \n" ;
+				return "(" + id + " " + label + " " + type.toString() + ") \n" ;
 			}
 		};
 	}
 
 	@Override
-	public IPrint question(final String id, final String label, final String type, final IPrint e) {
+	public IPrint question(final String id, final String label, final Type type, final IPrint e) {
 		return new IPrint(){
 			public String print(){
-				return "(" + id + " " + label + " " + type + " " + e.print() + ") \n" ;
+				return "(" + id + " " + label + " " + type.toString() + " " + e.print() + ") \n" ;
 			}
 		};
 	}

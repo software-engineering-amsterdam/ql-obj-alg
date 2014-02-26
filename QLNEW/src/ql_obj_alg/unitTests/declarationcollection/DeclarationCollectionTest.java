@@ -11,7 +11,7 @@ import ql_obj_alg.antlr4GenParser.QLParser;
 import ql_obj_alg.mainParser.mainParser;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.typechecker.declarationcollection.FormCollectDeclarations;
-import ql_obj_alg.operation.typechecker.types.Type;
+import ql_obj_alg.types.Type;
 
 public class DeclarationCollectionTest extends TestCase{
 

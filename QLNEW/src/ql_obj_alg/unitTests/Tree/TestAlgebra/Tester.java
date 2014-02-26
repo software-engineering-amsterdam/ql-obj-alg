@@ -1,7 +1,7 @@
 package ql_obj_alg.unitTests.Tree.TestAlgebra;
 
 import java.util.List;
-
+import ql_obj_alg.types.Type;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 
 
@@ -32,7 +32,7 @@ public class Tester implements IFormAlg<ITest,ITest,ITest> {
 	}
 
 	@Override
-	public ITest question(String id, String label, String type) {
+	public ITest question(String id, String label, Type type) {
 		return new Test(){
 			@Override
 			public ITest isQuestion(){return this;}
@@ -40,7 +40,7 @@ public class Tester implements IFormAlg<ITest,ITest,ITest> {
 	}
 
 	@Override
-	public ITest question(String id, String label, String type, ITest e) {
+	public ITest question(String id, String label, Type type, ITest e) {
 		return new Test(e){
 			@Override
 			public ITest isQuestionWithAssign(){return this;}
