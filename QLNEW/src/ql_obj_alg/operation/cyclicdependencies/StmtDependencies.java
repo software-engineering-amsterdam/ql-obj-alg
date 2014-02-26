@@ -3,6 +3,7 @@ package ql_obj_alg.operation.cyclicdependencies;
 import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.types.Type;
 
 public class StmtDependencies extends ExprDependencies implements
 		IStmtAlg<IExpDependency, IDependencyGraph> {
@@ -45,7 +46,7 @@ public class StmtDependencies extends ExprDependencies implements
 	}
 
 	@Override
-	public IDependencyGraph question(final String id, final String label, final String type) {
+	public IDependencyGraph question(final String id, final String label, Type type) {
 		return new IDependencyGraph(){
 			public void dependencies(){
 				dcd.addDefinitionDependentNode(id);
@@ -54,7 +55,7 @@ public class StmtDependencies extends ExprDependencies implements
 	}
 
 	@Override
-	public IDependencyGraph question(final String id, final String label, final String type,
+	public IDependencyGraph question(final String id, final String label, final Type type,
 			final IExpDependency e) {
 		return new IDependencyGraph(){
 			public void dependencies(){
@@ -63,5 +64,4 @@ public class StmtDependencies extends ExprDependencies implements
 			}
 		};
 	}
-
 }
