@@ -23,7 +23,8 @@ public class frmTests{
 	
 	private static ITest getTestAlgebraObject(String expr){
 		IBuildF exprBuilder = getFormTree(expr);
-		return exprBuilder.build(new Tester());		
+		Tester tester = new Tester();
+		return exprBuilder.build(tester,tester,tester);		
 	}
 	
 	private static IBuildF getFormTree(String expr){
