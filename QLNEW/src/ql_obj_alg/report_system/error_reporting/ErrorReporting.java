@@ -3,13 +3,14 @@ package ql_obj_alg.report_system.error_reporting;
 import java.util.LinkedList;
 import java.util.List;
 
+import ql_obj_alg.report_system.errors.GenError;
 import ql_obj_alg.report_system.warnings.Warning;
 
 public class ErrorReporting {
-	List<UnknownError> errors = new LinkedList<UnknownError>();
+	List<GenError> errors = new LinkedList<GenError>();
 	List<Warning> warnings = new LinkedList<Warning>();
 	
-	public void addError(UnknownError error){
+	public void addError(GenError error){
 		errors.add(error);
 	}
 	
@@ -19,7 +20,7 @@ public class ErrorReporting {
 	
 	public void printErrors(){
 		System.out.println("Errors: "+errors.size());
-		for(UnknownError error : errors)
+		for(GenError error : errors)
 			System.out.println("Error: "+error.toString());
 	}
 	
@@ -37,7 +38,7 @@ public class ErrorReporting {
 		return warnings.size();
 	}
 	
-	public boolean containsError(UnknownError error){
+	public boolean containsError(GenError error){
 		return errors.contains(error);
 	}
 	
