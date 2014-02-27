@@ -6,34 +6,42 @@ import java.util.List;
 import ql_obj_alg.report_system.warnings.Warning;
 
 public class ErrorReporting {
-	List<Error> errors = new LinkedList<Error>();
+	List<UnknownError> errors = new LinkedList<UnknownError>();
 	List<Warning> warnings = new LinkedList<Warning>();
 	
-	public void addError(String error){
+	public void addError(UnknownError error){
 		errors.add(error);
 	}
 	
-	public void addWarning(String warning){
+	public void addWarning(Warning warning){
 		warnings.add(warning);
 	}
 	
 	public void printErrors(){
 		System.out.println("Errors: "+errors.size());
-		for(String error : errors)
-			System.out.println("UnknownError: "+error);
+		for(UnknownError error : errors)
+			System.out.println("Error: "+error.toString());
 	}
 	
 	public void printWarnings(){
 		System.out.println("Warnings: "+warnings.size());
-		for(String warning : warnings)
-			System.out.println("Warning: "+warning);
+		for(Warning warning : warnings)
+			System.out.println("Warning: "+warning.toString());
 	}
 	
-	public List<String> getErrors(){
-		return errors;
+	public int numberOfErrors(){
+		return errors.size();
 	}
 	
-	public List<String> getWarnings(){
-		return warnings;
+	public int numberOfWarnings(){
+		return warnings.size();
+	}
+	
+	public boolean containsError(UnknownError error){
+		return errors.contains(error);
+	}
+	
+	public boolean containsWarning(Warning warning){
+		return warnings.contains(warning);
 	}
 }
