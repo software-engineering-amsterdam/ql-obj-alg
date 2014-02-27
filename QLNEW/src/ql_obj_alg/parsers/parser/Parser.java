@@ -20,7 +20,7 @@ import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
 import ql_obj_alg.operation.printer.*;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
-import ql_obj_alg.operation.typechecker.declaration_collection.FormCollectDeclarations;
+import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.parsers.antlr4_generated_parser.*;
 
 public class Parser {
@@ -36,7 +36,7 @@ public class Parser {
 	}
 
 	private static void typeCheck(IBuildF form) {
-		FormCollectDeclarations fcd = new FormCollectDeclarations();
+		FormCollectQuestionTypes fcd = new FormCollectQuestionTypes();
     	form.build(fcd).collect();
     	ErrorReporting report = new ErrorReporting();
     	form.build(new FormTypeChecker(fcd.getMemory(),report)).check();

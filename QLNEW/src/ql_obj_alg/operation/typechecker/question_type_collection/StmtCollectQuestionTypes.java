@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.typechecker.declaration_collection;
+package ql_obj_alg.operation.typechecker.question_type_collection;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.types.Type;
 
 
-public class StmtCollectDeclarations extends ExprNoop implements
+public class StmtCollectQuestionTypes extends ExprNoop implements
 		IStmtAlg<INoop,ICollect > {
 	
 	Map<String, Type> memory = new HashMap<String,Type>(); 	

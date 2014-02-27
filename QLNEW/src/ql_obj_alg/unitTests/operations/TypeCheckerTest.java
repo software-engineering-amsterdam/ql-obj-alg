@@ -9,14 +9,14 @@ import org.junit.Test;
 
 import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.operation.typechecker.declaration_collection.FormCollectDeclarations;
+import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 
 public class TypeCheckerTest {
 
-	FormCollectDeclarations fcd;
+	FormCollectQuestionTypes fcd;
 	FormTypeChecker ftc;
 	
 	ErrorReporting report;
@@ -27,7 +27,7 @@ public class TypeCheckerTest {
 	@Before
 	public void setUp() throws Exception {
 		report = new ErrorReporting();
-		fcd = new FormCollectDeclarations();
+		fcd = new FormCollectQuestionTypes();
 		
 		message = null;
 		expected = null;

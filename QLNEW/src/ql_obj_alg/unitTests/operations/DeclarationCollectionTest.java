@@ -8,19 +8,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.operation.typechecker.declaration_collection.FormCollectDeclarations;
+import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.types.Type;
 
 public class DeclarationCollectionTest extends TestCase{
 
-	FormCollectDeclarations fcd;
+	FormCollectQuestionTypes fcd;
 	private Map<String,Type> memory;
 
 	@Before
 	public void setUp() throws Exception {
-		fcd = new FormCollectDeclarations();
+		fcd = new FormCollectQuestionTypes();
 	}
 
 	@Test
