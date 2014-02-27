@@ -15,13 +15,13 @@ import java.io.IOException;
 
 import org.antlr.v4.runtime.*;
 
-import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
 import ql_obj_alg.operation.printer.*;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.parsers.antlr4_generated_parser.*;
+import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 
 public class Parser {
     public static void main(String[] args) throws Exception {

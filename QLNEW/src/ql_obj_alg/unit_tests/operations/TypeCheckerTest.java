@@ -7,12 +7,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 
 public class TypeCheckerTest {
 

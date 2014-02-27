@@ -2,10 +2,10 @@ package ql_obj_alg.operation.cyclic_dependencies;
 
 import java.util.List;
 
-import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.cyclic_dependencies.modules.graph.CyclicDependencyDetection;
 import ql_obj_alg.operation.cyclic_dependencies.modules.graph.DependencyGraph;
+import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 
 public class FormDependencies extends StmtDependencies implements
 		IFormAlg<IExpDependency, IDependencyGraph, IDependencyGraph> {

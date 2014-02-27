@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 
-import ql_obj_alg.errors.error_reporting.ErrorReporting;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.Type;
 
 public class StmtTypeChecker extends ExprTypeChecker implements
