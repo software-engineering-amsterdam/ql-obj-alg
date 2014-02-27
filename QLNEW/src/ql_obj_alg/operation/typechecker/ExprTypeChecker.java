@@ -3,8 +3,13 @@ package ql_obj_alg.operation.typechecker;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
+import ql_obj_alg.report_system.errors.ConflictingTypeError;
+import ql_obj_alg.report_system.errors.UndefinedQuestionError;
+import ql_obj_alg.report_system.errors.UnexpectedTypeError;
+import ql_obj_alg.report_system.errors.UnexpectedTypeInBinaryOpError;
 import ql_obj_alg.types.TBoolean;
 import ql_obj_alg.types.TInteger;
+import ql_obj_alg.types.TNumber;
 import ql_obj_alg.types.TString;
 import ql_obj_alg.types.TUniversal;
 import ql_obj_alg.types.Type;
@@ -51,7 +56,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t = tenv.getType(varName);
 				if(t != null)
 					return t;
-				report.addError("Variable "+varName+" is undefined.");
+				report.addError(new UndefinedQuestionError(varName));
 				return new TUniversal();
 			}
 		};
@@ -64,7 +69,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report);
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in * expression, expected numeric types, got "+t1.toString()+" * "+t2.toString()+".");
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), t1,t2,"/"));
 				}
 				return t1.merge(t2);
 			}
@@ -78,7 +83,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in / expression, expected numeric types, got "+t1.toString()+" / "+t2.toString()+".");
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), t1,t2,"/"));
 				}
 				return t1.merge(t2);
 			}
@@ -92,8 +97,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in + expression, expected numeric types, got "+t1.toString()+" + "+t2.toString()+".");
-				}
+					report.addError(new ConflictingTypeError(t1,t2,"+"));				}
 				return t1.merge(t2);
 			}
 		};
@@ -106,8 +110,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isNumber() || !t2.isNumber()){
-						report.addError("Wrong type in - expression, expected numeric types, got "+t1.toString()+" - "+t2.toString()+".");
-				}
+					report.addError(new ConflictingTypeError(t1,t2,"-"));				}
 				return t1.merge(t2);
 			}
 		};
@@ -120,7 +123,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.equals(t2)){
-						report.addError("Incompatible types in == expression, got "+t1.toString()+" == "+t2.toString()+".");
+					report.addError(new ConflictingTypeError(t1,t2,"=="));
 				}
 				return t1.merge(t2);
 			}
@@ -134,8 +137,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.equals(t2)){
-						report.addError("Incompatible types in != expression, got "+t1.toString()+" != "+t2.toString()+".");
-				}
+					report.addError(new ConflictingTypeError(t1,t2,"!="));				}
 				return t1.merge(t2);
 			}
 		};
@@ -148,8 +150,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isComparable(t2)){
-						report.addError("Incompatible types in < expression, expected comparable types, got "+t1.toString()+" < "+t2.toString()+".");
-				}
+					report.addError(new ConflictingTypeError(t1,t2,"<"));				}
 				return t1.merge(t2);
 			}
 		};
@@ -162,8 +163,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isComparable(t2)){
-						report.addError("Incompatible types in <= expression, expected comparable types, got "+t1.toString()+" <= "+t2.toString()+".");
-				}
+					report.addError(new ConflictingTypeError(t1,t2,"<="));				}
 				return t1.merge(t2);
 			}
 		};
@@ -176,8 +176,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isComparable(t2)){
-						report.addError("Incompatible types in > expression, expected comparable types, got "+t1.toString()+" > "+t2.toString()+".");
-				}
+					report.addError(new ConflictingTypeError(t1,t2,">"));				}
 				return t1.merge(t2);
 			}
 		};
@@ -190,7 +189,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(t1.isComparable(t2)){
-						report.addError("Incompatible types in >= expression, expected comparable types, got "+t1.toString()+" >= "+t2.toString()+".");
+					report.addError(new ConflictingTypeError(t1,t2,">="));
 				}
 				return t1.merge(t2);
 			}
@@ -204,8 +203,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			public Type type(TypeEnvironment tenv, ErrorReporting report){
 				Type t = a.type(tenv,report); 
 				if(!t.isBoolean()){
-						report.addError("Wrong type in ! expression, expected boolean, got "+t.toString()+".");
-				}
+					report.addError(new UnexpectedTypeError(new TBoolean(), t,"!"));				}
 				return t;
 			}
 		};
@@ -218,7 +216,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isBoolean() || !t2.isBoolean()){
-						report.addError("Wrong type in && expression, expected boolean, got "+t1.toString()+" && "+t2.toString()+".");
+					report.addError(new UnexpectedTypeInBinaryOpError(new TBoolean(), t1,t2,"&&"));
 				}
 				return t1.merge(t2);
 			}
@@ -232,7 +230,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isBoolean() || !t2.isBoolean()){
-						report.addError("Wrong type in || expression, expexted boolean, got "+t1.toString()+" || "+t2.toString()+".");
+					report.addError(new UnexpectedTypeInBinaryOpError(new TBoolean(), t1,t2,"||"));
 				}
 				return t1.merge(t2);
 			}
