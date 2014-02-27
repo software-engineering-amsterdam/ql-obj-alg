@@ -62,7 +62,8 @@ public class stmtTests{
 		
 	private static ITest getTestAlgebraObject(String expr){
 		IBuildS exprBuilder = getStmtTree(expr);
-		return exprBuilder.build(new Tester());		
+		Tester tester = new Tester();
+		return exprBuilder.build(tester,tester);		
 	}
 	
 	private static IBuildS getStmtTree(String expr){

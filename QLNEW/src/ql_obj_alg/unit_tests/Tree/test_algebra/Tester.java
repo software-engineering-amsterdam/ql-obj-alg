@@ -3,18 +3,18 @@ package ql_obj_alg.unit_tests.Tree.test_algebra;
 import java.util.List;
 
 import ql_obj_alg.types.Type;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
 
-public class Tester implements IFormAlg<ITest,ITest,ITest> {
+public class Tester implements IFormAlg<ITest,ITest,ITest>,IStmtAlg<ITest,ITest>, IExpAlg<ITest> {
 
 	@Override
 	public ITest iff(ITest cond, ITest b) {
 		return new Test(cond,b){
 			@Override
 			public ITest isIff(){return this;}
-			
-		
 		};
 	}
 
