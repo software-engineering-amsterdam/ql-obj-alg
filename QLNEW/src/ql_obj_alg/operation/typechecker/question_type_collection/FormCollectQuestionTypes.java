@@ -31,7 +31,7 @@ public class FormCollectQuestionTypes extends StmtCollectQuestionTypes implement
 		};
 	}
 	
-	public Map<String,Type> getMemory(){
+	public Map<String,Type> getTypeEnvironment(){
 		return memory;
 	}
 }

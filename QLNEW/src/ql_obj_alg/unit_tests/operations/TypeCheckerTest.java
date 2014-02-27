@@ -45,7 +45,7 @@ public class TypeCheckerTest {
     	
 		form.build(fcd).collect();
 
-		ftc = new FormTypeChecker(fcd.getMemory(), report);
+		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
 		form.build(ftc).check();
 		
 		assertEquals(0, report.getErrors().size());
@@ -71,7 +71,7 @@ public class TypeCheckerTest {
     	
 		form.build(fcd).collect();
 
-		ftc = new FormTypeChecker(fcd.getMemory(), report);
+		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
 		form.build(ftc).check();
 		
 		assertEquals(0, report.getErrors().size());
@@ -92,14 +92,19 @@ public class TypeCheckerTest {
     	
 		form.build(fcd).collect();
 
-		ftc = new FormTypeChecker(fcd.getMemory(), report);
+		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
 		form.build(ftc).check();
 	
+		assertEquals(0, report.numberOfWarning());
+		assertEquals(1, report.numberOErrors());
+		
 		assertEquals(0, report.getWarnings().size());	
 		
 		List<String> errors = report.getErrors();
 		
 		assertEquals(1,errors.size());
+		
+		assertTrue(report.hasError(new DuplicateDeflError()));
 		
 		message = errors.get(0);
 		expected = "Conflicting types of question "+duplicate+", initially declared "+type1+", redeclared "+type2+".";
@@ -117,7 +122,7 @@ public class TypeCheckerTest {
     	
 		form.build(fcd).collect();
 
-		ftc = new FormTypeChecker(fcd.getMemory(), report);
+		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
 		form.build(ftc).check();
 		
 		assertEquals(0, report.getWarnings().size());
@@ -142,7 +147,7 @@ public class TypeCheckerTest {
     	
 		form.build(fcd).collect();
 
-		ftc = new FormTypeChecker(fcd.getMemory(), report);
+		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
 		form.build(ftc).check();
 		
 		assertEquals(0, report.getWarnings().size());
@@ -167,7 +172,7 @@ public class TypeCheckerTest {
     	
 		form.build(fcd).collect();
 
-		ftc = new FormTypeChecker(fcd.getMemory(), report);
+		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
 		form.build(ftc).check();
 		
 		assertEquals(0, report.getWarnings().size());
@@ -192,7 +197,7 @@ public class TypeCheckerTest {
     	
 		form.build(fcd).collect();
 
-		ftc = new FormTypeChecker(fcd.getMemory(), report);
+		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
 		form.build(ftc).check();
 		
 		assertEquals(0, report.getWarnings().size());

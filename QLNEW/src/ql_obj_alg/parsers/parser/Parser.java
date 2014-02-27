@@ -39,7 +39,7 @@ public class Parser {
 		FormCollectQuestionTypes fcd = new FormCollectQuestionTypes();
     	form.build(fcd).collect();
     	ErrorReporting report = new ErrorReporting();
-    	form.build(new FormTypeChecker(fcd.getMemory(),report)).check();
+    	form.build(new FormTypeChecker(fcd.getTypeEnvironment(),report)).check();
     	form.build(new FormDependencies(report)).dependencies();
     	report.printErrors();
     	report.printWarnings();

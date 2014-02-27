@@ -34,7 +34,7 @@ public class DeclarationCollectionTest extends TestCase{
     	
 		form.build(fcd).collect();
 		
-		memory = fcd.getMemory();
+		memory = fcd.getTypeEnvironment();
 		
 		assertEquals(memory.size(),2);
 		
