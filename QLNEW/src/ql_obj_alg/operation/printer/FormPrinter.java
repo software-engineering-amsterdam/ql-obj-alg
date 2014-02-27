@@ -4,10 +4,7 @@ import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 
-public class FormPrinter extends StmtPrinter implements IFormAlg<IPrint, IPrint, IPrint> {
-
-	public FormPrinter(){
-	}
+public class FormPrinter implements IFormAlg<IPrint, IPrint, IPrint> {
 
 	@Override
 	public IPrint form(final String id, final IPrint s) {
