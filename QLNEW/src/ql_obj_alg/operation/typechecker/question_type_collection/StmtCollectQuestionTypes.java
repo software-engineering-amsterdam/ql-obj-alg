@@ -1,34 +1,33 @@
 package ql_obj_alg.operation.typechecker.question_type_collection;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.noop.ExprNoop;
+import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.types.Type;
+import ql_obj_alg.types.TypeEnvironment;
 
 
-public class StmtCollectQuestionTypes  implements
-		IStmtAlg<Void,ICollect > {
+public class StmtCollectQuestionTypes extends ExprNoop implements
+		IStmtAlg<INoop,ICollect> {
 	
-	Map<String, Type> memory = new HashMap<String,Type>(); 	
-
 	@Override
-	public ICollect iff(final Void cond, final ICollect b) {
+	public ICollect iff(final INoop cond, final ICollect b) {
 		return new ICollect(){
-			public void collect(){
-				b.collect();
+			public void collect(TypeEnvironment tenv){
+				b.collect(tenv);
 			}
 		};
 	}
 
 	@Override
-	public ICollect iffelse(final Void cond, final ICollect b1,
+	public ICollect iffelse(final INoop cond, final ICollect b1,
 			final ICollect b2) {
 		return new ICollect(){
-			public void collect(){
-				b1.collect();
-				b2.collect();
+			public void collect(TypeEnvironment tenv){
+				b1.collect(tenv);
+				b2.collect(tenv);
 			}
 		};
 	}
@@ -36,9 +35,9 @@ public class StmtCollectQuestionTypes  implements
 	@Override
 	public ICollect comb(final List<ICollect> stmtList) {
 		return new ICollect(){
-			public void collect(){
+			public void collect(TypeEnvironment tenv){
 				for(ICollect stmt : stmtList){
-					stmt.collect();
+					stmt.collect(tenv);
 				}
 			}
 		};
@@ -47,24 +46,18 @@ public class StmtCollectQuestionTypes  implements
 	@Override
 	public ICollect question(final String id, final String label, final Type type) {
 		return new ICollect(){
-			public void collect(){
-				Type t = memory.get(id);
-				if(t == null){
-					memory.put(id, type);			
-				}
+			public void collect(TypeEnvironment tenv){
+				tenv.setNewTypeIfUndefined(id, type);
 			}
 		};
 	}
 
 	@Override
 	public ICollect question(final String id, final String label, final Type type,
-			final Void e) {
+			final INoop e) {
 		return new ICollect(){
-			public void collect(){
-				Type t = memory.get(id);
-				if(t == null){
-					memory.put(id, type);			
-				}
+			public void collect(TypeEnvironment tenv){
+				tenv.setNewTypeIfUndefined(id, type);
 			}
 		};
 	}

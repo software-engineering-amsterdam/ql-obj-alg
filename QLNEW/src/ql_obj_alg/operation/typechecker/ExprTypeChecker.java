@@ -9,22 +9,21 @@ import ql_obj_alg.types.TError;
 import ql_obj_alg.types.TInteger;
 import ql_obj_alg.types.TString;
 import ql_obj_alg.types.Type;
+import ql_obj_alg.types.TypeEnvironment;
 
 public class ExprTypeChecker implements IExpAlg<IExpType>{
-	
-	Map<String, Type> memory; 
-	ErrorReporting report;
-	
-	public ExprTypeChecker(Map<String, Type> memory, ErrorReporting report){
-		this.memory = memory;
-		this.report = report;
-	}
 
 	@Override
 	public IExpType lit(int x) {
 		return new IExpType(){
-			public Type type(){
+			@Override
+			public Type type(TypeEnvironment tenv, ErrorReporting errors) {
 				return new TInteger();
+			}
+
+			@Override
+			public boolean check(TypeEnvironment tenvs, ErrorReporting errors) {
+				return false;
 			}
 		};
 	}
@@ -32,8 +31,14 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	@Override
 	public IExpType bool(boolean b) {
 		return new IExpType(){
-			public Type type(){
+			@Override
+			public Type type(TypeEnvironment tenv, ErrorReporting errors) {
 				return new TBoolean();
+			}
+
+			@Override
+			public boolean check(TypeEnvironment tenvs, ErrorReporting errors) {
+				return false;
 			}
 		};
 	}
@@ -41,8 +46,14 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	@Override
 	public IExpType string(String s) {
 		return new IExpType(){
-			public Type type(){
+			@Override
+			public Type type(TypeEnvironment tenv, ErrorReporting errors) {
 				return new TString();
+			}
+
+			@Override
+			public boolean check(TypeEnvironment tenvs, ErrorReporting errors) {
+				return false;
 			}
 		};
 	}
@@ -56,6 +67,11 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 					return t;
 				report.addError("Variable "+s+" is undefined.");
 				return new TError();
+			}
+
+			@Override
+			public boolean check() {
+				return false;
 			}
 		};
 	}

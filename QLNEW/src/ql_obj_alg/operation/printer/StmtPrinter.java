@@ -6,7 +6,7 @@ import java.util.List;
 import ql_obj_alg.types.Type;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
-public class StmtPrinter extends ExprPrinter implements IStmtAlg<IPrint, IPrint> {
+public class StmtPrinter implements IStmtAlg<IPrint, IPrint> {
 
 
 	

@@ -55,6 +55,8 @@ public class QLParser extends Parser {
 
 
 		FormBuilder formBuilder = new FormBuilder();
+		StmtBuilder stmtBuilder = new StmtBuilder();
+		ExprBuilder exprBuilder = new ExprBuilder();
 		
 		protected IBuildS composeStmt(List<QLParser.StatContext> antlr4StmtList){
 			List<IBuildS> stmtList = new ArrayList<IBuildS>();
@@ -62,7 +64,7 @@ public class QLParser extends Parser {
 			{
 				stmtList.add(stmt.stmt);
 			}
-			return formBuilder.comb(stmtList);
+			return stmtBuilder.comb(stmtList);
 		}
 		
 		protected IBuildF composeForms(List<QLParser.FormContext> antlr4FormList){
@@ -278,7 +280,7 @@ public class QLParser extends Parser {
 				}
 			}
 
-			if(((QuestionContext)_localctx).b != null){ ((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),TypeFactory.createType((((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null)),((QuestionContext)_localctx).assign.exp);} else {((QuestionContext)_localctx).stmt =  formBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),TypeFactory.createType((((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null)));};
+			if(((QuestionContext)_localctx).b != null){ ((QuestionContext)_localctx).stmt =  stmtBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),TypeFactory.createType((((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null)),((QuestionContext)_localctx).assign.exp);} else {((QuestionContext)_localctx).stmt =  stmtBuilder.question((((QuestionContext)_localctx).ID!=null?((QuestionContext)_localctx).ID.getText():null),(((QuestionContext)_localctx).STRING!=null?((QuestionContext)_localctx).STRING.getText():null),TypeFactory.createType((((QuestionContext)_localctx).TYPE!=null?((QuestionContext)_localctx).TYPE.getText():null)));};
 			}
 		}
 		catch (RecognitionException re) {
@@ -393,7 +395,7 @@ public class QLParser extends Parser {
 				}
 			}
 
-			if(((IfstatContext)_localctx).c != null){ ((IfstatContext)_localctx).stmt =  formBuilder.iffelse(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b),((IfstatContext)_localctx).elsestat.stmt);} else { ((IfstatContext)_localctx).stmt =  formBuilder.iff(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b));};
+			if(((IfstatContext)_localctx).c != null){ ((IfstatContext)_localctx).stmt =  stmtBuilder.iffelse(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b),((IfstatContext)_localctx).elsestat.stmt);} else { ((IfstatContext)_localctx).stmt =  stmtBuilder.iff(((IfstatContext)_localctx).a.exp,composeStmt(((IfstatContext)_localctx).b));};
 			}
 		}
 		catch (RecognitionException re) {
@@ -523,7 +525,7 @@ public class QLParser extends Parser {
 				{
 				setState(85); match(NOT);
 				setState(86); ((ExprContext)_localctx).a = expr(17);
-				((ExprContext)_localctx).exp =  formBuilder.not(((ExprContext)_localctx).a.exp);
+				((ExprContext)_localctx).exp =  exprBuilder.not(((ExprContext)_localctx).a.exp);
 				}
 				break;
 			case LP:
@@ -537,25 +539,25 @@ public class QLParser extends Parser {
 			case BOOL:
 				{
 				setState(94); ((ExprContext)_localctx).BOOL = match(BOOL);
-				((ExprContext)_localctx).exp =  formBuilder.bool(Boolean.parseBoolean((((ExprContext)_localctx).BOOL!=null?((ExprContext)_localctx).BOOL.getText():null)));
+				((ExprContext)_localctx).exp =  exprBuilder.bool(Boolean.parseBoolean((((ExprContext)_localctx).BOOL!=null?((ExprContext)_localctx).BOOL.getText():null)));
 				}
 				break;
 			case STRING:
 				{
 				setState(96); ((ExprContext)_localctx).STRING = match(STRING);
-				((ExprContext)_localctx).exp =  formBuilder.string((((ExprContext)_localctx).STRING!=null?((ExprContext)_localctx).STRING.getText():null));
+				((ExprContext)_localctx).exp =  exprBuilder.string((((ExprContext)_localctx).STRING!=null?((ExprContext)_localctx).STRING.getText():null));
 				}
 				break;
 			case INT:
 				{
 				setState(98); ((ExprContext)_localctx).INT = match(INT);
-				((ExprContext)_localctx).exp =  formBuilder.lit((((ExprContext)_localctx).INT!=null?Integer.valueOf(((ExprContext)_localctx).INT.getText()):0));
+				((ExprContext)_localctx).exp =  exprBuilder.lit((((ExprContext)_localctx).INT!=null?Integer.valueOf(((ExprContext)_localctx).INT.getText()):0));
 				}
 				break;
 			case ID:
 				{
 				setState(100); ((ExprContext)_localctx).ID = match(ID);
-				((ExprContext)_localctx).exp =  formBuilder.var((((ExprContext)_localctx).ID!=null?((ExprContext)_localctx).ID.getText():null));
+				((ExprContext)_localctx).exp =  exprBuilder.var((((ExprContext)_localctx).ID!=null?((ExprContext)_localctx).ID.getText():null));
 				}
 				break;
 			default:
@@ -581,7 +583,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 16))) throw new FailedPredicateException(this, "precpred(_ctx, 16)");
 						setState(105); match(MUL);
 						setState(106); ((ExprContext)_localctx).b = expr(17);
-						((ExprContext)_localctx).exp =  formBuilder.mul(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.mul(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -594,7 +596,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
 						setState(110); match(DIV);
 						setState(111); ((ExprContext)_localctx).b = expr(16);
-						((ExprContext)_localctx).exp =  formBuilder.div(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.div(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -607,7 +609,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
 						setState(115); match(ADD);
 						setState(116); ((ExprContext)_localctx).b = expr(15);
-						((ExprContext)_localctx).exp =  formBuilder.add(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.add(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -620,7 +622,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
 						setState(120); match(MIN);
 						setState(121); ((ExprContext)_localctx).b = expr(14);
-						((ExprContext)_localctx).exp =  formBuilder.sub(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.sub(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -633,7 +635,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
 						setState(125); match(LT);
 						setState(126); ((ExprContext)_localctx).b = expr(13);
-						((ExprContext)_localctx).exp =  formBuilder.lt(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.lt(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -646,7 +648,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
 						setState(130); match(LEQ);
 						setState(131); ((ExprContext)_localctx).b = expr(12);
-						((ExprContext)_localctx).exp =  formBuilder.leq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.leq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -659,7 +661,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
 						setState(135); match(GT);
 						setState(136); ((ExprContext)_localctx).b = expr(11);
-						((ExprContext)_localctx).exp =  formBuilder.gt(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.gt(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -672,7 +674,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
 						setState(140); match(GEQ);
 						setState(141); ((ExprContext)_localctx).b = expr(10);
-						((ExprContext)_localctx).exp =  formBuilder.geq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.geq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -685,7 +687,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
 						setState(145); match(EQ);
 						setState(146); ((ExprContext)_localctx).b = expr(9);
-						((ExprContext)_localctx).exp =  formBuilder.eq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.eq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -698,7 +700,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
 						setState(150); match(NEQ);
 						setState(151); ((ExprContext)_localctx).b = expr(8);
-						((ExprContext)_localctx).exp =  formBuilder.neq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.neq(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -711,7 +713,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(155); match(AND);
 						setState(156); ((ExprContext)_localctx).b = expr(7);
-						((ExprContext)_localctx).exp =  formBuilder.and(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.and(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 
@@ -724,7 +726,7 @@ public class QLParser extends Parser {
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(160); match(OR);
 						setState(161); ((ExprContext)_localctx).b = expr(6);
-						((ExprContext)_localctx).exp =  formBuilder.or(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
+						((ExprContext)_localctx).exp =  exprBuilder.or(((ExprContext)_localctx).a.exp,((ExprContext)_localctx).b.exp);
 						}
 						break;
 					}

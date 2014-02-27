@@ -3,7 +3,6 @@ package ql_obj_alg.operation.builder;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 
 public class ExprBuilder implements IExpAlg<IBuildE>{
-	
 	@Override
 	public IBuildE lit(final int x) {
 		return new IBuildE(){
@@ -39,7 +38,7 @@ public class ExprBuilder implements IExpAlg<IBuildE>{
 			}
 		};
 	}
-
+		
 	@Override
 	public IBuildE mul(final IBuildE a1, final IBuildE a2) {
 		return new IBuildE(){

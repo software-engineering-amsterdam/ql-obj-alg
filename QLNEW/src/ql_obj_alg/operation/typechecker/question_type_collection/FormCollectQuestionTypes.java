@@ -2,11 +2,10 @@ package ql_obj_alg.operation.typechecker.question_type_collection;
 
 
 import java.util.List;
-import java.util.Map;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.noop.INoop;
-import ql_obj_alg.types.Type;
+import ql_obj_alg.types.TypeEnvironment;
 
 public class FormCollectQuestionTypes extends StmtCollectQuestionTypes implements
 		IFormAlg<INoop, ICollect, ICollect> {
@@ -14,8 +13,8 @@ public class FormCollectQuestionTypes extends StmtCollectQuestionTypes implement
 	@Override
 	public ICollect form(final String id, final ICollect s) {
 		return new ICollect(){
-			public void collect(){
-				s.collect();
+			public void collect(TypeEnvironment tenv){
+				s.collect(tenv);
 			}
 		};
 	}
@@ -23,15 +22,12 @@ public class FormCollectQuestionTypes extends StmtCollectQuestionTypes implement
 	@Override
 	public ICollect forms(final List<ICollect> listForms) {
 		return new ICollect(){
-			public void collect(){
+			public void collect(TypeEnvironment tenv){
 				for(ICollect form : listForms){
-					form.collect();
+					form.collect(tenv);
 				}
 			}
 		};
 	}
-	
-	public Map<String,Type> getTypeEnvironment(){
-		return memory;
-	}
+
 }

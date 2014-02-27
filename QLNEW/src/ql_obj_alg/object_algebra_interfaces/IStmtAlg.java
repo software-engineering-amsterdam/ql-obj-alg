@@ -3,7 +3,7 @@ package ql_obj_alg.object_algebra_interfaces;
 import java.util.List;
 import ql_obj_alg.types.Type;
 
-public interface IStmtAlg<E, S> {
+public interface IStmtAlg<E, S>  {
 	S iff(E cond, S b);
 	S iffelse(E cond,S b1, S b2);
 	S comb(List<S> listStatements);

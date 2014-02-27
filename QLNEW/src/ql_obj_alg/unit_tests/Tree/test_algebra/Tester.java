@@ -1,6 +1,7 @@
 package ql_obj_alg.unit_tests.Tree.test_algebra;
 
 import java.util.List;
+
 import ql_obj_alg.types.Type;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 
@@ -12,6 +13,8 @@ public class Tester implements IFormAlg<ITest,ITest,ITest> {
 		return new Test(cond,b){
 			@Override
 			public ITest isIff(){return this;}
+			
+		
 		};
 	}
 

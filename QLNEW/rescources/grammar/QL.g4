@@ -13,6 +13,8 @@ import java.util.List;
 
 @parser::members{
 	FormBuilder formBuilder = new FormBuilder();
+	StmtBuilder stmtBuilder = new StmtBuilder();
+	ExprBuilder exprBuilder = new ExprBuilder();
 	
 	protected IBuildS composeStmt(List<QLParser.StatContext> antlr4StmtList){
 		List<IBuildS> stmtList = new ArrayList<IBuildS>();
@@ -20,7 +22,7 @@ import java.util.List;
 		{
 			stmtList.add(stmt.stmt);
 		}
-		return formBuilder.comb(stmtList);
+		return stmtBuilder.comb(stmtList);
 	}
 	
 	protected IBuildF composeForms(List<QLParser.FormContext> antlr4FormList){
@@ -45,13 +47,13 @@ stat returns [IBuildS stmt]:
 		| ifstat {$stmt = $ifstat.stmt;};
 
 question returns [IBuildS stmt]: 
-		ID ':' STRING TYPE b=assign? {if($b.ctx != null){ $stmt = formBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text),$assign.exp);} else {$stmt = formBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text));};};
+		ID ':' STRING TYPE b=assign? {if($b.ctx != null){ $stmt = stmtBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text),$assign.exp);} else {$stmt = stmtBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text));};};
 
 assign returns [IBuildE exp]: 
 		LP a=expr RP	{$exp = $a.exp;};
 
 ifstat returns [IBuildS stmt]: 
-		'if' LP a=expr RP LB b+=stat* RB c=elsestat? {if($c.ctx != null){ $stmt = formBuilder.iffelse($a.exp,composeStmt($b),$elsestat.stmt);} else { $stmt = formBuilder.iff($a.exp,composeStmt($b));};};
+		'if' LP a=expr RP LB b+=stat* RB c=elsestat? {if($c.ctx != null){ $stmt = stmtBuilder.iffelse($a.exp,composeStmt($b),$elsestat.stmt);} else { $stmt = stmtBuilder.iff($a.exp,composeStmt($b));};};
 
 elsestat returns [IBuildS stmt]:
 		'else' LB a+=stat* RB		{$stmt = composeStmt($a);};
@@ -59,22 +61,22 @@ elsestat returns [IBuildS stmt]:
 //precedence http://introcs.cs.princeton.edu/java/11precedence/
 expr returns [IBuildE exp]: 	
 		LP a=expr RP 				{$exp = $a.exp;}
-		| NOT a=expr 				{$exp = formBuilder.not($a.exp);} 
-		| a=expr MUL b=expr 		{$exp = formBuilder.mul($a.exp,$b.exp);} 
-		| a=expr DIV b=expr  		{$exp = formBuilder.div($a.exp,$b.exp);} 
-		| a=expr ADD b=expr  		{$exp = formBuilder.add($a.exp,$b.exp);} 
-		| a=expr MIN b=expr  		{$exp = formBuilder.sub($a.exp,$b.exp);} 
-		| a=expr LT b=expr  		{$exp = formBuilder.lt($a.exp,$b.exp);} 
-		| a=expr LEQ b=expr  		{$exp = formBuilder.leq($a.exp,$b.exp);} 
-		| a=expr GT b=expr  		{$exp = formBuilder.gt($a.exp,$b.exp);} 
-		| a=expr GEQ b=expr  		{$exp = formBuilder.geq($a.exp,$b.exp);}
-		| a=expr EQ b=expr  		{$exp = formBuilder.eq($a.exp,$b.exp);} 		
-		| a=expr NEQ b=expr  		{$exp = formBuilder.neq($a.exp,$b.exp);} 
-		| a=expr AND b=expr  		{$exp = formBuilder.and($a.exp,$b.exp);} 
-		| a=expr OR b=expr  		{$exp = formBuilder.or($a.exp,$b.exp);} 
-		| BOOL 						{$exp = formBuilder.bool(Boolean.parseBoolean($BOOL.text));} 
-		| STRING 					{$exp = formBuilder.string($STRING.text);}
-		| INT 						{$exp = formBuilder.lit($INT.int);} 
-		|ID							{$exp = formBuilder.var($ID.text);} 
+		| NOT a=expr 				{$exp = exprBuilder.not($a.exp);} 
+		| a=expr MUL b=expr 		{$exp = exprBuilder.mul($a.exp,$b.exp);} 
+		| a=expr DIV b=expr  		{$exp = exprBuilder.div($a.exp,$b.exp);} 
+		| a=expr ADD b=expr  		{$exp = exprBuilder.add($a.exp,$b.exp);} 
+		| a=expr MIN b=expr  		{$exp = exprBuilder.sub($a.exp,$b.exp);} 
+		| a=expr LT b=expr  		{$exp = exprBuilder.lt($a.exp,$b.exp);} 
+		| a=expr LEQ b=expr  		{$exp = exprBuilder.leq($a.exp,$b.exp);} 
+		| a=expr GT b=expr  		{$exp = exprBuilder.gt($a.exp,$b.exp);} 
+		| a=expr GEQ b=expr  		{$exp = exprBuilder.geq($a.exp,$b.exp);}
+		| a=expr EQ b=expr  		{$exp = exprBuilder.eq($a.exp,$b.exp);} 		
+		| a=expr NEQ b=expr  		{$exp = exprBuilder.neq($a.exp,$b.exp);} 
+		| a=expr AND b=expr  		{$exp = exprBuilder.and($a.exp,$b.exp);} 
+		| a=expr OR b=expr  		{$exp = exprBuilder.or($a.exp,$b.exp);} 
+		| BOOL 						{$exp = exprBuilder.bool(Boolean.parseBoolean($BOOL.text));} 
+		| STRING 					{$exp = exprBuilder.string($STRING.text);}
+		| INT 						{$exp = exprBuilder.lit($INT.int);} 
+		|ID							{$exp = exprBuilder.var($ID.text);} 
 		;
 		
