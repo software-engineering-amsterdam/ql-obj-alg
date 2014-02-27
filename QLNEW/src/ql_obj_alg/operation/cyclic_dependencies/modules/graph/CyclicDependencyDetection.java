@@ -50,12 +50,8 @@ public class CyclicDependencyDetection {
 			System.out.println(cycle.toString());
 		}
 	}
-
-	public List<String> listOfStringCycles(){
-		List<String> result = new LinkedList<String>();
-		for(Cycle cycle : cycles){
-			result.add(cycle.toString());
-		}
-		return result;
+	
+	public List<Cycle> getCycles(){
+		return cycles;
 	}
 }
