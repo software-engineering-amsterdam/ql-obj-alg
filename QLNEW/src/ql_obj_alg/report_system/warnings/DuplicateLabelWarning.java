@@ -1,6 +1,6 @@
 package ql_obj_alg.report_system.warnings;
 
-public class DuplicateLabelWarning {
+public class DuplicateLabelWarning extends Warning{
 	String label;
 	
 	public DuplicateLabelWarning(String label){
@@ -19,9 +19,7 @@ public class DuplicateLabelWarning {
 		if(obj instanceof DuplicateLabelWarning){
 			DuplicateLabelWarning warn = (DuplicateLabelWarning) obj;
 			
-			if(this.label != null && this.label.equals(warn.label))
-				return true;
-			if(this.label == warn.label)
+			if(this.label == warn.label || (this.label != null && this.label.equals(warn.label)))
 				return true;
 		}
 		return false;
