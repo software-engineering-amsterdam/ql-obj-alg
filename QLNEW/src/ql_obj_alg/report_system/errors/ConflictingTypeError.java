@@ -16,7 +16,7 @@ public class ConflictingTypeError extends GenError {
 	}
 	
 	public String toString(){
-		return "Conflicting types in "+exp+" ( "+t1.toString()+", "+t2.toString()+").";
+		return "Conflicting types in "+exp+", ("+t1.toString()+", "+t2.toString()+").";
 	}
 	
 	public boolean equals(Object obj){
