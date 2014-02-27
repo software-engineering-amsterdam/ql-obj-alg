@@ -1,4 +1,4 @@
-package ql_obj_alg.unitTests.operations;
+package ql_obj_alg.unit_tests.operations;
 
 import static org.junit.Assert.*;
 
