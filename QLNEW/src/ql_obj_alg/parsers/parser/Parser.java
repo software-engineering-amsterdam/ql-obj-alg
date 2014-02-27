@@ -1,3 +1,4 @@
+
 /***
  * Excerpted from "The Definitive ANTLR 4 Reference",
  * published by The Pragmatic Bookshelf.
@@ -13,37 +14,37 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
-import ql_obj_alg.operation.printer.*;
-import ql_obj_alg.operation.typechecker.FormTypeChecker;
-import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
-import ql_obj_alg.parsers.antlr4_generated_parser.*;
-import ql_obj_alg.report_system.error_reporting.ErrorReporting;
+import ql_obj_alg.operation.printer.ExprPrinter;
+import ql_obj_alg.operation.printer.FormPrinter;
+import ql_obj_alg.operation.printer.StmtPrinter;
+import ql_obj_alg.parsers.antlr4_generated_parser.QLLexer;
+import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 
 public class Parser {
     public static void main(String[] args) throws Exception {
     	QLParser qlParser = parse(getInputStream(new FileInputStream(args[0])));
     	IBuildF form = qlParser.forms().frm;
-    	typeCheck(form);
+    	//typeCheck(form);
     	printForm(form);
     }
 
 	private static void printForm(IBuildF form) {
-        System.out.println(form.build(new FormPrinter()).print());
+        System.out.println(form.build(new ExprPrinter(),new StmtPrinter(),new FormPrinter()).print());
 	}
 
-	private static void typeCheck(IBuildF form) {
-		FormCollectQuestionTypes fcd = new FormCollectQuestionTypes();
-    	form.build(fcd).collect();
-    	ErrorReporting report = new ErrorReporting();
-    	form.build(new FormTypeChecker(fcd.getTypeEnvironment(),report)).check();
-    	form.build(new FormDependencies(report)).dependencies();
-    	report.printErrors();
-    	report.printWarnings();
-	}
+//	private static void typeCheck(IBuildF form) {
+//		FormCollectQuestionTypes fcd = new FormCollectQuestionTypes();
+//    	form.build(fcd).collect();
+//    	ErrorReporting report = new ErrorReporting();
+//    	form.build(new FormTypeChecker(fcd.getTypeEnvironment(),report)).check();
+//    	form.build(new FormDependencies(report)).dependencies();
+//    	report.printErrors();
+//    	report.printWarnings();
+//	}
        
     public static QLParser parse(ANTLRInputStream input){
         QLLexer lexer = new QLLexer(input);

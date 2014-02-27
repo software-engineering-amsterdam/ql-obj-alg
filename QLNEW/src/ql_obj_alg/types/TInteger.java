@@ -39,7 +39,7 @@ public class TInteger extends TNumber {
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof TInteger || obj instanceof TError)
+		if(obj instanceof TInteger || obj instanceof TUniversal)
 			return true;
 		
 		return false;
@@ -62,7 +62,7 @@ public class TInteger extends TNumber {
 
 	@Override
 	public Type merge(TBoolean t) {
-		return new TError();
+		return new TUniversal();
 	}
 
 	@Override
@@ -72,11 +72,11 @@ public class TInteger extends TNumber {
 
 	@Override
 	public Type merge(TString t) {
-		return new TError();
+		return new TUniversal();
 	}
 
 	@Override
-	public Type merge(TError t) {
+	public Type merge(TUniversal t) {
 		return t;
 	}
 }
