@@ -4,7 +4,7 @@ public interface IExpAlg<E>{
 	E lit(int x);
 	E bool(boolean b);
 	E string(String s);
-	E var(String s);
+	E var(String varName);
 	
 	E mul(E a1, E a2);
 	E div(E a1, E a2);

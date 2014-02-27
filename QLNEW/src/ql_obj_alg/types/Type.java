@@ -22,7 +22,7 @@ public abstract class Type {
 	
 	public abstract Type merge(TString t);
 	
-	public abstract Type merge(TError t);
+	public abstract Type merge(TUniversal t);
 	
 	public abstract String toString();
 }

@@ -1,6 +1,6 @@
 package ql_obj_alg.types;
 
-public class TError extends Type {
+public class TUniversal extends Type {
 
 	@Override
 	public boolean isComparable(Type t) {
@@ -58,7 +58,7 @@ public class TError extends Type {
 	}
 
 	@Override
-	public Type merge(TError t) {
+	public Type merge(TUniversal t) {
 		return this;
 	}
 

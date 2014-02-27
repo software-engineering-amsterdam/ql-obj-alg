@@ -39,7 +39,7 @@ public class TString extends Type {
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof TString || obj instanceof TError)
+		if(obj instanceof TString || obj instanceof TUniversal)
 			return true;
 		
 		return false;
@@ -64,12 +64,12 @@ public class TString extends Type {
 
 	@Override
 	public Type merge(TBoolean t) {
-		return new TError();
+		return new TUniversal();
 	}
 
 	@Override
 	public Type merge(TInteger t) {
-		return new TError();
+		return new TUniversal();
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class TString extends Type {
 	}
 
 	@Override
-	public Type merge(TError t) {
+	public Type merge(TUniversal t) {
 		return t;
 	}
 }

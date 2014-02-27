@@ -40,7 +40,7 @@ public class TBoolean extends Type {
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof TBoolean || obj instanceof TError)
+		if(obj instanceof TBoolean || obj instanceof TUniversal)
 			return true;
 		
 		return false;
@@ -68,16 +68,16 @@ public class TBoolean extends Type {
 
 	@Override
 	public Type merge(TInteger t) {
-		return new TError();
+		return new TUniversal();
 	}
 
 	@Override
 	public Type merge(TString t) {
-		return new TError();
+		return new TUniversal();
 	}
 
 	@Override
-	public Type merge(TError t) {
+	public Type merge(TUniversal t) {
 		return t;
 	}
 }
