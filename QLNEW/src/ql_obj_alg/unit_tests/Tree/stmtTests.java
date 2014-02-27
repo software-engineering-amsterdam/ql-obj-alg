@@ -3,14 +3,12 @@ package ql_obj_alg.unit_tests.Tree;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
-import ql_obj_alg.errors.parse_error_strategy.BailErrorStrategy;
-
 import org.antlr.v4.runtime.RecognitionException;
 
 import ql_obj_alg.operation.builder.IBuildS;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 

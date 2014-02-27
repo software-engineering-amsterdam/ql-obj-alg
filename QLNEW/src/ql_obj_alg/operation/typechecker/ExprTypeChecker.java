@@ -1,7 +1,9 @@
 package ql_obj_alg.operation.typechecker;
 
-import ql_obj_alg.errors.error_reporting.ErrorReporting;
+
+import java.util.Map;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TBoolean;
 import ql_obj_alg.types.TInteger;
 import ql_obj_alg.types.TString;
