@@ -1,21 +1,9 @@
 package ql_obj_alg.unit_tests.Tree;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-	
-
-
-
-
-
-
-
-
-
-
-
 
 import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
@@ -25,7 +13,7 @@ import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 
 public class exprTests {
-	
+		
 	@Test
 	public void testAdditionMultiplication() {
 		ITest testAlg = getTestAlgebraObject("1+1*2");
