@@ -1,6 +1,7 @@
 package ql_obj_alg.operation.evaluator;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.operation.evaluator.value.VBoolean;
 import ql_obj_alg.operation.evaluator.value.VError;
 import ql_obj_alg.operation.evaluator.value.VInteger;
@@ -8,11 +9,11 @@ import ql_obj_alg.operation.evaluator.value.VString;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 
-public class ExprEvaluator implements IExpAlg<IEval>{
+public class ExprEvaluator implements IExpAlg<IEvalE>{
 
 	@Override
-	public IEval lit(final int x) {
-		return new IEval(){
+	public IEvalE lit(final int x) {
+		return new IEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
 				return new VInteger(x);
@@ -21,8 +22,8 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval bool(final boolean b) {
-		return new IEval(){
+	public IEvalE bool(final boolean b) {
+		return new IEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
 				return new VBoolean(b);
@@ -31,8 +32,8 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval string(final String s) {
-		return new IEval(){
+	public IEvalE string(final String s) {
+		return new IEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
 				return new VString(s);
@@ -41,17 +42,22 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval var(final String varName) {
-		return new IEval(){
+	public IEvalE var(final String varName) {
+		final ExprEvaluator expEval = this;
+		return new IEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				return valEnv.getQuestionValue(varName);
+				if(valEnv.isComputedQuestion(varName)){
+					IBuildE exp = valEnv.getExpressionFromComputedQuestion(varName);
+					return exp.build(expEval).eval(valEnv);
+				}
+				return valEnv.getQuestion(varName).getValue();
 			}	
 		};
 	}
 
 	@Override
-	public IEval mul(final IEval a1, final IEval a2) {
+	public IEvalE mul(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -71,7 +77,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval div(final IEval a1, final IEval a2) {
+	public IEvalE div(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -91,7 +97,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval add(final IEval a1, final IEval a2) {
+	public IEvalE add(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -111,7 +117,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval sub(final IEval a1, final IEval a2) {
+	public IEvalE sub(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -131,7 +137,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval eq(final IEval a1, final IEval a2) {
+	public IEvalE eq(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -151,7 +157,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval neq(final IEval a1, final IEval a2) {
+	public IEvalE neq(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -171,7 +177,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval lt(final IEval a1, final IEval a2) {
+	public IEvalE lt(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -191,7 +197,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval leq(final IEval a1, final IEval a2) {
+	public IEvalE leq(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -211,7 +217,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval gt(final IEval a1, final IEval a2) {
+	public IEvalE gt(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -231,7 +237,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval geq(final IEval a1, final IEval a2) {
+	public IEvalE geq(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -251,7 +257,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval not(final IEval a) {
+	public IEvalE not(final IEvalE a) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -268,7 +274,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval and(final IEval a1, final IEval a2) {
+	public IEvalE and(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
@@ -288,7 +294,7 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 	}
 
 	@Override
-	public IEval or(final IEval a1, final IEval a2) {
+	public IEvalE or(final IEvalE a1, final IEvalE a2) {
 		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {

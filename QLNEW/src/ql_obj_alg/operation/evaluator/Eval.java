@@ -2,7 +2,7 @@ package ql_obj_alg.operation.evaluator;
 
 import ql_obj_alg.operation.evaluator.value.Value;
 
-public class Eval implements IEval {
+public class Eval implements IEvalE {
 
 	@Override
 	public Value eval(ValueEnvironment valEnv) {

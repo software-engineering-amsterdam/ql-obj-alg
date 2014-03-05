@@ -10,6 +10,7 @@
 #eclipse
 QLNEW/.*
 QLNEW/lib/*
+QLNEW/bin/*
 
 # Packages #
 ############
