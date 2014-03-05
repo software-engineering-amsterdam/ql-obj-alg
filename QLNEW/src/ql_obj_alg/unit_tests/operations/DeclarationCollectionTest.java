@@ -1,48 +1,57 @@
 package ql_obj_alg.unit_tests.operations;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ql_obj_alg.operation.builder.IBuildF;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
-import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
-import ql_obj_alg.parsers.parser.Parser;
-import ql_obj_alg.types.Type;
+import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
+import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
+import ql_obj_alg.types.TBoolean;
+import ql_obj_alg.types.TInteger;
+import ql_obj_alg.types.TypeEnvironment;
 
 public class DeclarationCollectionTest extends TestCase{
 
 	FormCollectQuestionTypes fcd;
-	private Map<String,Type> memory;
+	StmtCollectQuestionTypes scd;
+	TypeEnvironment tenv;
+	String question = "duplicated";
 
 	@Before
 	public void setUp() throws Exception {
 		fcd = new FormCollectQuestionTypes();
+		scd = new StmtCollectQuestionTypes();
+		tenv = new TypeEnvironment();
 	}
 
 	@Test
 	public void testDuplicates() {
 		
-		String input = "form id {\n duplicate: \"label 1\" boolean \n correctDuplicate: \"label 3 \" integer \n correctDuplicate: \"label 4 \" integer \n \n duplicate: \"label 2\" string}";
-
-    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-    	
-    	IBuildF form = qlParser.forms().frm;
-    	
-		form.build(fcd).collect();
+		ICollect forms = duplicateQuestionInForm(fcd,scd);
 		
-		memory = fcd.getTypeEnvironment();
+		forms.collect(tenv);
+			
+		assertTrue(tenv.getType(question).isNumber());
 		
-		assertEquals(memory.size(),2);
-		
-		assertTrue(memory.get("duplicate").isBoolean());
-		
-		assertFalse(memory.get("correctDuplicate").isBoolean());
-		
-		assertEquals(memory.get("notdefined"),null);
+		assertFalse(tenv.getType(question).isBoolean());		
 	}
 	
+	private <E,S,F> F duplicateQuestionInForm(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
+
+		List<S> questions = new ArrayList<S>();
+		questions.add(s.question(question, "Prototype", new TInteger()));
+		questions.add(s.question(question, "Correct duplicate", new TInteger()));
+		questions.add(s.question(question, "Conflicting duplicate", new TBoolean()));
+		
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("id", s.comb(questions)));
+		return f.forms(forms);
+	}
 }
