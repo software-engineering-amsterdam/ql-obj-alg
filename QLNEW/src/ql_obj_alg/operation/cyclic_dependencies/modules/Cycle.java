@@ -18,4 +18,24 @@ public class Cycle {
 		output.append(cycle.get(0));
 		return output.toString();
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj == null)
+			return false;
+		
+		if(obj instanceof Cycle){
+		
+			Cycle c = (Cycle) obj;
+			
+			if(this.cycle.size() != c.cycle.size())
+				return false;
+			for(String node : this.cycle){
+				if(!c.cycle.contains(node))
+					return false;
+			}
+			return true;
+		}
+		return false;
+	}
 }
