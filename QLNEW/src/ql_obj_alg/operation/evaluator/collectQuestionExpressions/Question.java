@@ -23,4 +23,7 @@ public class Question {
 		return isVisible;
 	}
 
+	public void setValue(Value v){
+		this.v = v;
+	}
 }

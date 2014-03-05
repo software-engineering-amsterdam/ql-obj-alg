@@ -51,7 +51,7 @@ public class ExprEvaluator implements IExpAlg<IEvalE>{
 					IBuildE exp = valEnv.getExpressionFromComputedQuestion(varName);
 					return exp.build(expEval).eval(valEnv);
 				}
-				return valEnv.getQuestionValue(varName).getValue();
+				return valEnv.getQuestion(varName).getValue();
 			}	
 		};
 	}

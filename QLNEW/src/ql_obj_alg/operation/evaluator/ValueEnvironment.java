@@ -13,7 +13,7 @@ public class ValueEnvironment extends TypeEnvironment {
 	Map<String,Question> questionsMap = new HashMap<String,Question>();
 	Map<String,IBuildE> computedQuestions = new HashMap<String,IBuildE>();
 		
-	public Question getQuestionValue(String varName){
+	public Question getQuestion(String varName){
 		assert questionsMap.containsKey(varName) : "Variable name does not exist after collecting";
 		return questionsMap.get(varName);
 	}
