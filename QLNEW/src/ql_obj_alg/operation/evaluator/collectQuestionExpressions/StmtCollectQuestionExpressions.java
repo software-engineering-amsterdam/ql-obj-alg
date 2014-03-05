@@ -5,9 +5,8 @@ import java.util.List;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question.AnswerableQuestion;
-import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question.ComputedQuestion;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
+import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.types.Type;
 
 
@@ -55,7 +54,8 @@ public class StmtCollectQuestionExpressions implements IStmtAlg<IBuildE,ICollect
 		return new ICollect(){
 			@Override
 			public void collect(ValueEnvironment venv) {
-				venv.addQuestion(id, new AnswerableQuestion(new VUndefined()));
+				Value undef = new VUndefined();
+				venv.addQuestionWithValue(id,new Question(undef));
 			}
 			
 		};
@@ -66,7 +66,9 @@ public class StmtCollectQuestionExpressions implements IStmtAlg<IBuildE,ICollect
 		return new ICollect(){
 			@Override
 			public void collect(ValueEnvironment venv) {
-				venv.addQuestion(id, new ComputedQuestion(e));
+				Value undef = new VUndefined();
+				venv.addQuestionWithValue(id, new Question(undef));
+				venv.addQuestionWithExpression(id, e);
 			}
 			
 		};
