@@ -21,11 +21,16 @@ public class UnexpectedTypeInBinaryOpError extends UnexpectedTypeError {
 		
 		if(obj instanceof UnexpectedTypeInBinaryOpError){
 			UnexpectedTypeInBinaryOpError error = (UnexpectedTypeInBinaryOpError) obj;
-			
-			if(this.equals(error) && (this.found2 == error.found2 || (this.found2 != null && this.found2.equals(error.found2)))){
-				return true;
+
+			if(this.exp == error.exp || (this.exp != null && this.exp.equals(error.exp))){
+				if(this.expected == error.expected || (this.expected != null && this.expected.equals(error.expected))){
+					if(this.found == error.found || (this.found != null && this.found.equals(error.found))){
+						if(this.found2 == error.found2 || (this.found2 != null && this.found2.equals(error.found2))){
+							return true;
+						}
+					}
+				}
 			}
-			
 			return false;	
 		}
 		return false;

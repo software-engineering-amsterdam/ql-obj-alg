@@ -61,4 +61,15 @@ public class TNumber extends Type {
 	public String toString() {
 		return "numeric";
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj == null)
+			return false;
+		
+		if(obj instanceof TNumber)
+			return true;
+		
+		return false;				
+	}
 }
