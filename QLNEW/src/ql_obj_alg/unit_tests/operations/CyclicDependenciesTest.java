@@ -2,7 +2,6 @@ package ql_obj_alg.unit_tests.operations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,204 +9,220 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
-import ql_obj_alg.operation.builder.IBuildF;
+import ql_obj_alg.operation.cyclic_dependencies.ExprDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
+import ql_obj_alg.operation.cyclic_dependencies.IDependencyGraph;
+import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.modules.Cycle;
-import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
-import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.CyclicDependencyError;
+import ql_obj_alg.report_system.errors.GenError;
+import ql_obj_alg.report_system.warnings.Warning;
 import ql_obj_alg.types.TBoolean;
-import ql_obj_alg.types.TInteger;
 
 public class CyclicDependenciesTest{
 
-	FormDependencies fd;
 	ErrorReporting report;
+	FillDependencyGraph dcd;
 	
-	String message;
-	String expected;
-	String target;
+	GenError expectedError;
+	Warning expectedWarning;
 	
 	@Before
 	public void setUp() throws Exception {
 		report = new ErrorReporting();
-		fd = new FormDependencies(report);
-		message = null;
-		expected = null;
+		dcd = new FillDependencyGraph();
+		expectedError = null;
+		expectedWarning = null;
 	}
 
 	@Test
 	public void testValueDependencyCycle() {
 		
-//		target = "question";
-//
-//		
-//		
-//		assertEquals(1,report.numberOfErrors());
-//		
-//		Cycle cycle = new Cycle();
-//		
-//		cycle.add(target);
-//		assertTrue(report.containsError(new CyclicDependencyError(cycle)));
-		fail();
+		IDependencyGraph form = valueDependencyCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+
+		form.dependencies(dcd);
+		
+		assertEquals(0, report.numberOfWarnings());
+		
+		assertEquals(1,report.numberOfErrors());
+		
+		Cycle cycle = new Cycle();
+		cycle.add("id1");
+		expectedError = new CyclicDependencyError(cycle);
+		
+		assertTrue(report.containsError(expectedError));
 	}
+	
+	private static <E,S,F> F valueDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.question("id1", "label", new TBoolean(),e.var("id1"))));
+		return f.forms(forms);
+	}
+	
 	
 	@Test
 	public void testDefinitionDependencyCycle() {
-//		String x = "X";
-//		String y = "Y";
-//		String input = "form id {\n if("+x+"){\n "+y+": \"label1\" boolean\n} if("+y+"){\n "+x+": \"label2\" boolean\n}\n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fd).dependencies();
-//		List<String> errors = report.getErrors();
-//
-//		assertEquals(errors.size(),1);
-//		
-//		message = errors.get(0);
-//		expected = "Cyclic dependency: "+x+" -> "+y+" -> "+x;
-//		String alternative = "Cyclic dependency: "+y+" -> "+x+" -> "+y;
-//		assertTrue(expected.equals(message) || alternative.equals(message));	
-	fail();
+		IDependencyGraph form = definitionDependencyCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+
+		form.dependencies(dcd);
+		
+		assertEquals(0, report.numberOfWarnings());
+		
+		assertEquals(1,report.numberOfErrors());
+		
+		Cycle cycle = new Cycle();
+		cycle.add("Y");
+		cycle.add("X");
+		expectedError = new CyclicDependencyError(cycle);
+		
+		assertTrue(report.containsError(expectedError));
 	}
+	
+	private static <E,S,F> F definitionDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		List<S> stmts = new ArrayList<S>();
+		stmts.add(s.iff(e.var("X"), s.question("Y", "label y", new TBoolean())));
+		stmts.add(s.iff(e.var("Y"), s.question("X", "label x", new TBoolean())));
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(stmts)));
+		return f.forms(forms);
+	}
+	
+
 	
 	@Test
 	public void testNestedDependencyCycle() {
-//		String x1 = "X1";
-//		String x2 = "X2";
-//		String x3 = "X3";
-//		
-//		String input = "form id {\n "
-//				+ "if("+x1+"){\n"
-//					+ x2+": \"label2\" boolean\n"
-//					+ "if("+x2+"){\n"
-//						+ x3+": \"label1\" boolean "
-//					+ "}\n"
-//				+"}"
-//				+ "if("+x3+"){\n "
-//					+x1+": \"label3\" boolean"
-//				+ "\n}"
-//				+ "\n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fd).dependencies();
-//		List<String> errors = report.getErrors();
-//		
-//		assertEquals(2,errors.size());
-//		
-//		message = errors.get(0);
-//		expected =  "Cyclic dependency: "+x1+" -> "+x3+" -> "+x1;
-//		
-//		assertEquals(expected,message);
-//		
-//		message = errors.get(1);
-//		expected =  "Cyclic dependency: "+x1+" -> "+x3+" -> "+x2+" -> "+x1;
-//		
-//		assertEquals(expected,message);
-		fail();
+		IDependencyGraph form = nestedDependencyCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+
+		form.dependencies(dcd);
+		
+		assertEquals(0, report.numberOfWarnings());
+		
+		assertEquals(2,report.numberOfErrors());
+
+		Cycle cycle1 = new Cycle();
+		
+		cycle1.add("X1");
+		cycle1.add("X3");
+		
+		Cycle cycle2 = new Cycle();
+		
+		cycle2.add("X1");
+		cycle2.add("X3");
+		cycle2.add("X2");
+		
+		expectedError = new CyclicDependencyError(cycle1);
+		assertTrue(report.containsError(expectedError));
+		
+		expectedError = new CyclicDependencyError(cycle2);
+		assertTrue(report.containsError(expectedError));
+	}
+	
+	private static <E,S,F> F nestedDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		List<S> stmts = new ArrayList<S>();
+		List<S> stmtsIf = new ArrayList<S>();
+		stmts.add(s.iff(e.var("X1"), s.comb(stmtsIf)));
+		
+		stmtsIf.add(s.question("X2", "label 2", new TBoolean()));
+		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label 3", new TBoolean())));
+		
+		stmts.add(s.iff(e.var("X3"), s.question("X1", "label 1", new TBoolean())));
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(stmts)));
+		return f.forms(forms);
 	}
 	
 	@Test
 	public void testBothDependenciesCycle() {
-//		String x1 = "X1";
-//		String x2 = "X2";
-//		String x3 = "X3";
-//		String x4 = "X4";
-//		String input = "form id {\n "
-//				+ "if("+x1+"){\n"
-//					+ x2+": \"label2\" boolean ("+x3+")\n"
-//					+ "if("+x2+"){\n"
-//						+ x3+": \"label1\" boolean "
-//					+ "}\n"
-//				+"}"
-//				+ "if("+x3+"){\n "
-//					+x4+": \"label3\" boolean"
-//				+ "\n}"
-//				+ x1 +": \"label 4\" integer ("+x4+")"
-//				+ "\n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fd).dependencies();
-//		List<String> errors = report.getErrors();
-//
-//		assertEquals(3,errors.size());
-		fail();
+		IDependencyGraph form = bothDependenciesCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+
+		form.dependencies(dcd);
+		
+		assertEquals(0, report.numberOfWarnings());
+		
+		assertEquals(3,report.numberOfErrors());
+	}
+	
+	private static <E,S,F> F bothDependenciesCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		List<S> stmts = new ArrayList<S>();
+		List<S> stmtsIf = new ArrayList<S>();
+		stmts.add(s.iff(e.var("X1"), s.comb(stmtsIf)));
+		
+		stmtsIf.add(s.question("X2", "label 2", new TBoolean(), e.var("X3")));
+		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label 3", new TBoolean())));
+		
+		stmts.add(s.iff(e.var("X3"), s.question("X4", "label 4", new TBoolean())));
+		stmts.add(s.question("X1", "label 5", new TBoolean(), e.var("X4")));
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(stmts)));
+		return f.forms(forms);
 	}
 	
 
 	
 	@Test
 	public void testDefinitionDependencyNoCycle() {
-//		String x = "X";
-//		String y = "Y";
-//		String input = "form id {\n if("+x+"){\n "+y+": \"label1\" boolean\n} if("+y+"){\n "+x+": \"label2\" boolean\n}"+x+": \"label2\" boolean\n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fd).dependencies();
-//		List<String> errors = report.getErrors();
-//
-//		assertTrue(errors.isEmpty());
-		fail();
+		IDependencyGraph form = definitionNoCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+
+		form.dependencies(dcd);
+		
+		assertEquals(0, report.numberOfWarnings());
+		
+		assertEquals(0,report.numberOfErrors());
+	}
+	
+	private static <E,S,F> F definitionNoCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		List<S> stmts = new ArrayList<S>();
+		stmts.add(s.iff(e.var("X"), s.question("Y", "label y", new TBoolean())));
+		stmts.add(s.iff(e.var("Y"), s.question("X", "label x", new TBoolean())));
+		stmts.add(s.question("X", "label z", new TBoolean()));
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(stmts)));
+		return f.forms(forms);
 	}
 	
 	@Test
 	public void testValueDependencyNoCycle() {
-//		target = "variable";
-//		String input = "form id {\n "+target+": \"label\" integer (undefined) \n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fd).dependencies();
-//		List<String> errors = report.getErrors();
-//		
-//		assertTrue(errors.isEmpty());
-		fail();
+		IDependencyGraph form = valueDependencyNoCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+
+		form.dependencies(dcd);
+		
+		assertEquals(0, report.numberOfWarnings());
+		
+		assertEquals(0,report.numberOfErrors());
 	}
+	
+	private static <E,S,F> F valueDependencyNoCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.question("id", "label", new TBoolean(), e.var("undefined"))));
+		return f.forms(forms);
+	}	
 	
 	@Test
 	public void testIndependent(){
-//		String x1 = "X1";
-//		String x2 = "X2";
-//		String x3 = "X3";
-//		String x4 = "X4";
-//		String input = "form id {\n "
-//				+ "if("+x1+"){\n"
-//					+ x2+": \"label2\" boolean ("+x1+")\n"
-//					+ "if("+x2+"){\n"
-//						+ x3+": \"label1\" boolean "
-//					+ "}\n"
-//				+"}"
-//				+ "if("+x3+"){\n "
-//					+x4+": \"label3\" boolean"
-//				+ "\n}"
-//				+ "\n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fd).dependencies();
-//		List<String> errors = report.getErrors();
-//		
-//		assertTrue(errors.isEmpty());
-		fail();
+		IDependencyGraph form = independent(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+
+		form.dependencies(dcd);
+		
+		assertEquals(0, report.numberOfWarnings());
+		
+		assertEquals(0,report.numberOfErrors());
+	}
+	
+	private static <E,S,F> F independent(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		List<S> stmts = new ArrayList<S>();
+		List<S> stmtsIf = new ArrayList<S>();
+		stmts.add(s.iff(e.var("X1"), s.comb(stmtsIf)));
+		stmtsIf.add(s.question("X2", "label2", new TBoolean(), e.var("X1")));
+		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label3", new TBoolean())));
+		stmts.add(s.iff(e.var("X3"), s.question("X4", "label4", new TBoolean())));
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(stmts)));
+		return f.forms(forms);
 	}
 
 }

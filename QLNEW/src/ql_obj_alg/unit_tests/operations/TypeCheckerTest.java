@@ -45,6 +45,9 @@ public class TypeCheckerTest {
 	public void setUp() throws Exception {
 		report = new ErrorReporting();
 		tenv = new TypeEnvironment();
+		
+		expectedError = null;
+		expectedWarning = null;
 	}
 
 	@Test
