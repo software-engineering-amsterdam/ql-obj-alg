@@ -7,7 +7,7 @@ import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question.AnswerableQuestion;
 import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question.ComputedQuestion;
-import ql_obj_alg.operation.evaluator.value.VUndeclared;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.types.Type;
 
 
@@ -55,7 +55,7 @@ public class StmtCollectQuestionExpressions implements IStmtAlg<IBuildE,ICollect
 		return new ICollect(){
 			@Override
 			public void collect(ValueEnvironment venv) {
-				venv.addQuestion(id, new AnswerableQuestion(new VUndeclared()));
+				venv.addQuestion(id, new AnswerableQuestion(new VUndefined()));
 			}
 			
 		};

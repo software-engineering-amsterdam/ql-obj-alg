@@ -13,10 +13,17 @@ public class VString extends VBase {
 	}
 	
 	@Override
-	public boolean equals(Value v){
-		if(v instanceof VBoolean){
-			return s.equals(v.getString());
+	public int compareTo(Value v){
+		if(v instanceof VString){
+			return s.compareTo(v.getString());
 		}
+		assert false : "Compared two incompatible types after typechecking";
+		return 0;
+	}
+	
+	
+	@Override
+	public boolean isUndefined(){
 		return false;
 	}
 }

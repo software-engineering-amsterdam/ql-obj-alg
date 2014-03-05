@@ -18,9 +18,14 @@ public abstract class VBase extends Value {
 	public String getString() {
 		return null;
 	}
-
+	
 	@Override
-	public boolean equals(Value v) {
+	public boolean isUndefined(){
+		return false;
+	}
+	
+	@Override
+	public boolean isError(){
 		return false;
 	}
 

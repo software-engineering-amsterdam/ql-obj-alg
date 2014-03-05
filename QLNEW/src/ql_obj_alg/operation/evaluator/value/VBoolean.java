@@ -13,10 +13,16 @@ public class VBoolean extends VBase {
 	}
 	
 	@Override
-	public boolean equals(Value v){
+	public int compareTo(Value v){
 		if(v instanceof VBoolean){
-			return b == v.getBoolean();
+			return b.compareTo(v.getBoolean());
 		}
+		assert false : "Compared two incompatible types after typechecking";
+		return 0;
+	}
+	
+	@Override
+	public boolean isUndefined(){
 		return false;
 	}
 }

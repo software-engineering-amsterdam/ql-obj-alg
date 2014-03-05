@@ -14,10 +14,17 @@ public class VInteger extends VBase {
 	}
 	
 	@Override
-	public boolean equals(Value v){
-		if(v instanceof VBoolean){
-			return x == v.getInteger();
+	public int compareTo(Value v){
+		if(v instanceof VInteger){
+			return x.compareTo(v.getInteger());
 		}
+		assert false : "Compared two incompatible types after typechecking";
+		return 0;
+	}
+	
+	
+	@Override
+	public boolean isUndefined(){
 		return false;
 	}
 }

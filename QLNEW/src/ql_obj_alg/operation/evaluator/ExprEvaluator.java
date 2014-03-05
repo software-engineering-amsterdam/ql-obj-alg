@@ -5,6 +5,7 @@ import ql_obj_alg.operation.evaluator.value.VBoolean;
 import ql_obj_alg.operation.evaluator.value.VError;
 import ql_obj_alg.operation.evaluator.value.VInteger;
 import ql_obj_alg.operation.evaluator.value.VString;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 
 public class ExprEvaluator implements IExpAlg<IEval>{
@@ -51,10 +52,16 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 
 	@Override
 	public IEval mul(final IEval a1, final IEval a2) {
-		return new IEval(){
+		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				return mul(a1.eval(valEnv),a2.eval(valEnv));
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return mul(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
 			}	
 			
 			private Value mul(Value v1, Value v2){
@@ -65,26 +72,36 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 
 	@Override
 	public IEval div(final IEval a1, final IEval a2) {
-		return new IEval(){
+		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				return div(a1.eval(valEnv),a2.eval(valEnv));
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return div(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
 			}	
 			
 			private Value div(Value v1, Value v2){
-				if(v2.getInteger() == 0) 
-					return new VError();
-				return new VInteger(v1.getInteger() * v2.getInteger());
+				return new VInteger(v1.getInteger() / v2.getInteger());
 			}
 		};
 	}
 
 	@Override
 	public IEval add(final IEval a1, final IEval a2) {
-		return new IEval(){
+		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				return add(a1.eval(valEnv),a2.eval(valEnv));
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return add(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
 			}	
 			
 			private Value add(Value v1, Value v2){
@@ -95,10 +112,16 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 
 	@Override
 	public IEval sub(final IEval a1, final IEval a2) {
-		return new IEval(){
+		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				return sub(a1.eval(valEnv),a2.eval(valEnv));
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return sub(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
 			}	
 			
 			private Value sub(Value v1, Value v2){
@@ -109,56 +132,179 @@ public class ExprEvaluator implements IExpAlg<IEval>{
 
 	@Override
 	public IEval eq(final IEval a1, final IEval a2) {
-		return new IEval(){
+		return new Eval(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				return eq(a1.eval(valEnv),a2.eval(valEnv));
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return eq(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
 			}	
 			
 			private Value eq(Value v1, Value v2){
-				return new VBoolean(v1.equals(v2));
+				return new VBoolean(v1.compareTo(v2) == 0);
 			}
 		};
 	}
 
 	@Override
 	public IEval neq(final IEval a1, final IEval a2) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return neq(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
+			}	
+			
+			private Value neq(Value v1, Value v2){
+				return new VBoolean(v1.compareTo(v2) != 0);
+			}
+		};
 	}
 
 	@Override
 	public IEval lt(final IEval a1, final IEval a2) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return lt(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
+			}	
+			
+			private Value lt(Value v1, Value v2){
+				return new VBoolean(v1.compareTo(v2) == -1);
+			}
+		};
 	}
 
 	@Override
 	public IEval leq(final IEval a1, final IEval a2) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return leq(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
+			}	
+			
+			private Value leq(Value v1, Value v2){
+				return new VBoolean(v1.compareTo(v2) == -1 || v1.compareTo(v2) == 0);
+			}
+		};
 	}
 
 	@Override
 	public IEval gt(final IEval a1, final IEval a2) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return leq(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
+			}	
+			
+			private Value leq(Value v1, Value v2){
+				return new VBoolean(v1.compareTo(v2) == 1);
+			}
+		};
 	}
 
 	@Override
 	public IEval geq(final IEval a1, final IEval a2) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return leq(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
+			}	
+			
+			private Value leq(Value v1, Value v2){
+				return new VBoolean(v1.compareTo(v2) == 1 || v1.compareTo(v2) == 0);
+			}
+		};
 	}
 
 	@Override
 	public IEval not(final IEval a) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v = a.eval(valEnv);
+				if(isDefinedUnary(v))
+					return not(v);
+				return v;
+			}	
+			
+			private Value not(Value v){
+				return new VBoolean(!v.getBoolean());
+			}
+		};
 	}
 
 	@Override
 	public IEval and(final IEval a1, final IEval a2) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return and(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
+			}	
+			
+			private Value and(Value v1, Value v2){
+				return new VBoolean(v1.getBoolean() && v2.getBoolean());
+			}
+		};
 	}
 
 	@Override
 	public IEval or(final IEval a1, final IEval a2) {
-		return null;
+		return new Eval(){
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
+				if(isDefinedBinary(v1,v2))
+					return or(v1,v2);
+				if(v1.isError() || v2.isError())
+					return new VError();
+				return new VUndefined();
+			}	
+			
+			private Value or(Value v1, Value v2){
+				return new VBoolean(v1.getBoolean() || v2.getBoolean());
+			}
+		};
 	}
 
 }

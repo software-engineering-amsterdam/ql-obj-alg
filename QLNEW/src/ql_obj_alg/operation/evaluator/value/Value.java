@@ -5,5 +5,7 @@ public abstract class Value {
 	public abstract Integer getInteger();
 	public abstract Boolean getBoolean();
 	public abstract String getString();
-	public abstract boolean equals(Value v);
+	public abstract boolean isUndefined();
+	public abstract boolean isError();
+	public abstract int compareTo(Value v);
 }
