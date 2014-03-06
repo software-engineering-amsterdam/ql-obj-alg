@@ -25,7 +25,7 @@ public class VInteger extends VBase {
 	}
 	
 	public Value div(VInteger v){
-		if(x == 0) return new VError();
+		if(x == 0) return new VUndefined();
 		return new VInteger(v.getInteger() / x);
 	}
 	

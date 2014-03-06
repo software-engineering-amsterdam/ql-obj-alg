@@ -43,11 +43,6 @@ public class VUndefined extends Value{
 	}
 
 	@Override
-	public Value div(VError v) {
-		return new VUndefined();
-	}
-
-	@Override
 	public Value add(Value v) {
 		return new VUndefined();
 	}
@@ -72,10 +67,6 @@ public class VUndefined extends Value{
 		return new VUndefined();
 	}
 
-	@Override
-	public Value add(VError v) {
-		return new VUndefined();
-	}
 
 	@Override
 	public Value min(Value v) {
@@ -102,10 +93,6 @@ public class VUndefined extends Value{
 		return new VUndefined();
 	}
 
-	@Override
-	public Value min(VError v) {
-		return new VUndefined();
-	}
 
 	@Override
 	public Value lt(Value v) {
@@ -129,11 +116,6 @@ public class VUndefined extends Value{
 
 	@Override
 	public Value lt(VUndefined v) {
-		return new VUndefined();
-	}
-
-	@Override
-	public Value lt(VError v) {
 		return new VUndefined();
 	}
 
@@ -163,11 +145,6 @@ public class VUndefined extends Value{
 	}
 
 	@Override
-	public Value leq(VError v) {
-		return new VUndefined();
-	}
-
-	@Override
 	public Value gt(Value v) {
 		return new VUndefined();
 	}
@@ -189,11 +166,6 @@ public class VUndefined extends Value{
 
 	@Override
 	public Value gt(VUndefined v) {
-		return new VUndefined();
-	}
-
-	@Override
-	public Value gt(VError v) {
 		return new VUndefined();
 	}
 
@@ -223,11 +195,6 @@ public class VUndefined extends Value{
 	}
 
 	@Override
-	public Value geq(VError v) {
-		return new VUndefined();
-	}
-
-	@Override
 	public Value eq(Value v) {
 		return new VUndefined();
 	}
@@ -249,11 +216,6 @@ public class VUndefined extends Value{
 
 	@Override
 	public Value eq(VUndefined v) {
-		return new VUndefined();
-	}
-
-	@Override
-	public Value eq(VError v) {
 		return new VUndefined();
 	}
 
@@ -283,11 +245,6 @@ public class VUndefined extends Value{
 	}
 
 	@Override
-	public Value neq(VError v) {
-		return new VUndefined();
-	}
-
-	@Override
 	public Value and(Value v) {
 		return new VUndefined();
 	}
@@ -309,11 +266,6 @@ public class VUndefined extends Value{
 
 	@Override
 	public Value and(VUndefined v) {
-		return new VUndefined();
-	}
-
-	@Override
-	public Value and(VError v) {
 		return new VUndefined();
 	}
 
@@ -343,11 +295,6 @@ public class VUndefined extends Value{
 	}
 
 	@Override
-	public Value or(VError v) {
-		return new VUndefined();
-	}
-
-	@Override
 	public Value mul(Value v) {
 		return new VUndefined();
 	}
@@ -369,11 +316,6 @@ public class VUndefined extends Value{
 
 	@Override
 	public Value mul(VUndefined v) {
-		return new VUndefined();
-	}
-
-	@Override
-	public Value mul(VError v) {
 		return new VUndefined();
 	}
 
