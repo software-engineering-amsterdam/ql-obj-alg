@@ -21,7 +21,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.printer.ExprPrecedence;
 import ql_obj_alg.operation.printer.FormFormat;
-import ql_obj_alg.operation.printer.boxalg.FormatBox;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLLexer;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 
@@ -35,7 +34,7 @@ public class Parser {
 
 	private static void printForm(IBuildF form) {
 		
-		FormFormat fFormat = new FormFormat(new FormatBox(),new ExprPrecedence());
+		FormFormat fFormat = new FormFormat(new ExprPrecedence());
 		StringWriter w = new StringWriter();
 		form.build(fFormat,fFormat,fFormat).format(0, false, w);
         System.out.println(w);

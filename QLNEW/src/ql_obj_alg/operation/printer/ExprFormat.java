@@ -4,6 +4,7 @@ import java.io.StringWriter;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.operation.printer.boxalg.BoxAlg;
+import ql_obj_alg.operation.printer.boxalg.FormatBox;
 import ql_obj_alg.operation.printer.boxalg.IFormat;
 
 class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
@@ -11,8 +12,8 @@ class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 	protected BoxAlg<IFormat> box;
 	private IExpAlg<IPrecedence> prec;
 
-	public ExprFormat(BoxAlg<IFormat> box, IExpAlg<IPrecedence> prec) {
-		this.box = box;
+	public ExprFormat(IExpAlg<IPrecedence> prec) {
+		this.box = new FormatBox();
 		this.prec = prec;
 	}
 
