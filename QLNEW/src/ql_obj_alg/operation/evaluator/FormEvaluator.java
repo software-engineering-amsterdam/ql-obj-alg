@@ -4,11 +4,11 @@ import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 
-public class FormEvaluator implements IFormAlg<IEvalE, IEval, IEval> {
+public class FormEvaluator implements IFormAlg<IEvalE, IEvalS, IEvalF> {
 
 	@Override
-	public IEval form(String id, final IEval s) {
-		return new IEval(){
+	public IEvalF form(String id, final IEvalS s) {
+		return new IEvalF(){
 
 			@Override
 			public void eval(ValueEnvironment valEnv) {
@@ -19,12 +19,11 @@ public class FormEvaluator implements IFormAlg<IEvalE, IEval, IEval> {
 	}
 
 	@Override
-	public IEval forms(final List<IEval> listForms) {
-		return new IEval(){
-
+	public IEvalF forms(final List<IEvalF> listForms) {
+		return new IEvalF(){
 			@Override
 			public void eval(ValueEnvironment valEnv) {
-				for(IEval form : listForms){
+				for(IEvalF form : listForms){
 					form.eval(valEnv);
 				}
 			}

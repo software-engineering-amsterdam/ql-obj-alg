@@ -11,19 +11,54 @@ public class VString extends VBase {
 	public String getString(){
 		return s;
 	}
-	
-	@Override
-	public int compareTo(Value v){
-		if(v instanceof VString){
-			return s.compareTo(v.getString());
-		}
-		assert false : "Compared two incompatible types after typechecking";
-		return 0;
+
+	public Value lt(Value v){
+		return v.lt(this);
 	}
 	
+	public Value lt(VString v){
+		return new VBoolean(v.getString().compareTo(s) == -1);
+	}	
 	
-	@Override
-	public boolean isUndefined(){
-		return false;
+	public Value leq(Value v){
+		return v.leq(this);
 	}
+	
+	public Value leq(VString v){
+		int compare = v.getString().compareTo(s);
+		return new VBoolean(compare == -1 || compare == 0);
+	}	
+
+	public Value gt(Value v){
+		return v.gt(this);
+	}
+	
+	public Value gt(VString v){
+		return new VBoolean(v.getString().compareTo(s) == 1);
+	}	
+	
+	public Value geq(Value v){
+		return v.geq(this);
+	}
+	
+	public Value geq(VString v){
+		int compare = v.getString().compareTo(s);
+		return new VBoolean(compare == 0 || compare == 1);
+	}
+	
+	public Value eq(Value v){
+		return v.eq(this);
+	}
+	
+	public Value eq(VString v){
+		return new VBoolean(v.getString().equals(s));
+	}		
+	
+	public Value neq(Value v){
+		return v.neq(this);
+	}
+	
+	public Value neq(VString v){
+		return new VBoolean(!v.getString().equals(s));
+	}	
 }

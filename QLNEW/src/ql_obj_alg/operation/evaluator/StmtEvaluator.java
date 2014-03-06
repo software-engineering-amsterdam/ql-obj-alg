@@ -1,88 +1,98 @@
 package ql_obj_alg.operation.evaluator;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.types.Type;
 
-public class StmtEvaluator implements IStmtAlg<IEvalE,IEval> {
-	
-	private boolean isVisible = true;
+public class StmtEvaluator implements IStmtAlg<IEvalE,IEvalS> {
 
 	@Override
-	public IEval iff(final IEvalE cond, final IEval b) {
-		return new IEval(){
+	public IEvalS iff(final IEvalE cond, final IEvalS b) {
+		return new IEvalS(){
 			@Override
-			public void eval(ValueEnvironment valEnv) {
-				boolean wasVisibile = isVisible;
+			public Set<Question> eval(ValueEnvironment valEnv) {
+				Set<Question> questions = b.eval(valEnv);
 				if(!cond.eval(valEnv).getBoolean()){
-					isVisible = false;
+					setInvisible(questions);
 				}
-				b.eval(valEnv);
-				isVisible = wasVisibile;
+				return questions;
 			}
+
 		};
 	}
 
 	@Override
-	public IEval iffelse(final IEvalE cond, final IEval b1, final IEval b2) {
-		return new IEval(){
+	public IEvalS iffelse(final IEvalE cond, final IEvalS b1, final IEvalS b2) {
+		return new IEvalS(){
 			@Override
-			public void eval(ValueEnvironment valEnv) {
-				boolean wasVisibile = isVisible;
+			public Set<Question> eval(ValueEnvironment valEnv) {
+				Set<Question> qIf = b1.eval(valEnv);
+				Set<Question> qElse = b2.eval(valEnv);
 				if(!cond.eval(valEnv).getBoolean()){
-					isVisible = false;
-					b1.eval(valEnv);
-					isVisible = wasVisibile;
-					b2.eval(valEnv);
+					setInvisible(qIf);
 				}else{
-					b1.eval(valEnv);
-					isVisible = false;
-					b2.eval(valEnv);
-					isVisible = wasVisibile;
+					setInvisible(qElse);
 				}
+				qIf.addAll(qElse);
+				return qIf;
 			}
 		};
 	}
 
 	@Override
-	public IEval comb(final List<IEval> listStatements) {
-		return new IEval(){
+	public IEvalS comb(final List<IEvalS> listStatements) {
+		return new IEvalS(){
 
 			@Override
-			public void eval(ValueEnvironment valEnv) {
-				for(IEval stmt : listStatements){
-					stmt.eval(valEnv);
+			public Set<Question> eval(ValueEnvironment valEnv) {
+				Set<Question> questions = new HashSet<Question>();
+				for(IEvalS stmt : listStatements){
+					questions.addAll(stmt.eval(valEnv));
 				}
+				return questions;
 			}
 			
 		};
 	}
 
 	@Override
-	public IEval question(final String id, String label, Type type) {
-		return new IEval(){
+	public IEvalS question(final String id, String label, Type type) {
+		return new IEvalS(){
 
 			@Override
-			public void eval(ValueEnvironment valEnv) {
-				valEnv.getQuestion(id).setVisibility(isVisible);
+			public Set<Question> eval(ValueEnvironment valEnv) {
+				Set<Question> questions = new HashSet<Question>();
+				questions.add(valEnv.getQuestion(id));
+				return questions;
 			}
 			
 		};
 	}
 
 	@Override
-	public IEval question(final String id, String label, Type type, final IEvalE e) {
-		return new IEval(){
+	public IEvalS question(final String id, String label, Type type, final IEvalE e) {
+		return new IEvalS(){
 			@Override
-			public void eval(ValueEnvironment valEnv) {
+			public Set<Question> eval(ValueEnvironment valEnv) {
 				Value v = e.eval(valEnv);
 				valEnv.getQuestion(id).setValue(v);
-				valEnv.getQuestion(id).setVisibility(isVisible);
+				Set<Question> questions = new HashSet<Question>();
+				questions.add(valEnv.getQuestion(id));
+				return questions;
 			}
 			
 		};
+	}
+
+	private void setInvisible(Set<Question> questions) {
+		for(Question q : questions){
+			q.setVisibility(false);
+		}
 	}
 
 }

@@ -13,14 +13,14 @@ package ql_obj_alg.parsers.parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringWriter;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.operation.printer.ExprPrinter;
-import ql_obj_alg.operation.printer.FormPrinter;
-import ql_obj_alg.operation.printer.StmtPrinter;
+import ql_obj_alg.operation.printer.ExprPrecedence;
+import ql_obj_alg.operation.printer.FormFormat;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLLexer;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 
@@ -33,7 +33,11 @@ public class Parser {
     }
 
 	private static void printForm(IBuildF form) {
-        System.out.println(form.build(new ExprPrinter(),new StmtPrinter(),new FormPrinter()).print());
+		
+		FormFormat fFormat = new FormFormat(new ExprPrecedence());
+		StringWriter w = new StringWriter();
+		form.build(fFormat,fFormat,fFormat).format(0, false, w);
+        System.out.println(w);
 	}
 
 //	private static void typeCheck(IBuildF form) {

@@ -10,7 +10,7 @@ if (privateDebt && valueResidue) {
 	}
 	notsomuch: "Private debts for the sold house:" integer (reallyAddicted)
 }
-if(sellingPrice){
+if(sellingPrice > 5 *(2+1)){
 privateDebt: "Private debts for the sold house:" integer 
 valueResidue: "Value residue:" integer
 }
