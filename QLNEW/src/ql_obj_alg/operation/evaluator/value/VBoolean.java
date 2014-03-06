@@ -12,17 +12,35 @@ public class VBoolean extends VBase {
 		return b;
 	}
 	
-	@Override
-	public int compareTo(Value v){
-		if(v instanceof VBoolean){
-			return b.compareTo(v.getBoolean());
-		}
-		assert false : "Compared two incompatible types after typechecking";
-		return 0;
+	public Value eq(Value v){
+		return v.eq(this);
 	}
 	
-	@Override
-	public boolean isUndefined(){
-		return false;
+	public Value eq(VBoolean v){
+		return new VBoolean(b == v.getBoolean());
+	}
+
+	public Value neq(Value v){
+		return v.neq(this);
+	}
+	
+	public Value neq(VBoolean v){
+		return new VBoolean(b != v.getBoolean());
+	}
+	
+	public Value and(Value v){
+		return v.and(this);
+	}
+	
+	public Value and(VBoolean v){
+		return new VBoolean(b && v.getBoolean());
+	}
+	
+	public Value or(Value v){
+		return v.or(this);
+	}
+	
+	public Value or(VBoolean v){
+		return new VBoolean(b || v.getBoolean());
 	}
 }
