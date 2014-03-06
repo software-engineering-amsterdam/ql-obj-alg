@@ -216,7 +216,7 @@ public class VUndefined extends Value{
 
 	@Override
 	public Value eq(VUndefined v) {
-		return new VUndefined();
+		return new VBoolean(true);
 	}
 
 	@Override
