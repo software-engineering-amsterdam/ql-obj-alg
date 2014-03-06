@@ -3,8 +3,9 @@ package ql_obj_alg.operation.user_interface.creator;
 import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
-import ql_obj_alg.operation.user_interface.modules.FieldsIdsTable;
+import ql_obj_alg.operation.user_interface.UpdateAfterChangeListener;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
+import ql_obj_alg.operation.user_interface.modules.Widgets;
 
 public class FormUserInterfaceCreation implements IFormAlg<Void, IQuestionFieldCreator, IFormCreator> {
 
@@ -13,9 +14,9 @@ public class FormUserInterfaceCreation implements IFormAlg<Void, IQuestionFieldC
 		return new IFormCreator(){
 			@Override
 			public void create() {
-				FormFrame frame = new FormFrame(id);
-				FieldsIdsTable fields = new FieldsIdsTable();
-				s.create(frame, fields);
+				Widgets widgets = new Widgets();
+				FormFrame frame = new FormFrame(id,new UpdateAfterChangeListener(widgets));
+				s.create(frame, widgets);
 				frame.render();
 			}
 		};
