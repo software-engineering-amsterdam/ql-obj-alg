@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.user_interface;
+package ql_obj_alg.operation.user_interface.creator;
 
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
 import ql_obj_alg.operation.user_interface.modules.FieldsIdsTable;
