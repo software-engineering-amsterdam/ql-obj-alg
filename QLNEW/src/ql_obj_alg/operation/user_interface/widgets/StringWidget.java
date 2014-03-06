@@ -18,6 +18,7 @@ public class StringWidget implements IWidget{
 		this.id = id;
 		
 		this.text = new JTextField();
+		this.text.setColumns(15);
 		
 		this.label = new JLabel(label);
 		this.label.setLabelFor(this.text);
