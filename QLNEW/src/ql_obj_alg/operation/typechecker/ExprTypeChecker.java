@@ -97,7 +97,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isNumber() || !t2.isNumber()){
-					report.addError(new ConflictingTypeError(t1,t2,"+"));				}
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(),t1,t2,"+"));				}
 				return t1.merge(t2);
 			}
 		};
@@ -110,7 +110,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t1 = a1.type(tenv,report); 
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isNumber() || !t2.isNumber()){
-					report.addError(new ConflictingTypeError(t1,t2,"-"));				}
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(),t1,t2,"-"));				}
 				return t1.merge(t2);
 			}
 		};

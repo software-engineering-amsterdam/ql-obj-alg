@@ -1,220 +1,249 @@
 package ql_obj_alg.unit_tests.operations;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ql_obj_alg.operation.builder.IBuildF;
-import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.typechecker.ExprTypeChecker;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
-import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
-import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.operation.typechecker.ITypeCheck;
+import ql_obj_alg.operation.typechecker.StmtTypeChecker;
+import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
+import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
+import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
+import ql_obj_alg.report_system.errors.ConflictingTypeError;
+import ql_obj_alg.report_system.errors.DuplicateQuestionError;
+import ql_obj_alg.report_system.errors.GenError;
+import ql_obj_alg.report_system.errors.UndefinedQuestionError;
+import ql_obj_alg.report_system.errors.UnexpectedTypeError;
+import ql_obj_alg.report_system.errors.UnexpectedTypeInBinaryOpError;
+import ql_obj_alg.report_system.warnings.DuplicateLabelWarning;
+import ql_obj_alg.report_system.warnings.Warning;
+import ql_obj_alg.types.TBoolean;
+import ql_obj_alg.types.TInteger;
+import ql_obj_alg.types.TNumber;
+import ql_obj_alg.types.TString;
+import ql_obj_alg.types.TypeEnvironment;
 
 public class TypeCheckerTest {
-
-	FormCollectQuestionTypes fcd;
-	FormTypeChecker ftc;
 	
 	ErrorReporting report;
-	
-	String message;
-	String expected;
+	TypeEnvironment tenv;
+	GenError expectedError;
+	Warning expectedWarning;
 	
 	@Before
 	public void setUp() throws Exception {
 		report = new ErrorReporting();
-		fcd = new FormCollectQuestionTypes();
+		tenv = new TypeEnvironment();
 		
-		message = null;
-		expected = null;
+		expectedError = null;
+		expectedWarning = null;
 	}
 
 	@Test
 	public void testDuplicateLabels() {
-//		
-//		String label = "\"Duplicate Label\"";
-//		String input = "form id {\n id1: "+label+" integer\n id2: "+label+" boolean \n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fcd).collect();
-//
-//		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
-//		form.build(ftc).check();
-//		
-//		assertEquals(0, report.getErrors().size());
-//		
-//		List<String> warnings = report.getWarnings();
-//		
-//		assertEquals(1,warnings.size());
-//		
-//		message = warnings.get(0);
-//		expected = "Duplicate label: "+label;
-//		assertEquals(expected,message);
-		fail();
+		ICollect collector = duplicateLabels(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
+
+		collector.collect(tenv);
+		
+		ITypeCheck form = duplicateLabels(new FormTypeChecker(),new StmtTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(1, report.numberOfWarnings());
+				
+		assertEquals(0,report.numberOfErrors());
+		
+		expectedWarning = new DuplicateLabelWarning("label");
+		assertTrue(report.containsWarning(expectedWarning));
+	}
+	
+	private static <E,S,F> F duplicateLabels(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
+
+		List<S> questions = new ArrayList<S>();
+		questions.add(s.question("id1", "label", new TBoolean()));
+		questions.add(s.question("id2", "label", new TInteger()));
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(questions)));
+		return f.forms(forms);
 	}
 	
 	@Test
 	public void testAcceptableDuplicateDefinitions() {
 		
-//		String input = "form id {\n id1: \"label1\" integer\n id1: \"label2\" integer \n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fcd).collect();
-//
-//		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
-//		form.build(ftc).check();
-//		
-//		assertEquals(0, report.getErrors().size());
-//		assertEquals(0, report.getWarnings().size());	
-		fail();
+		
+		ICollect collector = acceptableDuplicateDefinitions(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
+
+		collector.collect(tenv);
+		
+		ITypeCheck form = acceptableDuplicateDefinitions(new FormTypeChecker(),new StmtTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(0, report.numberOfWarnings());
+				
+		assertEquals(0,report.numberOfErrors());
+	}
+	
+	private static <E,S,F> F acceptableDuplicateDefinitions(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
+		List<S> statements = new ArrayList<S>();
+		statements.add(s.question("id", "label", new TInteger()));
+		statements.add(s.question("id", "label1", new TInteger()));
+		
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(statements)));
+		return f.forms(forms);
 	}
 	
 	@Test
-	public void testUnAcceptableDuplicateDefinitions() {
+	public void testUnacceptableDuplicateDefinitions() {
 		
-//		String duplicate = "id1";
-//		String type1 = "integer";
-//		String type2 = "string";
-//		String input = "form id {\n "+duplicate+": \"label1\" "+type1+"\n "+duplicate+": \"label2\" "+type2+" \n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fcd).collect();
-//
-//		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
-//		form.build(ftc).check();
-//	
-//		assertEquals(0, report.numberOfWarning());
-//		assertEquals(1, report.numberOErrors());
-//		
-//		assertEquals(0, report.getWarnings().size());	
-//		
-//		List<String> errors = report.getErrors();
-//		
-//		assertEquals(1,errors.size());
-//		
-//		assertTrue(report.hasError(new DuplicateDeflError()));
-//		
-//		message = errors.get(0);
-//		expected = "Conflicting types of question "+duplicate+", initially declared "+type1+", redeclared "+type2+".";
-//		assertEquals(expected,message);
-		fail();
+		ICollect collector = unacceptableDuplicateDefinitions(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
+
+		collector.collect(tenv);
+		
+		ITypeCheck form = unacceptableDuplicateDefinitions(new FormTypeChecker(),new StmtTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(0, report.numberOfWarnings());
+				
+		assertEquals(1,report.numberOfErrors());
+		
+		expectedError = new DuplicateQuestionError("id", new TInteger(), new TString());
+		assertTrue(report.containsError(expectedError));
+	}
+	
+	private static <E,S,F> F unacceptableDuplicateDefinitions(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
+		List<S> statements = new ArrayList<S>();
+		statements.add(s.question("id", "label", new TInteger()));
+		statements.add(s.question("id", "label1", new TString()));
+		
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(statements)));
+		return f.forms(forms);
 	}
 	
 	@Test
 	public void testUndefinedVariable() {
-//		String undefined = "id1";
-//		String input = "form id {\n id2: \"label2\" integer ("+undefined+"+3) \n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fcd).collect();
-//
-//		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
-//		form.build(ftc).check();
-//		
-//		assertEquals(0, report.getWarnings().size());
-//		
-//		List<String> errors = report.getErrors();
-//		
-//		assertEquals(1,errors.size());
-//		
-//		message = errors.get(0);
-//		expected = "Variable "+undefined+" is undefined.";
-//		assertEquals(expected,message);
-		fail();
+		ICollect collector = undefinedVariable(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
+
+		collector.collect(tenv);
+		
+		ITypeCheck form = undefinedVariable(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(0, report.numberOfWarnings());
+				
+		assertEquals(1,report.numberOfErrors());
+		
+		expectedError = new UndefinedQuestionError("undefined");
+
+		assertTrue(report.containsError(expectedError));
+	}
+	
+	private static <E,S,F> F undefinedVariable(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		E exp = null;
+		List<F> forms = new ArrayList<F>();
+		if(e != null)
+			exp = e.var("undefined");
+		forms.add(f.form("Form id", s.question("id1", "label", new TBoolean(),exp)));
+		return f.forms(forms);
 	}
 	
 	@Test
 	public void testWrongTypeInAdd() {
-//		String type = "boolean";
-//		String input = "form id {\n id1: \"label1\" "+type+"\n id2: \"label2\" integer (id1+3) \n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fcd).collect();
-//
-//		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
-//		form.build(ftc).check();
-//		
-//		assertEquals(0, report.getWarnings().size());
-//		
-//		List<String> errors = report.getErrors();
-//		
-//		assertEquals(1,errors.size());
-//		
-//		message = errors.get(0);
-//		expected = "Wrong type in + expression, expected numeric types, got "+type+" + integer.";
-//		assertEquals(expected,message);
-		fail();
+
+		ICollect collector = wrongTypeInAdd(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
+
+		collector.collect(tenv);
+		
+		ITypeCheck form = wrongTypeInAdd(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(0, report.numberOfWarnings());
+				
+		assertEquals(1,report.numberOfErrors());
+		
+		expectedError = new UnexpectedTypeInBinaryOpError(new TNumber(),new TInteger(),new TBoolean(),"+");
+		
+		assertTrue(report.containsError(expectedError));
+	}
+	
+	private static <E,S,F> F wrongTypeInAdd(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		E exp = null;
+		List<S> questions = new ArrayList<S>();
+		questions.add(s.question("id1", "number", new TBoolean()));
+		if(e != null)
+			exp = e.add(e.lit(4), e.var("id1"));
+		questions.add(s.question("id2", "textfield", new TInteger(), exp));
+		
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.comb(questions)));
+		return f.forms(forms);
 	}
 	
 	@Test
 	public void testIncompatibleTypeInEquals() {
-//		String id1 = "id1";
-//		String input = "form id {\n "+id1+" :  \"label1\" boolean (3 == true)\n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fcd).collect();
-//
-//		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
-//		form.build(ftc).check();
-//		
-//		assertEquals(0, report.getWarnings().size());
-//		
-//		List<String> errors = report.getErrors();
-//		
-//		assertEquals(1,errors.size());
-//		
-//		message = errors.get(0);
-//		expected = "Incompatible types in == expression, got integer == boolean.";
-//		assertEquals(expected,message);
-		fail();
+		
+		ICollect collector = incompatibleTypeInEquals(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
+
+		collector.collect(tenv);
+		
+		ITypeCheck form = incompatibleTypeInEquals(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(0, report.numberOfWarnings());
+				
+		assertEquals(1,report.numberOfErrors());
+		
+		expectedError = new ConflictingTypeError(new TBoolean(), new TInteger(), "==");
+
+		assertTrue(report.containsError(expectedError));
+	}
+	
+	private static <E,S,F> F incompatibleTypeInEquals(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		E exp = null;
+		if(e != null)
+			exp = e.eq(e.bool(true), e.lit(4));
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.question("id", "equals", new TBoolean(), exp)));
+		return f.forms(forms);
 	}
 	
 	@Test
 	public void testWrongTypeInCondition() {
-//		String type = "integer";
-//		String input = "form id {\n id1: \"label1\" "+type+"\n if(id1){ id2: \"label2\" boolean} \n}";
-//
-//    	QLParser qlParser = Parser.parse(Parser.getInputStream(input));
-//    	
-//    	IBuildF form = qlParser.forms().frm;
-//    	
-//		form.build(fcd).collect();
-//
-//		ftc = new FormTypeChecker(fcd.getTypeEnvironment(), report);
-//		form.build(ftc).check();
-//		
-//		assertEquals(0, report.getWarnings().size());
-//		
-//		List<String> errors = report.getErrors();
-//		
-//		assertEquals(1,errors.size());
-//		
-//		message = errors.get(0);
-//		expected = "Wrong type in if-then condition, expected boolean, got "+type+".";
-//		assertEquals(expected,message);
-		fail();
+
+		ICollect collector = wrongTypeInCondition(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
+
+		collector.collect(tenv);
+		
+		ITypeCheck form = wrongTypeInCondition(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(0, report.numberOfWarnings());
+				
+		assertEquals(1,report.numberOfErrors());
+		
+		expectedError = new UnexpectedTypeError(new TBoolean(),new TInteger(),"if-then");
+		
+		assertTrue(report.containsError(expectedError));
+	}
+	
+	private static <E,S,F> F wrongTypeInCondition(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
+		E exp = null;
+		if(e != null)
+			exp = e.lit(4);
+		List<F> forms = new ArrayList<F>();
+		forms.add(f.form("Form id", s.iff(exp, s.question("id1", "number", new TBoolean()))));
+		return f.forms(forms);
 	}
 	
 }

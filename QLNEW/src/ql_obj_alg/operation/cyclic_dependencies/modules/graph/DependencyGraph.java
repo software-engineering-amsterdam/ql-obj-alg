@@ -35,7 +35,6 @@ public class DependencyGraph {
 		VariableDependency vd = variables.get(var);
 		if(vd == null){
 			vd = new VariableDependency();
-//			variables.put(var, vd);
 		}
 		return vd;
 	}
