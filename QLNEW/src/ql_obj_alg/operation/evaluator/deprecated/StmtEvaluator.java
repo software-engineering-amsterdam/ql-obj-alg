@@ -1,18 +1,20 @@
-package ql_obj_alg.operation.evaluator;
+package ql_obj_alg.operation.evaluator.deprecated;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
+import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.types.Type;
 
-public class StmtEvaluator implements IStmtAlg<IEvalE,IEvalS> {
+public class StmtEvaluator implements IStmtAlg<IDepsAndEvalE,IEvalS> {
 
 	@Override
-	public IEvalS iff(final IEvalE cond, final IEvalS b) {
+	public IEvalS iff(final IDepsAndEvalE cond, final IEvalS b) {
 		return new IEvalS(){
 			@Override
 			public Set<Question> eval(ValueEnvironment valEnv) {
@@ -27,7 +29,7 @@ public class StmtEvaluator implements IStmtAlg<IEvalE,IEvalS> {
 	}
 
 	@Override
-	public IEvalS iffelse(final IEvalE cond, final IEvalS b1, final IEvalS b2) {
+	public IEvalS iffelse(final IDepsAndEvalE cond, final IEvalS b1, final IEvalS b2) {
 		return new IEvalS(){
 			@Override
 			public Set<Question> eval(ValueEnvironment valEnv) {
@@ -75,7 +77,7 @@ public class StmtEvaluator implements IStmtAlg<IEvalE,IEvalS> {
 	}
 
 	@Override
-	public IEvalS question(final String id, String label, Type type, final IEvalE e) {
+	public IEvalS question(final String id, String label, Type type, final IDepsAndEvalE e) {
 		return new IEvalS(){
 			@Override
 			public Set<Question> eval(ValueEnvironment valEnv) {

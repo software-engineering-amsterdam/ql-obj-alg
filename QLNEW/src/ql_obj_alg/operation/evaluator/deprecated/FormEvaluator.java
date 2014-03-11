@@ -1,10 +1,12 @@
-package ql_obj_alg.operation.evaluator;
+package ql_obj_alg.operation.evaluator.deprecated;
 
 import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
+import ql_obj_alg.operation.evaluator.ValueEnvironment;
 
-public class FormEvaluator implements IFormAlg<IEvalE, IEvalS, IEvalF> {
+public class FormEvaluator implements IFormAlg<IDepsAndEvalE, IEvalS, IEvalF> {
 
 	@Override
 	public IEvalF form(String id, final IEvalS s) {

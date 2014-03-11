@@ -9,7 +9,7 @@ import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.operation.builder.ExprBuilder;
 import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
-import ql_obj_alg.operation.evaluator.IEvalE;
+import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question;
 import ql_obj_alg.operation.evaluator.value.VInteger;
@@ -29,7 +29,7 @@ public class ExprEvalTests {
 	}
 	@Test
 	public void TestSimpleAdditionEval(){
-		IEvalE eval = SimpleAddition(exprEval);
+		IDepsAndEvalE eval = SimpleAddition(exprEval);
 		Value v = eval.eval(valEnv);
 		assertTrue(v.getInteger().equals(3));
 		
@@ -41,7 +41,7 @@ public class ExprEvalTests {
 	
 	@Test
 	public void TestDividedByZero(){
-		IEvalE eval = DividedByZero(exprEval);
+		IDepsAndEvalE eval = DividedByZero(exprEval);
 		Value v = eval.eval(valEnv);
 		assertTrue(v.eq(new VUndefined()).getBoolean());
 		
@@ -53,7 +53,7 @@ public class ExprEvalTests {
 	
 	@Test
 	public void TestAssociativityOfDoubleDispatch(){
-		IEvalE eval = Min(exprEval);
+		IDepsAndEvalE eval = Min(exprEval);
 		Value v = eval.eval(valEnv);
 		assertTrue(v.getInteger().equals(2));		
 	}
@@ -66,7 +66,7 @@ public class ExprEvalTests {
 	@Test
 	public void TestLookUpfromVarEnvironment(){
 		valEnv.addQuestionWithValue("var1", new Question(new VInteger(5)));
-		IEvalE eval = LookUp(exprEval);
+		IDepsAndEvalE eval = LookUp(exprEval);
 		Value v = eval.eval(valEnv);
 		assertTrue(v.getInteger().equals(0));		
 	}
@@ -80,7 +80,7 @@ public class ExprEvalTests {
 		ExprBuilder expBuilder = new ExprBuilder();
 		IBuildE exp = expBuilder.add(expBuilder.lit(1), expBuilder.lit(2));
 		valEnv.addQuestionWithExpression("var1", exp);
-		IEvalE eval = LookUpWithExpression(exprEval);
+		IDepsAndEvalE eval = LookUpWithExpression(exprEval);
 		Value v = eval.eval(valEnv);
 		assertTrue(v.getInteger().equals(2));		
 	}
