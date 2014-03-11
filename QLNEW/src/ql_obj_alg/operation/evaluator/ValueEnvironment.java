@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
-import ql_obj_alg.operation.builder.IBuildE;
-import ql_obj_alg.operation.evaluator.deprecated.collectQuestionExpressions.Question;
-import ql_obj_alg.types.TypeEnvironment;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
+import ql_obj_alg.operation.evaluator.value.Value;
 
-public class ValueEnvironment extends TypeEnvironment {
+public class ValueEnvironment{
 
-	private Map<String, Observable> registry;
+	private Map<String, Observable> registry = new HashMap<String,Observable>();
+	private Map<String,Value> questionsMap = new HashMap<String,Value>();
 	
 	public void initObservable(String name) {
 		if (!registry.containsKey(name)) {
@@ -23,35 +23,20 @@ public class ValueEnvironment extends TypeEnvironment {
 		initObservable(name);
 		return registry.get(name);
 	}
+
+	private void initQuestion(String varName) {
+		if(!questionsMap.containsKey(varName)){
+			questionsMap.put(varName, new VUndefined());
+		}
+	}	
 	
-	Map<String,Question> questionsMap = new HashMap<String,Question>();
-	Map<String,IBuildE> computedQuestions = new HashMap<String,IBuildE>();
-		
-	public Question getQuestion(String varName){
-		assert questionsMap.containsKey(varName) : "Variable name does not exist after collecting";
+	public Value getQuestionValue(String varName){
+		initQuestion(varName);
 		return questionsMap.get(varName);
 	}
-	
-	public void addQuestionWithValue(String s, Question v){
-		questionsMap.put(s, v);
+
+	public void setQuestionValue(String varName, Value v){
+		questionsMap.put(varName,v);		
 	}
-	
-	public void addQuestionWithExpression(String s, IBuildE exp){
-		computedQuestions.put(s, exp);
-	}
-	
-	public boolean isVisible(String varName){
-		assert questionsMap.containsKey(varName) : "Variable name does not exist after collecting";
-		return questionsMap.get(varName).isVisible();
-	}
-	
-	public boolean isComputedQuestion(String varName){
-		return computedQuestions.containsKey(varName);
-	}
-	
-	public IBuildE getExpressionFromComputedQuestion(String varName){
-		assert computedQuestions.containsKey(varName) : "Variable name does not exist after collecting";		
-		return computedQuestions.get(varName);
-	}
-		
+
 }

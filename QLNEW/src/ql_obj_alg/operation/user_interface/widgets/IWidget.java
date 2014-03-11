@@ -13,4 +13,5 @@ public interface IWidget {
 	void addAnswerableQuestionToFrame(FormFrame frame);
 	boolean isUndefined();
 	void addFocusListener(FocusListener fl);
+	void setValue(Value v);
 }

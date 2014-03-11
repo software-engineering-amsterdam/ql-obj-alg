@@ -6,16 +6,19 @@ public class VBase extends Value {
 
 	@Override
 	public Integer getInteger() {
+		assert false : "getInteger in VBase was called";
 		return null;
 	}
 
 	@Override
 	public Boolean getBoolean() {
+		assert false : "getBoolean in VBase was called";
 		return null;
 	}
 
 	@Override
 	public String getString() {
+		assert false : "getString in VBase was called";
 		return null;
 	}
 	@Override

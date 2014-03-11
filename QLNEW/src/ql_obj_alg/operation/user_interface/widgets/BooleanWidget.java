@@ -6,6 +6,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 import ql_obj_alg.operation.evaluator.value.VBoolean;
+import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
 
 public class BooleanWidget implements IWidget{
@@ -84,5 +85,10 @@ public class BooleanWidget implements IWidget{
 	@Override
 	public void addFocusListener(FocusListener fl) {
 		checkBox.addFocusListener(fl);
+	}
+
+	@Override
+	public void setValue(Value v) {
+		checkBox.setSelected(v.getBoolean());
 	}
 }

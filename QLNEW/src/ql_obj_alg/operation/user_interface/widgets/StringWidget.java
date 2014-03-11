@@ -92,5 +92,10 @@ public class StringWidget implements IWidget{
 	public void addFocusListener(FocusListener fl) {
 		text.addFocusListener(fl);
 	}
+
+	@Override
+	public void setValue(Value v) {
+		text.setText(v.getString());
+	}
 	
 }

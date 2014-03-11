@@ -92,4 +92,9 @@ public class IntegerWidget implements IWidget{
 	public void addFocusListener(FocusListener fl) {
 		field.addFocusListener(fl);
 	}
+
+	@Override
+	public void setValue(Value v) {
+		field.setValue(v.getInteger());
+	}
 }

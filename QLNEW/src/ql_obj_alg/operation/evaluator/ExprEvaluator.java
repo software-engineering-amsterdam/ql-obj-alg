@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
-import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.operation.evaluator.value.VBoolean;
 import ql_obj_alg.operation.evaluator.value.VInteger;
 import ql_obj_alg.operation.evaluator.value.VString;
@@ -59,15 +58,10 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 
 	@Override
 	public IDepsAndEvalE var(final String varName) {
-		final ExprEvaluator expEval = this;
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				if(valEnv.isComputedQuestion(varName)){
-					IBuildE exp = valEnv.getExpressionFromComputedQuestion(varName);
-					return exp.build(expEval).eval(valEnv);
-				}
-				return valEnv.getQuestion(varName).getValue();
+				return valEnv.getQuestionValue(varName);
 			}
 
 			@Override

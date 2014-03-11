@@ -1,21 +1,6 @@
 package ql_obj_alg.operation.evaluator.value;
 
-public class VUndefined extends Value{
-
-	@Override
-	public Integer getInteger() {
-		return null;
-	}
-
-	@Override
-	public Boolean getBoolean() {
-		return null;
-	}
-
-	@Override
-	public String getString() {
-		return null;
-	}
+public class VUndefined extends VBase{
 
 	@Override
 	public Value div(Value v) {
