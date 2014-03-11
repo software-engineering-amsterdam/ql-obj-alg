@@ -1,5 +1,7 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
+import java.awt.event.FocusListener;
+
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
 
@@ -10,4 +12,5 @@ public interface IWidget {
 	String getId();
 	void addAnswerableQuestionToFrame(FormFrame frame);
 	boolean isUndefined();
+	void addFocusListener(FocusListener fl);
 }

@@ -1,5 +1,7 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
+import java.awt.event.FocusListener;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -84,6 +86,11 @@ public class StringWidget implements IWidget{
 	@Override
 	public int hashCode(){
 		return id.hashCode();
+	}
+
+	@Override
+	public void addFocusListener(FocusListener fl) {
+		text.addFocusListener(fl);
 	}
 	
 }

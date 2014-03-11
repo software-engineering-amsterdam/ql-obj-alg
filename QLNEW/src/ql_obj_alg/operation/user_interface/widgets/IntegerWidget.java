@@ -1,5 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
+import java.awt.event.FocusListener;
 import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
@@ -85,5 +86,10 @@ public class IntegerWidget implements IWidget{
 	@Override
 	public int hashCode(){
 		return id.hashCode();
+	}
+
+	@Override
+	public void addFocusListener(FocusListener fl) {
+		field.addFocusListener(fl);
 	}
 }
