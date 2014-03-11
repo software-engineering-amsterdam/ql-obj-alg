@@ -7,7 +7,7 @@ import java.util.Set;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question;
+import ql_obj_alg.operation.evaluator.deprecated.collectQuestionExpressions.Question;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.types.Type;
 

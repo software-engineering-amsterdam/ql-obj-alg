@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.evaluator.collectQuestionExpressions;
+package ql_obj_alg.operation.evaluator.deprecated.collectQuestionExpressions;
 
 import ql_obj_alg.operation.evaluator.value.Value;
 

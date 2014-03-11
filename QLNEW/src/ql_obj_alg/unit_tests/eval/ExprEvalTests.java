@@ -11,7 +11,7 @@ import ql_obj_alg.operation.builder.IBuildE;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question;
+import ql_obj_alg.operation.evaluator.deprecated.collectQuestionExpressions.Question;
 import ql_obj_alg.operation.evaluator.value.VInteger;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ql_obj_alg.operation.builder.IBuildE;
-import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question;
+import ql_obj_alg.operation.evaluator.deprecated.collectQuestionExpressions.Question;
 import ql_obj_alg.types.TypeEnvironment;
 
 public class ValueEnvironment extends TypeEnvironment {

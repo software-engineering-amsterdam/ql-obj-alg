@@ -11,9 +11,9 @@ import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.evaluator.collectQuestionExpressions.Question;
 import ql_obj_alg.operation.evaluator.deprecated.IEvalS;
 import ql_obj_alg.operation.evaluator.deprecated.StmtEvaluator;
+import ql_obj_alg.operation.evaluator.deprecated.collectQuestionExpressions.Question;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.types.TInteger;
 
