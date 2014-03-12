@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -95,8 +95,8 @@ public class StringWidget implements IWidget{
 	}
 
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-		text.addPropertyChangeListener("value", pcl);
+	public void addActionListener(ActionListener al) {
+		text.addActionListener(al);
 	}
 	
 }

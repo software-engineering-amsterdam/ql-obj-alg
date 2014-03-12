@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -18,7 +18,7 @@ public class BooleanWidget implements IWidget{
 	public BooleanWidget(String id, String label){
 		this.id = id;
 		
-		this.checkBox = new JCheckBox();
+		this.checkBox = new JCheckBox();	
 		this.label = new JLabel(label);
 		this.label.setLabelFor(this.checkBox);
 	}
@@ -87,7 +87,8 @@ public class BooleanWidget implements IWidget{
 	}
 
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-		checkBox.addPropertyChangeListener("value", pcl);
+	public void addActionListener(ActionListener al) {
+		checkBox.addActionListener(al);
 	}
+
 }

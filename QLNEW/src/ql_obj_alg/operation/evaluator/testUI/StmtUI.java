@@ -1,7 +1,7 @@
 package ql_obj_alg.operation.evaluator.testUI;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -101,17 +101,20 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 	public ICreate question(final String id, final String label, final Type type) {
 		return new ICreate(){
 			@Override
-			public List<IWidget> create(FormFrame frame, Widgets widgets,
+			public List<IWidget> create(final FormFrame frame, Widgets widgets,
 					final ValueEnvironment valEnv) {
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				valEnv.initObservable(id);
-				widget.addPropertyChangeListener(new PropertyChangeListener(){
+				
+				widget.addActionListener(new ActionListener(){
 
 					@Override
-					public void propertyChange(PropertyChangeEvent arg0) {
+					public void actionPerformed(ActionEvent arg0) {
 						valEnv.setQuestionValue(id, widget.getValue());
-						System.out.println("test"+arg0.getPropertyName());
+						System.out.println("actionListener "+ widget.getId() + arg0.getActionCommand());
 						Observable obs = valEnv.getObservable(id);
+						System.out.println(obs.countObservers());
+						
 						synchronized(obs){
 							obs.notifyAll();
 						}

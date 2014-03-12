@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
@@ -94,7 +94,7 @@ public class IntegerWidget implements IWidget{
 	}
 
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-		field.addPropertyChangeListener("value", pcl);
+	public void addActionListener(ActionListener al) {
+		field.addActionListener(al);
 	}
 }
