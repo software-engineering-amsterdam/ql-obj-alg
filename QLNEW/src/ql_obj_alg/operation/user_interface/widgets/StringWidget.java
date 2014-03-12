@@ -1,7 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
 import java.awt.event.ActionListener;
-import java.util.Observable;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -11,7 +10,7 @@ import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
 
-public class StringWidget extends Observable implements IWidget{
+public class StringWidget extends IWidget{
 
 	String id;
 	JLabel label;

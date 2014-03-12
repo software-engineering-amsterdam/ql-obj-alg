@@ -9,7 +9,7 @@ import ql_obj_alg.operation.evaluator.value.VBoolean;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
 
-public class BooleanWidget implements IWidget{
+public class BooleanWidget extends IWidget{
 
 	String id;
 	JLabel label;
@@ -90,5 +90,7 @@ public class BooleanWidget implements IWidget{
 	public void addActionListener(ActionListener al) {
 		checkBox.addActionListener(al);
 	}
+
+
 
 }

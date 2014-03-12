@@ -1,8 +1,9 @@
 form Box1HouseOwning {
 	valueResidue: "Value residue:" boolean
-	valueInt: "Value int:" integer
-	valueInt2: "Value of prev +1:" integer (valueInt +1)
+	valueBoolean2: "Value boolean2:" boolean
 	if(valueResidue){
-		value2: "is visible:" boolean
+		if(valueBoolean2){
+			value2: "is visible:" boolean
+		}
 	}
 }

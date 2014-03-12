@@ -8,6 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.value.Value;
@@ -19,7 +20,7 @@ import ql_obj_alg.operation.user_interface.widgets.ObservableWidget;
 import ql_obj_alg.types.Type;
 
 
-public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
+public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICreate>{
 
 	@Override
 	public ICreate iff(final IDepsAndEvalE cond, final ICreate b) {
@@ -28,7 +29,10 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 			@Override
 			public List<IWidget> create(final FormFrame frame, final Widgets widgets,
 					final ValueEnvironment valEnv) {
+				
 				final List<IWidget> listWidget = b.create(frame,widgets,valEnv);
+				addConditional(listWidget,cond);
+				
 				if(!cond.eval(valEnv).getBoolean()){
 					for(IWidget widget : listWidget){
 						widget.setVisible(false);
@@ -38,9 +42,9 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
-							boolean condition = cond.eval(valEnv).getBoolean();
 							for(IWidget widget : listWidget){
-								widget.setVisible(condition);
+								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
+								widget.setVisible(visibility);
 							}
 							frame.revalidate();
 							frame.repaint();
@@ -62,16 +66,19 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 					final ValueEnvironment valEnv) {
 				final List<IWidget> listWidgetIf = b1.create(frame,widgets,valEnv);
 				final List<IWidget> listWidgetElse = b2.create(frame,widgets,valEnv);
+				addConditional(listWidgetIf,cond);
+				addConditional(listWidgetElse,not(cond));
 				for(String dep : cond.deps()){
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
-							boolean condition = cond.eval(valEnv).getBoolean();
 							for(IWidget widget : listWidgetIf){
-								widget.setVisible(condition);
+								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
+								widget.setVisible(visibility);
 							}
 							for(IWidget widget : listWidgetElse){
-								widget.setVisible(!condition);
+								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
+								widget.setVisible(visibility);
 							}
 						}
 					});
@@ -168,6 +175,20 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 		List<IWidget> list = new ArrayList<IWidget>();
 		list.add(a);
 		return list;
+	}
+	
+	private void addConditional(List<IWidget> widgets, final IDepsAndEvalE cond){
+		for(IWidget widget: widgets){
+			widget.setVisibilityCondition(cond);
+		}
+	}
+	
+	private boolean computeConditionals(List<IDepsAndEvalE> conditionals, ValueEnvironment valEnv){
+		for(IDepsAndEvalE cond : conditionals){
+			if(!cond.eval(valEnv).getBoolean())
+				return false;
+		}
+		return true;
 	}
 	
 }
