@@ -112,6 +112,7 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						valEnv.setQuestionValue(id, widget.getValue());
+						System.out.println("Action Listener " + id + arg0.getActionCommand());
 						ObservableWidget obs = valEnv.getObservable(id);
 						synchronized(obs){
 							obs.setChanged();
@@ -133,7 +134,7 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 		return new ICreate(){
 
 			@Override
-			public List<IWidget> create(FormFrame frame, Widgets widgets,
+			public List<IWidget> create(final FormFrame frame, Widgets widgets,
 					final ValueEnvironment valEnv) {
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				valEnv.initObservable(id);
@@ -149,8 +150,11 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 								a.setChanged();
 								a.notifyAll();
 							}
+							frame.revalidate();
+							frame.repaint();
 						}
 					});
+					
 				}
 				widget.addComputedQuestionToFrame(frame);
 				widget.setVisible(true);
