@@ -11,16 +11,19 @@ import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 public class Tester implements IFormAlg<ITest,ITest,ITest>,IStmtAlg<ITest,ITest>, IExpAlg<ITest> {
 
 	@Override
-	public ITest iff(ITest cond, ITest b) {
-		return new Test(cond,b){
+	public ITest iff(ITest cond, List<ITest> b) {
+		b.add(cond);
+		return new Test(b){
 			@Override
 			public ITest isIff(){return this;}
 		};
 	}
 
 	@Override
-	public ITest iffelse(ITest cond, ITest b1, ITest b2) {
-		return new Test(cond,b1,b2){
+	public ITest iffelse(ITest cond, List<ITest> b1, List<ITest> b2) {
+		b1.addAll(b2);
+		b1.add(cond);
+		return new Test(b1){
 			@Override
 			public ITest isIffelse(){return this;}
 		};

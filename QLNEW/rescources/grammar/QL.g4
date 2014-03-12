@@ -16,13 +16,13 @@ import java.util.List;
 	StmtBuilder stmtBuilder = new StmtBuilder();
 	ExprBuilder exprBuilder = new ExprBuilder();
 	
-	protected IBuildS composeStmt(List<QLParser.StatContext> antlr4StmtList){
+	protected List<IBuildS> composeStmt(List<QLParser.StatContext> antlr4StmtList){
 		List<IBuildS> stmtList = new ArrayList<IBuildS>();
 		for(QLParser.StatContext stmt : antlr4StmtList)
 		{
 			stmtList.add(stmt.stmt);
 		}
-		return stmtBuilder.comb(stmtList);
+		return stmtList;
 	}
 
 }
@@ -43,7 +43,7 @@ assign returns [IBuildE exp]:
 ifstat returns [IBuildS stmt]: 
 		'if' LP a=expr RP LB b+=stat* RB c=elsestat? {if($c.ctx != null){ $stmt = stmtBuilder.iffelse($a.exp,composeStmt($b),$elsestat.stmt);} else { $stmt = stmtBuilder.iff($a.exp,composeStmt($b));};};
 
-elsestat returns [IBuildS stmt]:
+elsestat returns [List<IBuildS> stmt]:
 		'else' LB a+=stat* RB		{$stmt = composeStmt($a);};
 
 //precedence http://introcs.cs.princeton.edu/java/11precedence/

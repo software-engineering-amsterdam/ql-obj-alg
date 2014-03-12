@@ -1,5 +1,8 @@
 package ql_obj_alg.operation.builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
@@ -7,10 +10,14 @@ import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 public class FormBuilder implements IFormAlg<IBuildE,IBuildS,IBuildF> {
 
 	@Override
-	public IBuildF form(final String id, final IBuildS s) {
+	public IBuildF form(final String id, final List<IBuildS> s) {
 		return new IBuildF(){
 			public <E,S,F> F build(IExpAlg<E> expAlg, IStmtAlg<E,S> stmtAlg, IFormAlg<E,S,F> formAlg) {
-				return formAlg.form(id, s.build(expAlg,stmtAlg));
+				List<S> buildS = new ArrayList<S>();
+				for(IBuildS stmt : s){
+					buildS.add(stmt.build(expAlg, stmtAlg));
+				}
+				return formAlg.form(id, buildS);
 			}
 		};
 	}

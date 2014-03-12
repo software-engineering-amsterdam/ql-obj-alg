@@ -11,34 +11,33 @@ public class StmtBuilder implements IStmtAlg<IBuildE,IBuildS> {
 
 	
 	@Override
-	public IBuildS iff(final IBuildE cond, final IBuildS b) {
+	public IBuildS iff(final IBuildE cond, final List<IBuildS> b) {
 		return new IBuildS(){
 			public <E,S> S build(IExpAlg<E> expAlg, IStmtAlg<E,S> stmtAlg) {
-				return stmtAlg.iff(cond.build(expAlg), b.build(expAlg,stmtAlg));
-			}
-		};
-	}
-
-	@Override
-	public IBuildS iffelse(final IBuildE cond, final IBuildS b1, final IBuildS b2) {
-		return new IBuildS(){
-			public <E,S> S build(IExpAlg<E> expAlg, IStmtAlg<E,S> stmtAlg) {
-				return stmtAlg.iffelse(cond.build(expAlg), b1.build(expAlg,stmtAlg), b2.build(expAlg,stmtAlg));
-			}
-		};
-	}
-
-	@Override
-	public IBuildS comb(final List<IBuildS> listIBuildStmt) {
-			return new IBuildS(){
-				public <E,S> S build(IExpAlg<E> expAlg, IStmtAlg<E,S> stmtAlg) {
-					List<S> listStmt = new ArrayList<S>();
-					for(IBuildS Stmt : listIBuildStmt){
-						listStmt.add(Stmt.build(expAlg,stmtAlg));
-					}
-					return stmtAlg.comb(listStmt);
+				List<S> buildS = new ArrayList<S>();
+				for(IBuildS stmt : b){
+					buildS.add(stmt.build(expAlg, stmtAlg));
 				}
-			};
+				return stmtAlg.iff(cond.build(expAlg), buildS);
+			}
+		};
+	}
+
+	@Override
+	public IBuildS iffelse(final IBuildE cond, final List<IBuildS> b1, final List<IBuildS> b2) {		
+		return new IBuildS(){
+			public <E,S> S build(IExpAlg<E> expAlg, IStmtAlg<E,S> stmtAlg) {
+				List<S> buildS1 = new ArrayList<S>();
+				List<S> buildS2 = new ArrayList<S>();
+				for(IBuildS stmt : b1){
+					buildS1.add(stmt.build(expAlg, stmtAlg));
+				}
+				for(IBuildS stmt : b2){
+					buildS2.add(stmt.build(expAlg, stmtAlg));
+				}				
+				return stmtAlg.iffelse(cond.build(expAlg), buildS1, buildS2);
+			}
+		};
 	}
 
 	@Override

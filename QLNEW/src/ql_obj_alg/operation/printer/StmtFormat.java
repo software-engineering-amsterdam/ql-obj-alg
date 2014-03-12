@@ -15,7 +15,7 @@ public class StmtFormat extends ExprFormat implements IStmtAlg<IFormatWithPreced
 	}
 
 	@Override
-	public IFormat iff(final IFormatWithPrecedence cond, final IFormat b) {
+	public IFormat iff(final IFormatWithPrecedence cond, final List<IFormat> b) {
 		return new IFormat(){
 			@Override
 			public void format(int indent, boolean vert, StringWriter writer) {
@@ -26,23 +26,13 @@ public class StmtFormat extends ExprFormat implements IStmtAlg<IFormatWithPreced
 	}
 
 	@Override
-	public IFormat iffelse(final IFormatWithPrecedence cond, final IFormat b1, final IFormat b2) {
+	public IFormat iffelse(final IFormatWithPrecedence cond, final List<IFormat> b1, final List<IFormat> b2) {
 		return new IFormat(){
 			@Override
 			public void format(int indent, boolean vert, StringWriter writer) {
 				box.V(box.H(1,box.L("if"),box.H(box.L("("),cond,box.L(")")),box.L("{")),
 						box.I(2,b1), box.H(1,box.L("}"),box.L("else"),box.L("{"),
 								box.I(2,b2)),box.L("}")).format(indent, vert, writer);
-			}
-		};
-	}
-
-	@Override
-	public IFormat comb(final List<IFormat> listStatements) {
-		return new IFormat(){
-			@Override
-			public void format(int indent, boolean vert, StringWriter writer) {		
-				box.V(listStatements).format(indent, vert, writer);
 			}
 		};
 	}

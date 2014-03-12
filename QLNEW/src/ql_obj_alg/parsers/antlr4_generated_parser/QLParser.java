@@ -58,13 +58,13 @@ public class QLParser extends Parser {
 		StmtBuilder stmtBuilder = new StmtBuilder();
 		ExprBuilder exprBuilder = new ExprBuilder();
 		
-		protected IBuildS composeStmt(List<QLParser.StatContext> antlr4StmtList){
+		protected List<IBuildS> composeStmt(List<QLParser.StatContext> antlr4StmtList){
 			List<IBuildS> stmtList = new ArrayList<IBuildS>();
 			for(QLParser.StatContext stmt : antlr4StmtList)
 			{
 				stmtList.add(stmt.stmt);
 			}
-			return stmtBuilder.comb(stmtList);
+			return stmtList;
 		}
 
 
@@ -350,7 +350,7 @@ public class QLParser extends Parser {
 	}
 
 	public static class ElsestatContext extends ParserRuleContext {
-		public IBuildS stmt;
+		public List<IBuildS> stmt;
 		public StatContext stat;
 		public List<StatContext> a = new ArrayList<StatContext>();
 		public StatContext stat(int i) {
