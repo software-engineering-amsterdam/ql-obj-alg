@@ -8,21 +8,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import ql_obj_alg.operation.user_interface.UpdateAfterChangeListener;
-
 public class FormFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	JPanel mainPanel;
 	JPanel labelPane;
 	JPanel fieldPane;
-	UpdateAfterChangeListener uac;
 
-	public FormFrame(String id, UpdateAfterChangeListener uac ) {
+	public FormFrame(String id) {
 		super(id);		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		this.uac = uac;
 		
         labelPane = new JPanel(new GridLayout(0,1));
         fieldPane = new JPanel(new GridLayout(0,1));
@@ -43,8 +38,4 @@ public class FormFrame extends JFrame {
         setVisible(true);		
 	}
 
-	public void addListener(JComponent component) {
-		component.addPropertyChangeListener("value",uac);
-	}
-	
 }
