@@ -6,7 +6,7 @@ import java.util.Map;
 
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
-import ql_obj_alg.operation.user_interface.widgets.ObservableWidget;
+import ql_obj_alg.user_interface.widgets.ObservableWidget;
 public class ValueEnvironment{
 
 	private Map<String, ObservableWidget> registry = new HashMap<String,ObservableWidget>();

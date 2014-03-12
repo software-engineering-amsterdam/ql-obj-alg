@@ -30,14 +30,6 @@ public class Tester implements IFormAlg<ITest,ITest,ITest>,IStmtAlg<ITest,ITest>
 	}
 
 	@Override
-	public ITest comb(List<ITest> listStatements) {
-		return new Test(listStatements){
-			@Override
-			public ITest isComb(){return this;}
-		};
-	}
-
-	@Override
 	public ITest question(String id, String label, Type type) {
 		return new Test(){
 			@Override
@@ -190,7 +182,7 @@ public class Tester implements IFormAlg<ITest,ITest,ITest>,IStmtAlg<ITest,ITest>
 	}
 
 	@Override
-	public ITest form(String id, ITest s) {
+	public ITest form(String id, List<ITest> s) {
 		return new Test(s){
 			@Override
 			public ITest isForm(){return this;}

@@ -15,17 +15,17 @@ import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
-import ql_obj_alg.operation.user_interface.modules.FormFrame;
-import ql_obj_alg.operation.user_interface.widgets.FieldFactory;
-import ql_obj_alg.operation.user_interface.widgets.IWidget;
-import ql_obj_alg.operation.user_interface.widgets.ObservableWidget;
 import ql_obj_alg.types.Type;
+import ql_obj_alg.user_interface.modules.FormFrame;
+import ql_obj_alg.user_interface.widgets.FieldFactory;
+import ql_obj_alg.user_interface.widgets.IWidget;
+import ql_obj_alg.user_interface.widgets.ObservableWidget;
 
 
 public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICreate>{
 
 	@Override
-	public ICreate iff(final IDepsAndEvalE cond, final ICreate b) {
+	public ICreate iff(final IDepsAndEvalE cond, final List<ICreate> b) {
 		return new ICreate(){
 
 			@Override
@@ -33,7 +33,9 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 
 				visibilityConditions.push(cond);
-				b.create(frame,valEnv,visibilityConditions);
+				for(ICreate stmt : b){
+					stmt.create(frame,valEnv,visibilityConditions);
+				}
 				visibilityConditions.pop();
 			}
 			
@@ -41,7 +43,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	}
 
 	@Override
-	public ICreate iffelse(final IDepsAndEvalE cond,final ICreate b1, final ICreate b2) {
+	public ICreate iffelse(final IDepsAndEvalE cond,final List<ICreate> b1, final List<ICreate> b2) {
 		return new ICreate(){
 
 			@Override
@@ -49,28 +51,19 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				visibilityConditions.push(cond);
-				b1.create(frame,valEnv, visibilityConditions);
+				for(ICreate stmt : b1){
+					stmt.create(frame,valEnv,visibilityConditions);
+				}
 				visibilityConditions.pop();
 				
 				visibilityConditions.push(not(cond));
-				b2.create(frame,valEnv, visibilityConditions);
+				for(ICreate stmt : b2){
+					stmt.create(frame,valEnv,visibilityConditions);
+				}
 				visibilityConditions.pop();
 
 			}
 			
-		};
-	}
-
-	@Override
-	public ICreate comb(final List<ICreate> listStatements) {
-		return new ICreate(){
-			@Override
-			public void create(FormFrame frame,
-					ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
-				for(ICreate stmt: listStatements){
-					stmt.create(frame, valEnv, visibilityConditions);
-				}
-			}
 		};
 	}
 
