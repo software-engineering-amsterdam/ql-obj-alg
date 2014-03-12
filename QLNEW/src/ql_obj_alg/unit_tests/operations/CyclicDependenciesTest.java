@@ -59,9 +59,9 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F valueDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<S> stmts = new ArrayList<S>();
-		stmts.add(s.question("id1", "label", new TBoolean(),e.var("id1")));
-		return f.form("Form id", stmts);
+		List<S> level1 = new ArrayList<S>();
+		level1.add(s.question("id1", "label", new TBoolean(),e.var("id1")));
+		return f.form("Form id", level1);
 	}
 	
 	
@@ -84,14 +84,17 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F definitionDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<S> stmts = new ArrayList<S>();
-		List<S> iffstmt = new ArrayList<S>();
-		iffstmt.add(s.question("Y", "label y", new TBoolean()));
-		stmts.add(s.iff(e.var("X"), iffstmt));
-		iffstmt = new ArrayList<S>();
-		iffstmt.add(s.question("X", "label x", new TBoolean()));
-		stmts.add(s.iff(e.var("Y"), iffstmt));
-		return f.form("Form id", stmts);
+		List<S> level1 = new ArrayList<S>();
+		List<S> level2 = new ArrayList<S>();
+		
+		level1.add(s.iff(e.var("X"), level2));
+		level2.add(s.question("Y", "label y", new TBoolean()));
+		level2 = new ArrayList<S>();
+		
+		level1.add(s.iff(e.var("Y"), level2));
+		level2.add(s.question("X", "label x", new TBoolean()));
+		
+		return f.form("Form id", level1);
 	}
 	
 
@@ -125,20 +128,20 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F nestedDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<S> stmts = new ArrayList<S>();
-		List<S> stmtsIf = new ArrayList<S>();
-		List<S> nested = new ArrayList<S>();
+		List<S> level1 = new ArrayList<S>();
+		List<S> level2 = new ArrayList<S>();
+		List<S> level3 = new ArrayList<S>();
 		
-		stmts.add(s.iff(e.var("X1"), stmtsIf));
+		level1.add(s.iff(e.var("X1"), level2));
+		level2.add(s.question("X2", "label 2", new TBoolean()));
+		level2.add(s.iff(e.var("X2"), level3));
+		level3.add(s.question("X3", "label 3", new TBoolean()));
+		level2 = new ArrayList<S>();
 		
-		stmtsIf.add(s.question("X2", "label 2", new TBoolean()));
-		nested.add(s.question("X3", "label 3", new TBoolean()));
-		stmtsIf.add(s.iff(e.var("X2"), nested));
-		nested = new ArrayList<S>();
-		nested.add(s.question("X1", "label 1", new TBoolean()));
-		stmts.add(s.iff(e.var("X3"), nested));
-
-		return f.form("Form id", stmts);
+		level1.add(s.iff(e.var("X3"), level2));
+		level2.add(s.question("X1", "label 1", new TBoolean()));
+		
+		return f.form("Form id", level1);
 	}
 	
 	@Test
@@ -153,22 +156,22 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F bothDependenciesCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<S> stmts = new ArrayList<S>();
-		List<S> stmtsIf = new ArrayList<S>();
-		List<S> nested = new ArrayList<S>();
+		List<S> level1 = new ArrayList<S>();
+		List<S> level2 = new ArrayList<S>();
+		List<S> level3 = new ArrayList<S>();
 		
-		stmts.add(s.iff(e.var("X1"), stmtsIf));
+		level1.add(s.iff(e.var("X1"), level2));
+		level2.add(s.question("X2", "label 2", new TBoolean(), e.var("X3")));
+		level2.add(s.iff(e.var("X2"), level3));
+		level3.add(s.question("X3", "label 3", new TBoolean()));
+		level2 = new ArrayList<S>();
 		
-		nested.add(s.question("X3", "label 3", new TBoolean()));
-		stmtsIf.add(s.question("X2", "label 2", new TBoolean(), e.var("X3")));
-		stmtsIf.add(s.iff(e.var("X2"), nested));
+		level1.add(s.iff(e.var("X3"),level2));
+		level2.add( s.question("X4", "label 4", new TBoolean()));
 		
-		nested = new ArrayList<S>();
-		nested.add( s.question("X4", "label 4", new TBoolean()));
-		stmts.add(s.iff(e.var("X3"),nested));
-		stmts.add(s.question("X1", "label 5", new TBoolean(), e.var("X4")));
+		level1.add(s.question("X1", "label 5", new TBoolean(), e.var("X4")));		
 
-		return f.form("Form id", stmts);
+		return f.form("Form id", level1);
 	}
 	
 
@@ -185,18 +188,19 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F definitionNoCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<S> stmts = new ArrayList<S>();
-		List<S> stmtsif = new ArrayList<S>();
+		List<S> level1 = new ArrayList<S>();
+		List<S> level2 = new ArrayList<S>();
 		
-		stmtsif.add(s.question("Y", "label y", new TBoolean()));
-		stmts.add(s.iff(e.var("X"), stmtsif));
+		level1.add(s.iff(e.var("X"), level2));
+		level2.add(s.question("Y", "label y", new TBoolean()));	
+		level2 = new ArrayList<S>();
 		
-		stmtsif = new ArrayList<S>();
-		stmtsif.add(s.question("X", "label x", new TBoolean()));
-		stmts.add(s.iff(e.var("Y"), stmtsif));
-		stmts.add(s.question("X", "label z", new TBoolean()));
-
-		return f.form("Form id", stmts);
+		level1.add(s.iff(e.var("Y"), level2));
+		level2.add(s.question("X", "label x", new TBoolean()));
+		
+		level1.add(s.question("X", "label z", new TBoolean()));
+		
+		return f.form("Form id", level1);
 	}
 	
 	@Test
@@ -211,9 +215,9 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F valueDependencyNoCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<S> stmts = new ArrayList<S>();
-		stmts.add(s.question("id", "label", new TBoolean(), e.var("undefined")));
-		return f.form("Form id", stmts);
+		List<S> level1 = new ArrayList<S>();
+		level1.add(s.question("id", "label", new TBoolean(), e.var("undefined")));
+		return f.form("Form id", level1);
 	}	
 	
 	@Test
@@ -228,21 +232,20 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F independent(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<S> stmts = new ArrayList<S>();
-		List<S> stmtsIf = new ArrayList<S>();
-		List<S> nested = new ArrayList<S>();
-		stmts.add(s.iff(e.var("X1"), stmtsIf));
+		List<S> level1 = new ArrayList<S>();
+		List<S> level2 = new ArrayList<S>();
+		List<S> level3 = new ArrayList<S>();
 		
-		stmtsIf.add(s.question("X2", "label2", new TBoolean(), e.var("X1")));
+		level1.add(s.iff(e.var("X1"), level2));
+		level2.add(s.question("X2", "label2", new TBoolean(), e.var("X1")));
+		level2.add(s.iff(e.var("X2"), level3));
+		level3.add(s.question("X3", "label3", new TBoolean()));
+		level2 = new ArrayList<S>();
 		
-		nested.add(s.question("X3", "label3", new TBoolean()));
-		stmtsIf.add(s.iff(e.var("X2"), nested));
-		
-		nested = new ArrayList<S>();
-		nested.add( s.question("X4", "label4", new TBoolean()));
-		stmts.add(s.iff(e.var("X3"),nested));
+		level1.add(s.iff(e.var("X3"),level2));
+		level2.add( s.question("X4", "label4", new TBoolean()));
 
-		return f.form("Form id", stmts);
+		return f.form("Form id", level1);
 	}
 
 }
