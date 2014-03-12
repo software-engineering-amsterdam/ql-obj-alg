@@ -59,7 +59,9 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F valueDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		return f.form("Form id", s.question("id1", "label", new TBoolean(),e.var("id1")));
+		List<S> stmts = new ArrayList<S>();
+		stmts.add(s.question("id1", "label", new TBoolean(),e.var("id1")));
+		return f.form("Form id", stmts);
 	}
 	
 	
@@ -83,9 +85,13 @@ public class CyclicDependenciesTest{
 	
 	private static <E,S,F> F definitionDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
 		List<S> stmts = new ArrayList<S>();
-		stmts.add(s.iff(e.var("X"), s.question("Y", "label y", new TBoolean())));
-		stmts.add(s.iff(e.var("Y"), s.question("X", "label x", new TBoolean())));
-		return f.form("Form id", s.comb(stmts));
+		List<S> iffstmt = new ArrayList<S>();
+		iffstmt.add(s.question("Y", "label y", new TBoolean()));
+		stmts.add(s.iff(e.var("X"), iffstmt));
+		iffstmt = new ArrayList<S>();
+		iffstmt.add(s.question("X", "label x", new TBoolean()));
+		stmts.add(s.iff(e.var("Y"), iffstmt));
+		return f.form("Form id", stmts);
 	}
 	
 
@@ -121,14 +127,18 @@ public class CyclicDependenciesTest{
 	private static <E,S,F> F nestedDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
 		List<S> stmts = new ArrayList<S>();
 		List<S> stmtsIf = new ArrayList<S>();
-		stmts.add(s.iff(e.var("X1"), s.comb(stmtsIf)));
+		List<S> nested = new ArrayList<S>();
+		
+		stmts.add(s.iff(e.var("X1"), stmtsIf));
 		
 		stmtsIf.add(s.question("X2", "label 2", new TBoolean()));
-		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label 3", new TBoolean())));
-		
-		stmts.add(s.iff(e.var("X3"), s.question("X1", "label 1", new TBoolean())));
+		nested.add(s.question("X3", "label 3", new TBoolean()));
+		stmtsIf.add(s.iff(e.var("X2"), nested));
+		nested = new ArrayList<S>();
+		nested.add(s.question("X1", "label 1", new TBoolean()));
+		stmts.add(s.iff(e.var("X3"), nested));
 
-		return f.form("Form id", s.comb(stmts));
+		return f.form("Form id", stmts);
 	}
 	
 	@Test
@@ -145,15 +155,20 @@ public class CyclicDependenciesTest{
 	private static <E,S,F> F bothDependenciesCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
 		List<S> stmts = new ArrayList<S>();
 		List<S> stmtsIf = new ArrayList<S>();
-		stmts.add(s.iff(e.var("X1"), s.comb(stmtsIf)));
+		List<S> nested = new ArrayList<S>();
 		
+		stmts.add(s.iff(e.var("X1"), stmtsIf));
+		
+		nested.add(s.question("X3", "label 3", new TBoolean()));
 		stmtsIf.add(s.question("X2", "label 2", new TBoolean(), e.var("X3")));
-		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label 3", new TBoolean())));
+		stmtsIf.add(s.iff(e.var("X2"), nested));
 		
-		stmts.add(s.iff(e.var("X3"), s.question("X4", "label 4", new TBoolean())));
+		nested = new ArrayList<S>();
+		nested.add( s.question("X4", "label 4", new TBoolean()));
+		stmts.add(s.iff(e.var("X3"),nested));
 		stmts.add(s.question("X1", "label 5", new TBoolean(), e.var("X4")));
 
-		return f.form("Form id", s.comb(stmts));
+		return f.form("Form id", stmts);
 	}
 	
 
@@ -171,11 +186,17 @@ public class CyclicDependenciesTest{
 	
 	private static <E,S,F> F definitionNoCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
 		List<S> stmts = new ArrayList<S>();
-		stmts.add(s.iff(e.var("X"), s.question("Y", "label y", new TBoolean())));
-		stmts.add(s.iff(e.var("Y"), s.question("X", "label x", new TBoolean())));
+		List<S> stmtsif = new ArrayList<S>();
+		
+		stmtsif.add(s.question("Y", "label y", new TBoolean()));
+		stmts.add(s.iff(e.var("X"), stmtsif));
+		
+		stmtsif = new ArrayList<S>();
+		stmtsif.add(s.question("X", "label x", new TBoolean()));
+		stmts.add(s.iff(e.var("Y"), stmtsif));
 		stmts.add(s.question("X", "label z", new TBoolean()));
 
-		return f.form("Form id", s.comb(stmts));
+		return f.form("Form id", stmts);
 	}
 	
 	@Test
@@ -190,7 +211,9 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F valueDependencyNoCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		return f.form("Form id", s.question("id", "label", new TBoolean(), e.var("undefined")));
+		List<S> stmts = new ArrayList<S>();
+		stmts.add(s.question("id", "label", new TBoolean(), e.var("undefined")));
+		return f.form("Form id", stmts);
 	}	
 	
 	@Test
@@ -207,12 +230,19 @@ public class CyclicDependenciesTest{
 	private static <E,S,F> F independent(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
 		List<S> stmts = new ArrayList<S>();
 		List<S> stmtsIf = new ArrayList<S>();
-		stmts.add(s.iff(e.var("X1"), s.comb(stmtsIf)));
+		List<S> nested = new ArrayList<S>();
+		stmts.add(s.iff(e.var("X1"), stmtsIf));
+		
 		stmtsIf.add(s.question("X2", "label2", new TBoolean(), e.var("X1")));
-		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label3", new TBoolean())));
-		stmts.add(s.iff(e.var("X3"), s.question("X4", "label4", new TBoolean())));
+		
+		nested.add(s.question("X3", "label3", new TBoolean()));
+		stmtsIf.add(s.iff(e.var("X2"), nested));
+		
+		nested = new ArrayList<S>();
+		nested.add( s.question("X4", "label4", new TBoolean()));
+		stmts.add(s.iff(e.var("X3"),nested));
 
-		return f.form("Form id", s.comb(stmts));
+		return f.form("Form id", stmts);
 	}
 
 }
