@@ -15,11 +15,11 @@ import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
-import ql_obj_alg.operation.user_interface.modules.FormFrame;
-import ql_obj_alg.operation.user_interface.widgets.FieldFactory;
-import ql_obj_alg.operation.user_interface.widgets.IWidget;
-import ql_obj_alg.operation.user_interface.widgets.ObservableWidget;
 import ql_obj_alg.types.Type;
+import ql_obj_alg.user_interface.modules.FormFrame;
+import ql_obj_alg.user_interface.widgets.FieldFactory;
+import ql_obj_alg.user_interface.widgets.IWidget;
+import ql_obj_alg.user_interface.widgets.ObservableWidget;
 
 
 public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICreate>{

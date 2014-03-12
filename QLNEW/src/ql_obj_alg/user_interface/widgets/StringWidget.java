@@ -1,33 +1,33 @@
-package ql_obj_alg.operation.user_interface.widgets;
+package ql_obj_alg.user_interface.widgets;
 
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
 
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-import ql_obj_alg.operation.evaluator.value.VInteger;
+import ql_obj_alg.operation.evaluator.value.VString;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
-import ql_obj_alg.operation.user_interface.modules.FormFrame;
+import ql_obj_alg.user_interface.modules.FormFrame;
 
-public class IntegerWidget implements IWidget{
+public class StringWidget implements IWidget{
 
 	String id;
 	JLabel label;
-	JFormattedTextField field;
+	JTextField text;
 	
-	public IntegerWidget(String id, String label){
+	public StringWidget(String id, String label){
 		this.id = id;
 		
-		this.field = new JFormattedTextField(NumberFormat.getNumberInstance());
-		this.field.setColumns(15);
+		this.text = new JTextField();
+		this.text.setColumns(15);
+		
 		this.label = new JLabel(label);
-		this.label.setLabelFor(this.field);
+		this.label.setLabelFor(this.text);
 	}
 	
 	public boolean isAnswerable(){
-		return field.isEnabled();
+		return text.isEnabled();
 	}
 	
 	@Override
@@ -36,31 +36,31 @@ public class IntegerWidget implements IWidget{
 			return new VUndefined();
 		}
 		else
-			return new VInteger(Integer.parseInt(field.getText()));
+			return new VString(text.getText());
 	}
 	
 	@Override
 	public boolean isUndefined() {
-		return field.getText() == null || field.getText().equals("");
+		return text.getText() == null || text.getText().equals("");
 	}
 
 	@Override
 	public void setVisible(boolean visible){
-		field.setVisible(visible);
+		text.setVisible(visible);
 		label.setVisible(visible);
 	}
 
 	@Override
 	public void addComputedQuestionToFrame(FormFrame frame) {
-		field.setEnabled(false);
-		frame.addField(field);
+		text.setEnabled(false);
+		frame.addField(text);
 		frame.addLabel(label);
 	}
 	
 	@Override
 	public void addAnswerableQuestionToFrame(FormFrame frame) {
-		field.setEnabled(true);
-		frame.addField(field);
+		text.setEnabled(true);
+		frame.addField(text);
 		frame.addLabel(label);
 	}
 
@@ -74,8 +74,8 @@ public class IntegerWidget implements IWidget{
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof IntegerWidget){
-			IntegerWidget w = (IntegerWidget) obj;
+		if(obj instanceof StringWidget){
+			StringWidget w = (StringWidget) obj;
 			
 			if(this.id == w.id || (this.id != null && this.id.equals(w.id)))
 				return true;
@@ -87,14 +87,16 @@ public class IntegerWidget implements IWidget{
 	public int hashCode(){
 		return id.hashCode();
 	}
-	
+
+
 	@Override
 	public void setValue(Value v) {
-		field.setValue(v.getInteger());
+		text.setText(v.getString());
 	}
 
 	@Override
 	public void addActionListener(ActionListener al) {
-		field.addActionListener(al);
+		text.addActionListener(al);
 	}
+	
 }

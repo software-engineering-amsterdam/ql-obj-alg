@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.user_interface.modules;
+package ql_obj_alg.user_interface.modules;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;

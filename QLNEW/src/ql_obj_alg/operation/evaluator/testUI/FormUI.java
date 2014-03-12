@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.user_interface.modules.FormFrame;
+import ql_obj_alg.user_interface.modules.FormFrame;
 
 public class FormUI implements IFormAlg<IDepsAndEvalE,ICreate,ICreateF>{
 

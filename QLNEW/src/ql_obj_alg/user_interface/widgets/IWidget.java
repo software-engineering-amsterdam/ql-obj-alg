@@ -1,9 +1,9 @@
-package ql_obj_alg.operation.user_interface.widgets;
+package ql_obj_alg.user_interface.widgets;
 
 import java.awt.event.ActionListener;
 
 import ql_obj_alg.operation.evaluator.value.Value;
-import ql_obj_alg.operation.user_interface.modules.FormFrame;
+import ql_obj_alg.user_interface.modules.FormFrame;
 
 public interface IWidget {
 	abstract public Value getValue();
