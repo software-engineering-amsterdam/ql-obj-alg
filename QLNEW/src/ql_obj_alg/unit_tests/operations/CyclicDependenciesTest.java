@@ -59,9 +59,7 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F valueDependencyCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.question("id1", "label", new TBoolean(),e.var("id1"))));
-		return f.forms(forms);
+		return f.form("Form id", s.question("id1", "label", new TBoolean(),e.var("id1")));
 	}
 	
 	
@@ -87,9 +85,7 @@ public class CyclicDependenciesTest{
 		List<S> stmts = new ArrayList<S>();
 		stmts.add(s.iff(e.var("X"), s.question("Y", "label y", new TBoolean())));
 		stmts.add(s.iff(e.var("Y"), s.question("X", "label x", new TBoolean())));
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(stmts)));
-		return f.forms(forms);
+		return f.form("Form id", s.comb(stmts));
 	}
 	
 
@@ -131,9 +127,8 @@ public class CyclicDependenciesTest{
 		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label 3", new TBoolean())));
 		
 		stmts.add(s.iff(e.var("X3"), s.question("X1", "label 1", new TBoolean())));
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(stmts)));
-		return f.forms(forms);
+
+		return f.form("Form id", s.comb(stmts));
 	}
 	
 	@Test
@@ -157,9 +152,8 @@ public class CyclicDependenciesTest{
 		
 		stmts.add(s.iff(e.var("X3"), s.question("X4", "label 4", new TBoolean())));
 		stmts.add(s.question("X1", "label 5", new TBoolean(), e.var("X4")));
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(stmts)));
-		return f.forms(forms);
+
+		return f.form("Form id", s.comb(stmts));
 	}
 	
 
@@ -180,9 +174,8 @@ public class CyclicDependenciesTest{
 		stmts.add(s.iff(e.var("X"), s.question("Y", "label y", new TBoolean())));
 		stmts.add(s.iff(e.var("Y"), s.question("X", "label x", new TBoolean())));
 		stmts.add(s.question("X", "label z", new TBoolean()));
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(stmts)));
-		return f.forms(forms);
+
+		return f.form("Form id", s.comb(stmts));
 	}
 	
 	@Test
@@ -197,9 +190,7 @@ public class CyclicDependenciesTest{
 	}
 	
 	private static <E,S,F> F valueDependencyNoCycle(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.question("id", "label", new TBoolean(), e.var("undefined"))));
-		return f.forms(forms);
+		return f.form("Form id", s.question("id", "label", new TBoolean(), e.var("undefined")));
 	}	
 	
 	@Test
@@ -220,9 +211,8 @@ public class CyclicDependenciesTest{
 		stmtsIf.add(s.question("X2", "label2", new TBoolean(), e.var("X1")));
 		stmtsIf.add(s.iff(e.var("X2"), s.question("X3", "label3", new TBoolean())));
 		stmts.add(s.iff(e.var("X3"), s.question("X4", "label4", new TBoolean())));
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(stmts)));
-		return f.forms(forms);
+
+		return f.form("Form id", s.comb(stmts));
 	}
 
 }

@@ -49,9 +49,7 @@ public class DeclarationCollectionTest extends TestCase{
 		questions.add(s.question(question, "Prototype", new TInteger()));
 		questions.add(s.question(question, "Correct duplicate", new TInteger()));
 		questions.add(s.question(question, "Conflicting duplicate", new TBoolean()));
-		
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("id", s.comb(questions)));
-		return f.forms(forms);
+
+		return f.form("id", s.comb(questions));
 	}
 }

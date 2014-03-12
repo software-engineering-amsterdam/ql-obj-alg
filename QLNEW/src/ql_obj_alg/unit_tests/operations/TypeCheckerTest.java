@@ -96,9 +96,7 @@ public class TypeCheckerTest {
 		statements.add(s.question("id", "label", new TInteger()));
 		statements.add(s.question("id", "label1", new TInteger()));
 		
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(statements)));
-		return f.forms(forms);
+		return f.form("Form id", s.comb(statements));
 	}
 	
 	@Test
@@ -124,9 +122,7 @@ public class TypeCheckerTest {
 		statements.add(s.question("id", "label", new TInteger()));
 		statements.add(s.question("id", "label1", new TString()));
 		
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(statements)));
-		return f.forms(forms);
+		return f.form("Form id", s.comb(statements));
 	}
 	
 	@Test
@@ -149,11 +145,9 @@ public class TypeCheckerTest {
 	
 	private static <E,S,F> F undefinedVariable(IFormAlg<E,S,F> f, IStmtAlg<E,S> s, IExpAlg<E> e){
 		E exp = null;
-		List<F> forms = new ArrayList<F>();
 		if(e != null)
 			exp = e.var("undefined");
-		forms.add(f.form("Form id", s.question("id1", "label", new TBoolean(),exp)));
-		return f.forms(forms);
+		return f.form("Form id", s.question("id1", "label", new TBoolean(),exp));
 	}
 	
 	@Test
@@ -183,9 +177,7 @@ public class TypeCheckerTest {
 			exp = e.add(e.lit(4), e.var("id1"));
 		questions.add(s.question("id2", "textfield", new TInteger(), exp));
 		
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(questions)));
-		return f.forms(forms);
+		return f.form("Form id", s.comb(questions));
 	}
 	
 	@Test
@@ -211,9 +203,7 @@ public class TypeCheckerTest {
 		E exp = null;
 		if(e != null)
 			exp = e.eq(e.bool(true), e.lit(4));
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.question("id", "equals", new TBoolean(), exp)));
-		return f.forms(forms);
+		return f.form("Form id", s.question("id", "equals", new TBoolean(), exp));
 	}
 	
 	@Test
@@ -239,9 +229,7 @@ public class TypeCheckerTest {
 		E exp = null;
 		if(e != null)
 			exp = e.lit(4);
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.iff(exp, s.question("id1", "number", new TBoolean()))));
-		return f.forms(forms);
+		return f.form("Form id", s.iff(exp, s.question("id1", "number", new TBoolean())));
 	}
 	
 }
