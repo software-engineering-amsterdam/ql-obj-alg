@@ -72,7 +72,7 @@ public class TypeCheckerTest {
 		List<S> questions = new ArrayList<S>();
 		questions.add(s.question("id1", "label", new TBoolean()));
 		questions.add(s.question("id2", "label", new TInteger()));
-		return f.form("Form id", s.comb(questions));
+		return f.form("Form id", questions);
 	}
 	
 	@Test
@@ -92,11 +92,11 @@ public class TypeCheckerTest {
 	}
 	
 	private static <E,S,F> F acceptableDuplicateDefinitions(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
-		List<S> statements = new ArrayList<S>();
-		statements.add(s.question("id", "label", new TInteger()));
-		statements.add(s.question("id", "label1", new TInteger()));
+		List<S> questions = new ArrayList<S>();
+		questions.add(s.question("id", "label", new TInteger()));
+		questions.add(s.question("id", "label1", new TInteger()));
 		
-		return f.form("Form id", s.comb(statements));
+		return f.form("Form id", questions);
 	}
 	
 	@Test
@@ -118,11 +118,11 @@ public class TypeCheckerTest {
 	}
 	
 	private static <E,S,F> F unacceptableDuplicateDefinitions(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
-		List<S> statements = new ArrayList<S>();
-		statements.add(s.question("id", "label", new TInteger()));
-		statements.add(s.question("id", "label1", new TString()));
+		List<S> questions = new ArrayList<S>();
+		questions.add(s.question("id", "label", new TInteger()));
+		questions.add(s.question("id", "label1", new TString()));
 		
-		return f.form("Form id", s.comb(statements));
+		return f.form("Form id", questions);
 	}
 	
 	@Test
@@ -147,7 +147,11 @@ public class TypeCheckerTest {
 		E exp = null;
 		if(e != null)
 			exp = e.var("undefined");
-		return f.form("Form id", s.question("id1", "label", new TBoolean(),exp));
+		
+		List<S> questions = new ArrayList<S>();
+		
+		questions.add(s.question("id1", "label", new TBoolean(),exp));
+		return f.form("Form id", questions);
 	}
 	
 	@Test
@@ -177,7 +181,7 @@ public class TypeCheckerTest {
 			exp = e.add(e.lit(4), e.var("id1"));
 		questions.add(s.question("id2", "textfield", new TInteger(), exp));
 		
-		return f.form("Form id", s.comb(questions));
+		return f.form("Form id", questions);
 	}
 	
 	@Test
@@ -203,7 +207,11 @@ public class TypeCheckerTest {
 		E exp = null;
 		if(e != null)
 			exp = e.eq(e.bool(true), e.lit(4));
-		return f.form("Form id", s.question("id", "equals", new TBoolean(), exp));
+		
+		List<S> questions = new ArrayList<S>();
+		questions.add(s.question("id", "equals", new TBoolean(), exp));
+		
+		return f.form("Form id", questions);
 	}
 	
 	@Test
@@ -229,7 +237,13 @@ public class TypeCheckerTest {
 		E exp = null;
 		if(e != null)
 			exp = e.lit(4);
-		return f.form("Form id", s.iff(exp, s.question("id1", "number", new TBoolean())));
+		List<S> stmtList = new ArrayList<S>();
+		List<S> questions = new ArrayList<S>();
+		
+		questions.add( s.question("id1", "number", new TBoolean()));
+		stmtList.add(s.iff(exp,questions));		
+		
+		return f.form("Form id", stmtList);
 	}
 	
 }

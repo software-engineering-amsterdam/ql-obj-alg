@@ -17,40 +17,32 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 		IStmtAlg<IExpType, ITypeCheck> {
 
 	@Override
-	public ITypeCheck iff(final IExpType cond, final ITypeCheck b) {
+	public ITypeCheck iff(final IExpType cond, final List<ITypeCheck> stmtList) {
 		return new ITypeCheck(){
 			public void check(TypeEnvironment tenv,ErrorReporting report){
 				Type t = cond.type(tenv,report); 
 				if(!t.isBoolean()){
 					report.addError(new UnexpectedTypeError(new TBoolean(), t,"if-then"));
 				}
-				b.check(tenv,report);
+				for(ITypeCheck stmt : stmtList)
+					stmt.check(tenv,report);
 			}
 		};
 	}
 
 	@Override
-	public ITypeCheck iffelse(final IExpType cond, final ITypeCheck b1,
-			final ITypeCheck b2) {
+	public ITypeCheck iffelse(final IExpType cond, final List<ITypeCheck> stmtList1,
+			final List<ITypeCheck> stmtList2) {
 		return new ITypeCheck(){
 			public void check(TypeEnvironment tenv,ErrorReporting report){
 				Type t = cond.type(tenv,report); 
 				if(!t.isBoolean()){
 					report.addError(new UnexpectedTypeError(new TBoolean(), t,"if-then-else"));
 				}
-				b1.check(tenv,report);
-				b2.check(tenv,report);
-			}
-		};
-	}
-
-	@Override
-	public ITypeCheck comb(final List<ITypeCheck> stmtList) {
-		return new ITypeCheck(){
-			public void check(TypeEnvironment tenv,ErrorReporting report){
-				for(ITypeCheck stmt : stmtList){
+				for(ITypeCheck stmt : stmtList1)
 					stmt.check(tenv,report);
-				}
+				for(ITypeCheck stmt : stmtList2)
+					stmt.check(tenv,report);
 			}
 		};
 	}
