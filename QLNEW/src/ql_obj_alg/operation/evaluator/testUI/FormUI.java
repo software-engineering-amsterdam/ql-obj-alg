@@ -10,7 +10,6 @@ import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
-import ql_obj_alg.operation.user_interface.modules.Widgets;
 
 public class FormUI implements IFormAlg<IDepsAndEvalE,ICreate,ICreateF>{
 
@@ -20,9 +19,8 @@ public class FormUI implements IFormAlg<IDepsAndEvalE,ICreate,ICreateF>{
 
 			@Override
 			public void create(final ValueEnvironment valEnv) {
-				Widgets widgets = new Widgets();
 				final FormFrame frame = new FormFrame(id);
-				s.create(frame, widgets, valEnv, new Stack<IDepsAndEvalE>());
+				s.create(frame, valEnv, new Stack<IDepsAndEvalE>());
 				JButton Submit = new JButton("Submit");
 				Submit.addActionListener(new ActionListener(){
 					@Override
