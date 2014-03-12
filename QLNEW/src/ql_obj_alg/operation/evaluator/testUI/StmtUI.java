@@ -29,8 +29,7 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 			public List<IWidget> create(final FormFrame frame, final Widgets widgets,
 					final ValueEnvironment valEnv) {
 				final List<IWidget> listWidget = b.create(frame,widgets,valEnv);
-				final boolean condition = cond.eval(valEnv).getBoolean();
-				if(!condition){
+				if(!cond.eval(valEnv).getBoolean()){
 					for(IWidget widget : listWidget){
 						widget.setVisible(false);
 					}
@@ -39,6 +38,7 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
+							boolean condition = cond.eval(valEnv).getBoolean();
 							for(IWidget widget : listWidget){
 								widget.setVisible(condition);
 							}
