@@ -109,6 +109,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 						public void update(Observable arg0, Object arg1) {
 							boolean visible = computeConditionals(localVisibility,valEnv);
 							widget.setValue(new VUndefined());
+							valEnv.setQuestionValue(widget.getId(), new VUndefined());
 							widget.setVisible(visible);
 						}
 					});
@@ -159,6 +160,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 						public void update(Observable arg0, Object arg1) {
 							boolean visible = computeConditionals(localVisibility,valEnv);
 							widget.setValue(new VUndefined());
+							valEnv.setQuestionValue(widget.getId(), new VUndefined());
 							widget.setVisible(visible);
 						}
 					});
