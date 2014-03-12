@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
-import java.awt.event.FocusListener;
+import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
@@ -87,14 +87,14 @@ public class IntegerWidget implements IWidget{
 	public int hashCode(){
 		return id.hashCode();
 	}
-
-	@Override
-	public void addFocusListener(FocusListener fl) {
-		field.addFocusListener(fl);
-	}
-
+	
 	@Override
 	public void setValue(Value v) {
 		field.setValue(v.getInteger());
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		field.addPropertyChangeListener("value", pcl);
 	}
 }

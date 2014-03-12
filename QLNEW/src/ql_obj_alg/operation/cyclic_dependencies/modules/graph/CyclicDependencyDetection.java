@@ -15,6 +15,7 @@ public class CyclicDependencyDetection {
 	}
 	
 	public void detectCycles(){
+		//TODO use Java loop for collections without int i
 		Object[] nodes = dependencyG.getNodes().toArray();
 		for(int i = 0; i < nodes.length; i++){
 			String node = (String) nodes[i];

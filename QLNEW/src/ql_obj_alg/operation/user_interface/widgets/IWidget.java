@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
-import java.awt.event.FocusListener;
+import java.beans.PropertyChangeListener;
 
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
@@ -12,6 +12,6 @@ public interface IWidget {
 	String getId();
 	void addAnswerableQuestionToFrame(FormFrame frame);
 	boolean isUndefined();
-	void addFocusListener(FocusListener fl);
+	void addPropertyChangeListener(PropertyChangeListener pcl);
 	void setValue(Value v);
 }

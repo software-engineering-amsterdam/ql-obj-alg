@@ -19,10 +19,13 @@ public class Dependencies {
 		return nodes.isEmpty();
 	}
 	
+	//TODO you created your own encapsulated collection but you are not using better internal naming for methods but
+	//just using the common ones.
 	public void add(String node){
 		if(!isIndependent())
 			nodes.add(node);
 	}
+	
 	
 	public void addAll(Collection<String> dependencies){
 		if(!isIndependent())

@@ -13,6 +13,7 @@ public class StmtDependencies extends ExprDependencies implements
 	public IDependencyGraph iff(final IExpDependency cond, final IDependencyGraph b) {
 		return new IDependencyGraph(){
 			public void dependencies(FillDependencyGraph dcd){
+				//TODO Code duplication
 				dcd.newDefinitionDependencyLevel();
 				dcd.addNodesToDependOn(cond.dependency(dcd));
 				b.dependencies(dcd);
@@ -26,6 +27,7 @@ public class StmtDependencies extends ExprDependencies implements
 			final IDependencyGraph b2) {
 		return new IDependencyGraph(){
 			public void dependencies(FillDependencyGraph dcd){
+				//TODO Code duplication
 				dcd.newDefinitionDependencyLevel();
 				dcd.addNodesToDependOn(cond.dependency(dcd));
 				b1.dependencies(dcd);

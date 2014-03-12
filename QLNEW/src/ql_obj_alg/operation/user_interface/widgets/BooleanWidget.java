@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
-import java.awt.event.FocusListener;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -19,7 +19,6 @@ public class BooleanWidget implements IWidget{
 		this.id = id;
 		
 		this.checkBox = new JCheckBox();
-
 		this.label = new JLabel(label);
 		this.label.setLabelFor(this.checkBox);
 	}
@@ -83,12 +82,12 @@ public class BooleanWidget implements IWidget{
 	}
 
 	@Override
-	public void addFocusListener(FocusListener fl) {
-		checkBox.addFocusListener(fl);
+	public void setValue(Value v) {
+		checkBox.setSelected(v.getBoolean());
 	}
 
 	@Override
-	public void setValue(Value v) {
-		checkBox.setSelected(v.getBoolean());
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		checkBox.addPropertyChangeListener("value", pcl);
 	}
 }

@@ -1,6 +1,6 @@
 package ql_obj_alg.operation.user_interface.widgets;
 
-import java.awt.event.FocusListener;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -88,14 +88,15 @@ public class StringWidget implements IWidget{
 		return id.hashCode();
 	}
 
-	@Override
-	public void addFocusListener(FocusListener fl) {
-		text.addFocusListener(fl);
-	}
 
 	@Override
 	public void setValue(Value v) {
 		text.setText(v.getString());
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		text.addPropertyChangeListener("value", pcl);
 	}
 	
 }

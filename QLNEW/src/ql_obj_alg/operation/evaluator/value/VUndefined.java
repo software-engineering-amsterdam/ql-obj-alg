@@ -2,6 +2,10 @@ package ql_obj_alg.operation.evaluator.value;
 
 public class VUndefined extends VBase{
 
+	@Override 
+	public Boolean getBoolean(){
+		return new Boolean(false);
+	}
 	@Override
 	public Value div(Value v) {
 		return new VUndefined();
