@@ -43,4 +43,9 @@ public class VBoolean extends VBase {
 	public Value or(VBoolean v){
 		return new VBoolean(b || v.getBoolean());
 	}
+	
+	@Override 
+	public String toString(){
+		return ""+b;
+	}
 }

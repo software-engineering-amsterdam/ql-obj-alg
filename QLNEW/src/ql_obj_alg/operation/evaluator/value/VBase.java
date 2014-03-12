@@ -328,5 +328,9 @@ public class VBase extends Value {
 	public Value not() {
 		assert false : "Wrong type " + this.getClass() + " in operation not"; return new VUndefined();
 	}
-
+	
+	@Override 
+	public String toString(){
+		return "Undefined";
+	}
 }

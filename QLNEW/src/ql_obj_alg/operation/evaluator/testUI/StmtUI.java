@@ -77,6 +77,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
+
 							for(IWidget widget : listWidgetIf){
 								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
 								eraseAndUpdateIfHidden(valEnv, widget,

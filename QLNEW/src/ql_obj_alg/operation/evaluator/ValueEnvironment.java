@@ -7,7 +7,6 @@ import java.util.Map;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.widgets.ObservableWidget;
-
 public class ValueEnvironment{
 
 	private Map<String, ObservableWidget> registry = new HashMap<String,ObservableWidget>();
@@ -38,6 +37,15 @@ public class ValueEnvironment{
 
 	public void setQuestionValue(String varName, Value v){
 		questionsMap.put(varName,v);		
+	}
+	
+	public String toJsonString(){
+		String ret = "{ \n";
+		for(String key : questionsMap.keySet()){
+			ret += "\"" + key + "\"" + ":" + "\"" + questionsMap.get(key) + "\",\n";
+		}
+		ret += "}";
+		return ret;
 	}
 
 }
