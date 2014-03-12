@@ -2,10 +2,11 @@ package ql_obj_alg.operation.evaluator.testUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import java.util.Stack;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
@@ -28,29 +29,12 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public List<IWidget> create(final FormFrame frame,
+			public void create(final FormFrame frame,
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 
 				visibilityConditions.push(cond);
-				final List<IWidget> listWidget = b.create(frame,valEnv,visibilityConditions);
+				b.create(frame,valEnv,visibilityConditions);
 				visibilityConditions.pop();
-				
-				for(String dep : cond.deps()){
-					valEnv.getObservable(dep).addObserver(new Observer(){
-						@Override
-						public void update(Observable arg0, Object arg1) {
-							for(IWidget widget : listWidget){
-								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
-								widget.setVisible(visibility);
-								eraseAndUpdateIfHidden(valEnv, widget,
-										visibility);
-							}
-							frame.revalidate();
-							frame.repaint();
-						}
-					});
-				}
-				return listWidget;
 			}
 			
 		};
@@ -61,38 +45,17 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public List<IWidget> create(final FormFrame frame,
+			public void create(final FormFrame frame,
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				visibilityConditions.push(cond);
-				final List<IWidget> listWidgetIf = b1.create(frame,valEnv, visibilityConditions);
+				b1.create(frame,valEnv, visibilityConditions);
 				visibilityConditions.pop();
 				
 				visibilityConditions.push(not(cond));
-				final List<IWidget> listWidgetElse = b2.create(frame,valEnv, visibilityConditions);
+				b2.create(frame,valEnv, visibilityConditions);
 				visibilityConditions.pop();
-				
-				for(String dep : cond.deps()){
-					valEnv.getObservable(dep).addObserver(new Observer(){
-						@Override
-						public void update(Observable arg0, Object arg1) {
 
-							for(IWidget widget : listWidgetIf){
-								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
-								eraseAndUpdateIfHidden(valEnv, widget,
-										visibility);
-							}
-							for(IWidget widget : listWidgetElse){
-								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
-								widget.setVisible(visibility);
-								eraseAndUpdateIfHidden(valEnv, widget,
-										visibility);
-							}
-						}
-					});
-				}
-				listWidgetIf.addAll(listWidgetElse);
-				return listWidgetIf;
 			}
 			
 		};
@@ -102,13 +65,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate comb(final List<ICreate> listStatements) {
 		return new ICreate(){
 			@Override
-			public List<IWidget> create(FormFrame frame,
+			public void create(FormFrame frame,
 					ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
-				List<IWidget> listWidget = new ArrayList<IWidget>();
 				for(ICreate stmt: listStatements){
-					listWidget.addAll(stmt.create(frame, valEnv, visibilityConditions));
+					stmt.create(frame, valEnv, visibilityConditions);
 				}
-				return listWidget;
 			}
 		};
 	}
@@ -117,16 +78,18 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate question(final String id, final String label, final Type type) {
 		return new ICreate(){
 			@Override
-			public List<IWidget> create(final FormFrame frame,
-					final ValueEnvironment valEnv,Stack<IDepsAndEvalE> visibilityConditions) {
+			public void create(final FormFrame frame,
+					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
+				
 				final IWidget widget = FieldFactory.createField(id,label,type);
-				widget.setVisibilityConditions(visibilityConditions);
-
-				widget.setVisible(computeConditionals(visibilityConditions,valEnv));
+				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
+				widget.setVisible(computeConditionals(localVisibility,valEnv));
+				
 				valEnv.initObservable(id);
+				valEnv.setQuestionValue(id, new VUndefined());
+				
 				
 				widget.addActionListener(new ActionListener(){
-
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						valEnv.setQuestionValue(id, widget.getValue());
@@ -139,10 +102,19 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					}
 					
 				});
-
+				
+				for(String dep : ConditionalsDependencies(localVisibility)){
+					valEnv.getObservable(dep).addObserver(new Observer(){
+						@Override
+						public void update(Observable arg0, Object arg1) {
+							boolean visible = computeConditionals(localVisibility,valEnv);
+							widget.setValue(new VUndefined());
+							widget.setVisible(visible);
+						}
+					});
+				}
+				
 				widget.addAnswerableQuestionToFrame(frame);
-				widget.setVisible(true);
-				return initWidgetList(widget);
 			}
 		};
 	}
@@ -152,12 +124,16 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public List<IWidget> create(final FormFrame frame,
+			public void create(final FormFrame frame,
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
+				
 				final IWidget widget = FieldFactory.createField(id,label,type);
-				widget.setVisibilityConditions(visibilityConditions);
-				widget.setVisible(computeConditionals(visibilityConditions,valEnv));
+				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
+				widget.setVisible(computeConditionals(localVisibility,valEnv));
+				
 				valEnv.initObservable(id);
+				valEnv.setQuestionValue(id, new VUndefined());
+				
 				for(String dep : e.deps()){
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
@@ -176,18 +152,23 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					});
 					
 				}
+				
+				for(String dep : ConditionalsDependencies(localVisibility)){
+					valEnv.getObservable(dep).addObserver(new Observer(){
+						@Override
+						public void update(Observable arg0, Object arg1) {
+							boolean visible = computeConditionals(localVisibility,valEnv);
+							widget.setValue(new VUndefined());
+							widget.setVisible(visible);
+						}
+					});
+				}				
+				
 				widget.addComputedQuestionToFrame(frame);
-				widget.setVisible(true);
-				return initWidgetList(widget);
+
 			}
 			
 		};
-	}
-
-	private List<IWidget> initWidgetList(IWidget a){
-		List<IWidget> list = new ArrayList<IWidget>();
-		list.add(a);
-		return list;
 	}
 	
 	private boolean computeConditionals(List<IDepsAndEvalE> conditionals, ValueEnvironment valEnv){
@@ -198,17 +179,17 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return true;
 	}
 
-	private void eraseAndUpdateIfHidden(final ValueEnvironment valEnv,
-			IWidget widget, boolean visibility) {
-		widget.setVisible(visibility);
-		if(!visibility){
-			valEnv.setQuestionValue(widget.getId(), new VUndefined());
+	private Set<String> ConditionalsDependencies(List<IDepsAndEvalE> conditionals){
+		Set<String> set = new HashSet<String>();
+		for(IDepsAndEvalE cond : conditionals){
+			set.addAll(cond.deps());
 		}
-		ObservableWidget a = valEnv.getObservable(widget.getId());
-		synchronized(a){
-			a.setChanged();
-			a.notifyAll();
-		}
+		return set;
 	}
 	
+	private Stack<IDepsAndEvalE> cloneToLocalConditions(Stack<IDepsAndEvalE> conditions){
+		Stack<IDepsAndEvalE> localCond = new Stack<IDepsAndEvalE>();
+		localCond.addAll(conditions);
+		return localCond;
+	}
 }
