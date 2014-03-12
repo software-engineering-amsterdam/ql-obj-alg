@@ -1,5 +1,7 @@
 package ql_obj_alg.operation.cyclic_dependencies;
 
+import java.util.List;
+
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.cyclic_dependencies.modules.Cycle;
 import ql_obj_alg.operation.cyclic_dependencies.modules.graph.CyclicDependencyDetection;
@@ -17,10 +19,11 @@ public class FormDependencies extends StmtDependencies implements
 	}
 
 	@Override
-	public IDependencyGraph form(final String id, final IDependencyGraph s) {
+	public IDependencyGraph form(final String id, final List<IDependencyGraph> s) {
 		return new IDependencyGraph(){
 			public void dependencies(FillDependencyGraph dcd){
-				s.dependencies(dcd);
+				for(IDependencyGraph stmt : s)
+					stmt.dependencies(dcd);
 				CyclicDependencyDetection cycleDetection = new CyclicDependencyDetection(dcd.getGraph());
 				cycleDetection.detectCycles();
 				for(Cycle cycle : cycleDetection.getCycles())

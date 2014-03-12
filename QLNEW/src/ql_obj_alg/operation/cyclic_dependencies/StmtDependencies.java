@@ -10,40 +10,32 @@ public class StmtDependencies extends ExprDependencies implements
 		IStmtAlg<IExpDependency, IDependencyGraph> {
 	
 	@Override
-	public IDependencyGraph iff(final IExpDependency cond, final IDependencyGraph b) {
+	public IDependencyGraph iff(final IExpDependency cond, final List<IDependencyGraph> b) {
 		return new IDependencyGraph(){
 			public void dependencies(FillDependencyGraph dcd){
 				//TODO Code duplication
 				dcd.newDefinitionDependencyLevel();
 				dcd.addNodesToDependOn(cond.dependency(dcd));
-				b.dependencies(dcd);
-				dcd.revert();
-			}
-		};
-	}
-
-	@Override
-	public IDependencyGraph iffelse(final IExpDependency cond, final IDependencyGraph b1,
-			final IDependencyGraph b2) {
-		return new IDependencyGraph(){
-			public void dependencies(FillDependencyGraph dcd){
-				//TODO Code duplication
-				dcd.newDefinitionDependencyLevel();
-				dcd.addNodesToDependOn(cond.dependency(dcd));
-				b1.dependencies(dcd);
-				b2.dependencies(dcd);
-				dcd.revert();
-			}
-		};
-	}
-
-	@Override
-	public IDependencyGraph comb(final List<IDependencyGraph> stmtList) {
-		return new IDependencyGraph(){
-			public void dependencies(FillDependencyGraph dcd){
-				for(IDependencyGraph stmt : stmtList){
+				for(IDependencyGraph stmt : b)
 					stmt.dependencies(dcd);
-				}
+				dcd.revert();
+			}
+		};
+	}
+
+	@Override
+	public IDependencyGraph iffelse(final IExpDependency cond, final List<IDependencyGraph> b1,
+			final List<IDependencyGraph> b2) {
+		return new IDependencyGraph(){
+			public void dependencies(FillDependencyGraph dcd){
+				//TODO Code duplication
+				dcd.newDefinitionDependencyLevel();
+				dcd.addNodesToDependOn(cond.dependency(dcd));
+				for(IDependencyGraph stmt : b1)
+					stmt.dependencies(dcd);
+				for(IDependencyGraph stmt : b2)
+					stmt.dependencies(dcd);
+				dcd.revert();
 			}
 		};
 	}
