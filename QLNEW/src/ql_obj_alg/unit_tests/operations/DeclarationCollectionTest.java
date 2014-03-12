@@ -50,6 +50,6 @@ public class DeclarationCollectionTest extends TestCase{
 		questions.add(s.question(question, "Correct duplicate", new TInteger()));
 		questions.add(s.question(question, "Conflicting duplicate", new TBoolean()));
 
-		return f.form("id", s.comb(questions));
+		return f.form("id", questions);
 	}
 }

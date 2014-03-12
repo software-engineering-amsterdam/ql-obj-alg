@@ -11,32 +11,24 @@ public class StmtCollectQuestionTypes implements
 		IStmtAlg<Void,ICollect> {
 	
 	@Override
-	public ICollect iff(final Void cond, final ICollect b) {
+	public ICollect iff(final Void cond, final List<ICollect> stmtList) {
 		return new ICollect(){
 			public void collect(TypeEnvironment tenv){
-				b.collect(tenv);
-			}
-		};
-	}
-
-	@Override
-	public ICollect iffelse(final Void cond, final ICollect b1,
-			final ICollect b2) {
-		return new ICollect(){
-			public void collect(TypeEnvironment tenv){
-				b1.collect(tenv);
-				b2.collect(tenv);
-			}
-		};
-	}
-
-	@Override
-	public ICollect comb(final List<ICollect> stmtList) {
-		return new ICollect(){
-			public void collect(TypeEnvironment tenv){
-				for(ICollect stmt : stmtList){
+				for(ICollect stmt : stmtList)
 					stmt.collect(tenv);
-				}
+			}
+		};
+	}
+
+	@Override
+	public ICollect iffelse(final Void cond, final List<ICollect> stmtList1,
+			final List<ICollect> stmtList2) {
+		return new ICollect(){
+			public void collect(TypeEnvironment tenv){
+				for(ICollect stmt : stmtList1)
+					stmt.collect(tenv);
+				for(ICollect stmt : stmtList2)
+					stmt.collect(tenv);
 			}
 		};
 	}
