@@ -15,7 +15,6 @@ import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
-import ql_obj_alg.operation.user_interface.modules.Widgets;
 import ql_obj_alg.operation.user_interface.widgets.FieldFactory;
 import ql_obj_alg.operation.user_interface.widgets.IWidget;
 import ql_obj_alg.operation.user_interface.widgets.ObservableWidget;
@@ -29,11 +28,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public List<IWidget> create(final FormFrame frame, final Widgets widgets,
+			public List<IWidget> create(final FormFrame frame,
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 
 				visibilityConditions.push(cond);
-				final List<IWidget> listWidget = b.create(frame,widgets,valEnv,visibilityConditions);
+				final List<IWidget> listWidget = b.create(frame,valEnv,visibilityConditions);
 				visibilityConditions.pop();
 				
 				for(String dep : cond.deps()){
@@ -62,15 +61,15 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public List<IWidget> create(final FormFrame frame, final Widgets widgets,
+			public List<IWidget> create(final FormFrame frame,
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				visibilityConditions.push(cond);
-				final List<IWidget> listWidgetIf = b1.create(frame,widgets,valEnv, visibilityConditions);
+				final List<IWidget> listWidgetIf = b1.create(frame,valEnv, visibilityConditions);
 				visibilityConditions.pop();
 				
 				visibilityConditions.push(not(cond));
-				final List<IWidget> listWidgetElse = b2.create(frame,widgets,valEnv, visibilityConditions);
+				final List<IWidget> listWidgetElse = b2.create(frame,valEnv, visibilityConditions);
 				visibilityConditions.pop();
 				
 				for(String dep : cond.deps()){
@@ -103,11 +102,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate comb(final List<ICreate> listStatements) {
 		return new ICreate(){
 			@Override
-			public List<IWidget> create(FormFrame frame, Widgets widgets,
+			public List<IWidget> create(FormFrame frame,
 					ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 				List<IWidget> listWidget = new ArrayList<IWidget>();
 				for(ICreate stmt: listStatements){
-					listWidget.addAll(stmt.create(frame, widgets, valEnv, visibilityConditions));
+					listWidget.addAll(stmt.create(frame, valEnv, visibilityConditions));
 				}
 				return listWidget;
 			}
@@ -118,7 +117,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate question(final String id, final String label, final Type type) {
 		return new ICreate(){
 			@Override
-			public List<IWidget> create(final FormFrame frame, Widgets widgets,
+			public List<IWidget> create(final FormFrame frame,
 					final ValueEnvironment valEnv,Stack<IDepsAndEvalE> visibilityConditions) {
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				widget.setVisibilityConditions(visibilityConditions);
@@ -153,7 +152,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public List<IWidget> create(final FormFrame frame, Widgets widgets,
+			public List<IWidget> create(final FormFrame frame,
 					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				widget.setVisibilityConditions(visibilityConditions);
