@@ -15,6 +15,7 @@ import ql_obj_alg.operation.user_interface.modules.FormFrame;
 import ql_obj_alg.operation.user_interface.modules.Widgets;
 import ql_obj_alg.operation.user_interface.widgets.FieldFactory;
 import ql_obj_alg.operation.user_interface.widgets.IWidget;
+import ql_obj_alg.operation.user_interface.widgets.ObservableWidget;
 import ql_obj_alg.types.Type;
 
 
@@ -111,12 +112,10 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						valEnv.setQuestionValue(id, widget.getValue());
-						System.out.println("actionListener "+ widget.getId() + arg0.getActionCommand());
-						Observable obs = valEnv.getObservable(id);
-						System.out.println(obs.countObservers());
-						
+						ObservableWidget obs = valEnv.getObservable(id);
 						synchronized(obs){
-							obs.notifyAll();
+							obs.setChanged();
+							obs.notifyObservers();
 						}
 					}
 					
@@ -145,8 +144,9 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 							Value val = e.eval(valEnv);
 							valEnv.setQuestionValue(id, val);
 							widget.setValue(val);
-							Observable a = valEnv.getObservable(id);
+							ObservableWidget a = valEnv.getObservable(id);
 							synchronized(a){
+								a.setChanged();
 								a.notifyAll();
 							}
 						}
