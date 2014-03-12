@@ -111,6 +111,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 							widget.setValue(new VUndefined());
 							valEnv.setQuestionValue(widget.getId(), new VUndefined());
 							widget.setVisible(visible);
+							ObservableWidget obs = valEnv.getObservable(id);
+							synchronized(obs){
+								obs.setChanged();
+								obs.notifyObservers();
+							}
 						}
 					});
 				}
