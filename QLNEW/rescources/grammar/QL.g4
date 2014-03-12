@@ -24,20 +24,8 @@ import java.util.List;
 		}
 		return stmtBuilder.comb(stmtList);
 	}
-	
-	protected IBuildF composeForms(List<QLParser.FormContext> antlr4FormList){
-		List<IBuildF> formList = new ArrayList<IBuildF>();
-		for(QLParser.FormContext form : antlr4FormList)
-		{
-			formList.add(form.frm);
-		}
-		return formBuilder.forms(formList);
-	}
-	
-}
 
-forms returns [IBuildF frm]: 
-		a+=form+ {$frm = composeForms($a);};
+}
 
 form returns [IBuildF frm]: 
 		'form' ID LB a+=stat+ RB {$frm = formBuilder.form($ID.text,composeStmt($a));};

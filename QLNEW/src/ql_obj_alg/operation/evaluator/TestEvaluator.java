@@ -18,7 +18,7 @@ public class TestEvaluator {
 	public static void main(String[] args) {
 		try {
 			QLParser qlParser = Parser.parse(Parser.getInputStream(new FileInputStream(args[0])));
-	    	IBuildF form = qlParser.forms().frm;
+	    	IBuildF form = qlParser.form().frm;
 	    	
 	    	IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
 	    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI();

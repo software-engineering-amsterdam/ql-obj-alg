@@ -194,12 +194,4 @@ public class Tester implements IFormAlg<ITest,ITest,ITest>,IStmtAlg<ITest,ITest>
 		};
 	}
 
-	@Override
-	public ITest forms(List<ITest> listForms) {
-		return new Test((ITest[]) listForms.toArray()){
-			@Override
-			public ITest isForms(){return this;}
-		};
-	}
-
 }

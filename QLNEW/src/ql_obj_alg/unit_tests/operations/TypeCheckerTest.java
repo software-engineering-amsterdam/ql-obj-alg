@@ -72,9 +72,7 @@ public class TypeCheckerTest {
 		List<S> questions = new ArrayList<S>();
 		questions.add(s.question("id1", "label", new TBoolean()));
 		questions.add(s.question("id2", "label", new TInteger()));
-		List<F> forms = new ArrayList<F>();
-		forms.add(f.form("Form id", s.comb(questions)));
-		return f.forms(forms);
+		return f.form("Form id", s.comb(questions));
 	}
 	
 	@Test

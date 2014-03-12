@@ -27,7 +27,7 @@ import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 public class Parser {
     public static void main(String[] args) throws Exception {
     	QLParser qlParser = parse(getInputStream(new FileInputStream(args[0])));
-    	IBuildF form = qlParser.forms().frm;
+    	IBuildF form = qlParser.form().frm;
     	//typeCheck(form);
     	printForm(form);
     }
