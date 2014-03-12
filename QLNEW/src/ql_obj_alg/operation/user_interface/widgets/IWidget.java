@@ -23,6 +23,10 @@ public abstract class IWidget {
 	public void setVisibilityCondition(IDepsAndEvalE cond) {
 		visConditions.add(cond);
 	}
+	
+	public void setVisibilityConditions(List<IDepsAndEvalE> cond) {
+		visConditions.addAll(cond);
+	}
 
 	public List<IDepsAndEvalE> getVisibilityConditions() {
 		return visConditions;

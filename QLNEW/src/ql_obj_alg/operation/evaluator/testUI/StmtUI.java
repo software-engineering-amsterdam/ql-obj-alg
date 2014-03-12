@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Stack;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.operation.user_interface.modules.FormFrame;
 import ql_obj_alg.operation.user_interface.modules.Widgets;
@@ -28,16 +30,12 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 			@Override
 			public List<IWidget> create(final FormFrame frame, final Widgets widgets,
-					final ValueEnvironment valEnv) {
+					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
+
+				visibilityConditions.push(cond);
+				final List<IWidget> listWidget = b.create(frame,widgets,valEnv,visibilityConditions);
+				visibilityConditions.pop();
 				
-				final List<IWidget> listWidget = b.create(frame,widgets,valEnv);
-				addConditional(listWidget,cond);
-				
-				if(!cond.eval(valEnv).getBoolean()){
-					for(IWidget widget : listWidget){
-						widget.setVisible(false);
-					}
-				}
 				for(String dep : cond.deps()){
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
@@ -45,6 +43,8 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 							for(IWidget widget : listWidget){
 								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
 								widget.setVisible(visibility);
+								eraseAndUpdateIfHidden(valEnv, widget,
+										visibility);
 							}
 							frame.revalidate();
 							frame.repaint();
@@ -63,22 +63,30 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 			@Override
 			public List<IWidget> create(final FormFrame frame, final Widgets widgets,
-					final ValueEnvironment valEnv) {
-				final List<IWidget> listWidgetIf = b1.create(frame,widgets,valEnv);
-				final List<IWidget> listWidgetElse = b2.create(frame,widgets,valEnv);
-				addConditional(listWidgetIf,cond);
-				addConditional(listWidgetElse,not(cond));
+					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
+				
+				visibilityConditions.push(cond);
+				final List<IWidget> listWidgetIf = b1.create(frame,widgets,valEnv, visibilityConditions);
+				visibilityConditions.pop();
+				
+				visibilityConditions.push(not(cond));
+				final List<IWidget> listWidgetElse = b2.create(frame,widgets,valEnv, visibilityConditions);
+				visibilityConditions.pop();
+				
 				for(String dep : cond.deps()){
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
 							for(IWidget widget : listWidgetIf){
 								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
-								widget.setVisible(visibility);
+								eraseAndUpdateIfHidden(valEnv, widget,
+										visibility);
 							}
 							for(IWidget widget : listWidgetElse){
 								boolean visibility = computeConditionals(widget.getVisibilityConditions(),valEnv);
 								widget.setVisible(visibility);
+								eraseAndUpdateIfHidden(valEnv, widget,
+										visibility);
 							}
 						}
 					});
@@ -95,10 +103,10 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 			@Override
 			public List<IWidget> create(FormFrame frame, Widgets widgets,
-					ValueEnvironment valEnv) {
+					ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 				List<IWidget> listWidget = new ArrayList<IWidget>();
 				for(ICreate stmt: listStatements){
-					listWidget.addAll(stmt.create(frame, widgets, valEnv));
+					listWidget.addAll(stmt.create(frame, widgets, valEnv, visibilityConditions));
 				}
 				return listWidget;
 			}
@@ -110,8 +118,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 			@Override
 			public List<IWidget> create(final FormFrame frame, Widgets widgets,
-					final ValueEnvironment valEnv) {
+					final ValueEnvironment valEnv,Stack<IDepsAndEvalE> visibilityConditions) {
 				final IWidget widget = FieldFactory.createField(id,label,type);
+				widget.setVisibilityConditions(visibilityConditions);
+
+				widget.setVisible(computeConditionals(visibilityConditions,valEnv));
 				valEnv.initObservable(id);
 				
 				widget.addActionListener(new ActionListener(){
@@ -142,8 +153,10 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 			@Override
 			public List<IWidget> create(final FormFrame frame, Widgets widgets,
-					final ValueEnvironment valEnv) {
+					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
 				final IWidget widget = FieldFactory.createField(id,label,type);
+				widget.setVisibilityConditions(visibilityConditions);
+				widget.setVisible(computeConditionals(visibilityConditions,valEnv));
 				valEnv.initObservable(id);
 				for(String dep : e.deps()){
 					valEnv.getObservable(dep).addObserver(new Observer(){
@@ -177,18 +190,25 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return list;
 	}
 	
-	private void addConditional(List<IWidget> widgets, final IDepsAndEvalE cond){
-		for(IWidget widget: widgets){
-			widget.setVisibilityCondition(cond);
-		}
-	}
-	
 	private boolean computeConditionals(List<IDepsAndEvalE> conditionals, ValueEnvironment valEnv){
 		for(IDepsAndEvalE cond : conditionals){
 			if(!cond.eval(valEnv).getBoolean())
 				return false;
 		}
 		return true;
+	}
+
+	private void eraseAndUpdateIfHidden(final ValueEnvironment valEnv,
+			IWidget widget, boolean visibility) {
+		widget.setVisible(visibility);
+		if(!visibility){
+			valEnv.setQuestionValue(widget.getId(), new VUndefined());
+		}
+		ObservableWidget a = valEnv.getObservable(widget.getId());
+		synchronized(a){
+			a.setChanged();
+			a.notifyAll();
+		}
 	}
 	
 }
