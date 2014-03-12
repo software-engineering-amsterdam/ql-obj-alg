@@ -95,5 +95,10 @@ public class VInteger extends VBase {
 	public Value neq(VInteger v){
 		return new VBoolean(!v.getInteger().equals(x));
 	}	
+	
+	@Override 
+	public String toString(){
+		return ""+x;
+	}
 		
 }

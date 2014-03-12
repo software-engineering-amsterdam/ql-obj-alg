@@ -61,4 +61,9 @@ public class VString extends VBase {
 	public Value neq(VString v){
 		return new VBoolean(!v.getString().equals(s));
 	}	
+	
+	@Override 
+	public String toString(){
+		return s;
+	}
 }
