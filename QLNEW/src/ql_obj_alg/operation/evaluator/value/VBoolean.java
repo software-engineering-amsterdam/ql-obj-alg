@@ -24,6 +24,10 @@ public class VBoolean extends VBase {
 		return v.neq(this);
 	}
 	
+	public Value not(){
+		return new VBoolean(!b);
+	}
+	
 	public Value neq(VBoolean v){
 		return new VBoolean(b != v.getBoolean());
 	}

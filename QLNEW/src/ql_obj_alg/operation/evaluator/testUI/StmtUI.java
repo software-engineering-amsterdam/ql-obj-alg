@@ -27,28 +27,25 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	@Override
 	public ICreate iff(final IDepsAndEvalE cond, final List<ICreate> b) {
 		return new ICreate(){
-
 			@Override
-			public void create(final FormFrame frame,
-					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
-
+			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+					Stack<IDepsAndEvalE> visibilityConditions) {
+				
 				visibilityConditions.push(cond);
 				for(ICreate stmt : b){
 					stmt.create(frame,valEnv,visibilityConditions);
 				}
 				visibilityConditions.pop();
 			}
-			
 		};
 	}
 
 	@Override
 	public ICreate iffelse(final IDepsAndEvalE cond,final List<ICreate> b1, final List<ICreate> b2) {
 		return new ICreate(){
-
 			@Override
-			public void create(final FormFrame frame,
-					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
+			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+					Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				visibilityConditions.push(cond);
 				for(ICreate stmt : b1){
@@ -61,9 +58,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					stmt.create(frame,valEnv,visibilityConditions);
 				}
 				visibilityConditions.pop();
-
 			}
-			
 		};
 	}
 
@@ -71,8 +66,8 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate question(final String id, final String label, final Type type) {
 		return new ICreate(){
 			@Override
-			public void create(final FormFrame frame,
-					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
+			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+					Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
@@ -80,7 +75,6 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				
 				valEnv.initObservable(id);
 				valEnv.setQuestionValue(id, new VUndefined());
-				
 				
 				widget.addActionListener(new ActionListener(){
 					@Override
@@ -93,7 +87,6 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 							obs.notifyObservers();
 						}
 					}
-					
 				});
 				
 				for(String dep : ConditionalsDependencies(localVisibility)){
@@ -112,7 +105,6 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 						}
 					});
 				}
-				
 				widget.addAnswerableQuestionToFrame(frame);
 			}
 		};
@@ -123,8 +115,8 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public void create(final FormFrame frame,
-					final ValueEnvironment valEnv, Stack<IDepsAndEvalE> visibilityConditions) {
+			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+					Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
@@ -165,9 +157,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				}				
 				
 				widget.addComputedQuestionToFrame(frame);
-
 			}
-			
 		};
 	}
 	
