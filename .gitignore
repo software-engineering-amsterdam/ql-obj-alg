@@ -11,6 +11,9 @@
 QLNEW/.*
 QLNEW/lib/*
 QLNEW/bin/*
+QLNEW/.classpath
+QLNEW/.project
+QLNEW/rescources
 
 # Packages #
 ############
