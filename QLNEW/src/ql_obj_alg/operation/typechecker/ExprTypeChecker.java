@@ -125,7 +125,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(!t1.equals(t2)){
 					report.addError(new ConflictingTypeError(t1,t2,"=="));
 				}
-				return t1.merge(t2);
+				return new TBoolean();
 			}
 		};
 	}
@@ -138,7 +138,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t2 = a2.type(tenv,report);
 				if(!t1.equals(t2)){
 					report.addError(new ConflictingTypeError(t1,t2,"!="));				}
-				return t1.merge(t2);
+				return new TBoolean();
 			}
 		};
 	}
@@ -151,7 +151,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isComparable(t2)){
 					report.addError(new ConflictingTypeError(t1,t2,"<"));				}
-				return t1.merge(t2);
+				return new TBoolean();
 			}
 		};
 	}
@@ -164,7 +164,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isComparable(t2)){
 					report.addError(new ConflictingTypeError(t1,t2,"<="));				}
-				return t1.merge(t2);
+				return new TBoolean();
 			}
 		};
 	}
@@ -177,7 +177,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				Type t2 = a2.type(tenv,report);
 				if(!t1.isComparable(t2)){
 					report.addError(new ConflictingTypeError(t1,t2,">"));				}
-				return t1.merge(t2);
+				return new TBoolean();
 			}
 		};
 	}
@@ -191,7 +191,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 				if(t1.isComparable(t2)){
 					report.addError(new ConflictingTypeError(t1,t2,">="));
 				}
-				return t1.merge(t2);
+				return new TBoolean();
 			}
 		};
 	}
