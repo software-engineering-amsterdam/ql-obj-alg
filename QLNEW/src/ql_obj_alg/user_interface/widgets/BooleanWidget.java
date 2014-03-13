@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import ql_obj_alg.operation.evaluator.value.VBoolean;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.user_interface.modules.FormFrame;
 
@@ -29,8 +30,11 @@ public class BooleanWidget implements IWidget{
 	}
 	
 	@Override
-	public VBoolean getValue(){
-		return new VBoolean(checkBox.isSelected());
+	public Value getValue(){
+		if(checkBox.isVisible()){
+			return new VBoolean(checkBox.isSelected());
+		}
+		return new VUndefined();
 	}
 	
 	@Override
