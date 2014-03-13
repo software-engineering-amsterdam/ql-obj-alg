@@ -37,7 +37,7 @@ public class IntegerWidget implements IWidget{
 			return new VUndefined();
 		}
 		else
-			return new VInteger(Integer.parseInt(field.getText()));
+			return new VInteger(Integer.parseInt(field.getText().replace(".", "")));
 	}
 	
 	@Override

@@ -80,11 +80,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						frame.updateField(id,widget.getValue());
-						System.out.println("Action Listener " + id + arg0.getActionCommand());
-						ObservableWidget obs = depNetwork.getObservable(id);
-						obs.setChanged();
-						obs.notifyObservers();
-						
+						notifyObservers(id, frame, depNetwork);
 					}
 				});
 				
@@ -92,18 +88,10 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					depNetwork.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
-
-
 							boolean visible = computeConditionals(localVisibility,frame);
 							frame.updateField(id,new VUndefined());
-
 							widget.setVisible(visible);
-							ObservableWidget obs = depNetwork.getObservable(id);
-					
-								obs.setChanged();
-								obs.notifyObservers();
-							
-							frame.pack();
+							notifyObservers(id, frame, depNetwork);
 						}
 					});
 				}
@@ -131,16 +119,10 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					depNetwork.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
-
 							Value val = e.eval(frame);
 							frame.updateField(id,val);
-
 							widget.setValue(val);
-							ObservableWidget a = depNetwork.getObservable(id);
-							a.setChanged();
-							a.notifyObservers();
-							
-							frame.pack();
+							notifyObservers(id, frame, depNetwork);
 						}
 					});
 					
@@ -154,9 +136,8 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 							boolean visible = computeConditionals(localVisibility,frame);
 							widget.setValue(new VUndefined());
 							frame.updateField(id,new VUndefined());
-
 							widget.setVisible(visible);
-							frame.pack();
+							notifyObservers(id, frame, depNetwork);
 						}
 					});
 				}				
@@ -186,5 +167,13 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		Stack<IDepsAndEvalE> localCond = new Stack<IDepsAndEvalE>();
 		localCond.addAll(conditions);
 		return localCond;
+	}
+
+	private void notifyObservers(final String id, final FormFrame frame,
+			final DependencyNetwork depNetwork) {
+		ObservableWidget obs = depNetwork.getObservable(id);
+		obs.setChanged();
+		obs.notifyObservers();
+		frame.pack();
 	}
 }
