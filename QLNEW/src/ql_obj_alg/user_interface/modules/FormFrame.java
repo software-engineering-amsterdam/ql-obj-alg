@@ -10,6 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ql_obj_alg.operation.evaluator.value.Value;
+import ql_obj_alg.user_interface.widgets.IWidget;
+
 public class FormFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -17,6 +20,7 @@ public class FormFrame extends JFrame {
 	JPanel labelPane;
 	JPanel fieldPane;
 	JPanel buttonPane;
+	private IdAndWidgets idWidgets;
 
 	public FormFrame(String id) {
 		super(id);		
@@ -33,18 +37,25 @@ public class FormFrame extends JFrame {
 		Submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("button clicked");
+				System.out.println(idWidgets.toJsonString());
 			}
 		});
 		buttonPane.add(Submit);
 
+		idWidgets = new IdAndWidgets();
 	}
 	
-	public void addLabel(JLabel label){
+	public void addWidget(String id, IWidget widget){
+		idWidgets.addWidget(id, widget);
+		addLabel(widget.getLabel());
+		addField(widget.getComponent());	
+	}
+	
+	private void addLabel(JLabel label){
 		labelPane.add(label);
 	}
 	
-	public void addField(JComponent field){
+	private void addField(JComponent field){
 		fieldPane.add(field);
 	}
 
@@ -52,6 +63,12 @@ public class FormFrame extends JFrame {
         pack();
         setVisible(true);		
 	}
+	
+	public Value getValueOfField(String id){
+		return idWidgets.getValue(id);
+	}
 
-
+	public void updateField(String id, Value value){
+		idWidgets.setValue(id, value);
+	}
 }

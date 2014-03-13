@@ -13,7 +13,6 @@ import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.evaluator.value.VBoolean;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.types.Type;
@@ -72,20 +71,16 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
-				boolean visible = computeConditionals(localVisibility,valEnv);
-				widget.setVisible(visible);
+
+				widget.setVisible(computeConditionals(localVisibility,frame));
 				
 				valEnv.initObservable(id);
-				if(type.isBoolean()){
-					valEnv.setQuestionValue(id, new VBoolean(false));
-				}else{
-					valEnv.setQuestionValue(id, new VUndefined());
-				}
+
 				
 				widget.addActionListener(new ActionListener(){
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						valEnv.setQuestionValue(id, widget.getValue());
+						frame.updateField(id,widget.getValue());
 						System.out.println("Action Listener " + id + arg0.getActionCommand());
 						ObservableWidget obs = valEnv.getObservable(id);
 						synchronized(obs){
@@ -99,12 +94,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
-							boolean visible = computeConditionals(localVisibility,valEnv);
-							System.out.println("Update called on visible question " + visible );
-							if(!visible){
-								widget.setValue(new VUndefined());
-								valEnv.setQuestionValue(widget.getId(), new VUndefined());
-							}
+
+
+							boolean visible = computeConditionals(localVisibility,frame);
+							frame.updateField(id,new VUndefined());
+
 							widget.setVisible(visible);
 							ObservableWidget obs = valEnv.getObservable(id);
 							synchronized(obs){
@@ -130,22 +124,19 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
-				widget.setVisible(computeConditionals(localVisibility,valEnv));
-				
+				widget.setVisible(computeConditionals(localVisibility,frame));
+				widget.setValue(e.eval(frame));
 				valEnv.initObservable(id);
-				if(type.isBoolean()){
-					valEnv.setQuestionValue(id, new VBoolean(false));
-				}else{
-					valEnv.setQuestionValue(id, new VUndefined());
-				}
+
 				
 				for(String dep : e.deps()){
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
-							System.out.println("Update called on value question " );
-							Value val = e.eval(valEnv);
-							valEnv.setQuestionValue(id, val);
+
+							Value val = e.eval(frame);
+							frame.updateField(id,val);
+
 							widget.setValue(val);
 							ObservableWidget a = valEnv.getObservable(id);
 							synchronized(a){
@@ -162,12 +153,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					valEnv.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
-							boolean visible = computeConditionals(localVisibility,valEnv);
-							System.out.println("Update called on question " + visible );
-							if(!visible){
-								widget.setValue(new VUndefined());
-								valEnv.setQuestionValue(widget.getId(), new VUndefined());
-							}
+
+							boolean visible = computeConditionals(localVisibility,frame);
+							widget.setValue(new VUndefined());
+							frame.updateField(id,new VUndefined());
+
 							widget.setVisible(visible);
 							frame.pack();
 						}
@@ -179,9 +169,9 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		};
 	}
 	
-	private boolean computeConditionals(List<IDepsAndEvalE> conditionals, ValueEnvironment valEnv){
+	private boolean computeConditionals(List<IDepsAndEvalE> conditionals, FormFrame frame){
 		for(IDepsAndEvalE cond : conditionals){
-			if(!cond.eval(valEnv).getBoolean())
+			if(!cond.eval(frame).getBoolean())
 				return false;
 		}
 		return true;
