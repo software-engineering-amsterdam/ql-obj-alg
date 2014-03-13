@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import ql_obj_alg.operation.evaluator.DependencyNetwork;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.user_interface.modules.FormFrame;
 
@@ -31,16 +30,5 @@ public class ConditionalManagement {
 		Stack<IDepsAndEvalE> localCond = new Stack<IDepsAndEvalE>();
 		localCond.addAll(conditions);
 		return localCond;
-	}
-
-	public static void createConditional(final IDepsAndEvalE cond,
-			final List<ICreate> b, final FormFrame frame,
-			final DependencyNetwork depNetwork,
-			Stack<IDepsAndEvalE> visibilityConditions) {
-		visibilityConditions.push(cond);
-		for(ICreate stmt : b){
-			stmt.create(frame,depNetwork,visibilityConditions);
-		}
-		visibilityConditions.pop();
 	}
 }

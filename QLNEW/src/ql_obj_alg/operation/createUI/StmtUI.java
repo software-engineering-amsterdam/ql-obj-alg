@@ -23,7 +23,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 			@Override
 			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
-				ConditionalManagement.createConditional(cond, b, frame, depNetwork,visibilityConditions);
+				visibilityConditions.push(cond);
+				for(ICreate stmt : b){
+					stmt.create(frame,depNetwork,visibilityConditions);
+				}
+				visibilityConditions.pop();
 			}
 		};
 	}
@@ -34,8 +38,17 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 			@Override
 			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
-				ConditionalManagement.createConditional(cond, b1, frame, depNetwork,visibilityConditions);
-				ConditionalManagement.createConditional(not(cond), b2, frame, depNetwork,visibilityConditions);
+				visibilityConditions.push(cond);
+				for(ICreate stmt : b1){
+					stmt.create(frame,depNetwork,visibilityConditions);
+				}
+				visibilityConditions.pop();
+				
+				visibilityConditions.push(not(cond));
+				for(ICreate stmt : b2){
+					stmt.create(frame,depNetwork,visibilityConditions);
+				}
+				visibilityConditions.pop();
 			}
 		};
 	}
