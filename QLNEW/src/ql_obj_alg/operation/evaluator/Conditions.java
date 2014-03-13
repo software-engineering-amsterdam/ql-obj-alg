@@ -1,5 +1,8 @@
 package ql_obj_alg.operation.evaluator;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 public class Conditions {
@@ -32,6 +35,14 @@ public class Conditions {
 				return false;
 		}
 		return true;
+	}
+	
+	public Set<String> dependencies(){
+		Set<String> set = new HashSet<String>();
+		for(IDepsAndEvalE cond : conditions){
+			set.addAll(cond.deps());
+		}
+		return set;
 	}
 	
 }
