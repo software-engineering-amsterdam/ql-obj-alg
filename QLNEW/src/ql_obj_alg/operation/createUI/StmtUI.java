@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Stack;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
-import ql_obj_alg.operation.evaluator.ConditionalManagement;
 import ql_obj_alg.operation.evaluator.Conditions;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
@@ -79,7 +78,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					}
 				});
 				
-				valEnv.createVisibilityObservers(id, frame, widget,localVisibility);
+				valEnv.createVisibilityObservers(id, frame, widget,conditions);
 				widget.addAnswerableQuestionToFrame(frame);
 			}
 		};

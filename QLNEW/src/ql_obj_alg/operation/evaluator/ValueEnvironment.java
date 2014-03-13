@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Stack;
 
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
@@ -49,13 +48,13 @@ public class ValueEnvironment {
 	}
 	
 	public void createVisibilityObservers(final String id,final FormFrame frame, 
-			final IWidget widget, final Stack<IDepsAndEvalE> localVisibility) {
+			final IWidget widget, final Conditions conditions) {
 		final ValueEnvironment valEnv = this;
-		for(String dep : ConditionalManagement.dependencies(localVisibility)){
+		for(String dep : conditions.dependencies()){
 			this.getObservable(dep).addObserver(new Observer(){
 				@Override
 				public void update(Observable arg0, Object arg1) {
-					boolean visible = ConditionalManagement.compute(localVisibility,valEnv);
+					boolean visible = conditions.compute(valEnv);
 					valEnv.setQuestionValue(id, new VUndefined());
 					System.out.println("Visibility update called");
 					valEnv.setQuestionValue(id, new VUndefined());

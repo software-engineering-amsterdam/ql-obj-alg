@@ -1,7 +1,6 @@
 package ql_obj_alg.operation.evaluator;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
