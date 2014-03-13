@@ -83,10 +83,9 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 						frame.updateField(id,widget.getValue());
 						System.out.println("Action Listener " + id + arg0.getActionCommand());
 						ObservableWidget obs = valEnv.getObservable(id);
-						synchronized(obs){
-							obs.setChanged();
-							obs.notifyObservers();
-						}
+						obs.setChanged();
+						obs.notifyObservers();
+						
 					}
 				});
 				
@@ -101,10 +100,10 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 							widget.setVisible(visible);
 							ObservableWidget obs = valEnv.getObservable(id);
-							synchronized(obs){
+					
 								obs.setChanged();
 								obs.notifyObservers();
-							}
+							
 							frame.pack();
 						}
 					});
@@ -139,10 +138,9 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 							widget.setValue(val);
 							ObservableWidget a = valEnv.getObservable(id);
-							synchronized(a){
-								a.setChanged();
-								a.notifyAll();
-							}
+							a.setChanged();
+							a.notifyObservers();
+							
 							frame.pack();
 						}
 					});

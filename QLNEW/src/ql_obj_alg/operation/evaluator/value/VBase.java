@@ -2,23 +2,23 @@ package ql_obj_alg.operation.evaluator.value;
 
 import ql_obj_alg.operation.evaluator.value.Value;;
 
-public class VBase extends Value {
+public abstract class VBase extends Value {
 
 	@Override
 	public Integer getInteger() {
-		assert false : "getInteger in VBase was called";
+		assert false : "getInteger in" + this.getClass() + " was called";
 		return null;
 	}
 
 	@Override
 	public Boolean getBoolean() {
-		assert false : "getBoolean in VBase was called";
+		assert false : "getBoolean in" + this.getClass() + " was called";
 		return null;
 	}
 
 	@Override
 	public String getString() {
-		assert false : "getString in VBase was called";
+		assert false : "getString in" + this.getClass() + " was called";
 		return null;
 	}
 	@Override
