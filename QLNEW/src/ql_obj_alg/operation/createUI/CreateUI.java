@@ -13,7 +13,7 @@ import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 
-public class TestEvaluator {
+public class CreateUI {
 
 	public static void main(String[] args) {
 		try {
