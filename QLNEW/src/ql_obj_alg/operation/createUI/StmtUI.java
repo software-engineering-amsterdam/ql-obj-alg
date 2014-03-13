@@ -73,7 +73,6 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						valEnv.setQuestionValue(id, widget.getValue());
-						frame.updateField(id,widget.getValue());
 						valEnv.notifyObservers(id);
 						frame.pack();
 					}
@@ -101,7 +100,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				widget.setValue(e.eval(valEnv));
 				valEnv.initObservable(id);
 				
-				valEnv.createValueObservers(id, e,frame);
+				valEnv.createValueObservers(id, e,frame,widget);
 				valEnv.createVisibilityObservers(id, frame, widget,localVisibility);			
 				widget.addComputedQuestionToFrame(frame);
 			}
