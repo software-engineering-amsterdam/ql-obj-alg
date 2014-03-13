@@ -3,6 +3,7 @@ package ql_obj_alg.operation.evaluator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
@@ -47,5 +48,4 @@ public class ValueEnvironment{
 		ret += "}";
 		return ret;
 	}
-
 }

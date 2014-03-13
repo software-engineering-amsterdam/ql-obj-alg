@@ -23,7 +23,6 @@ public class FormUI implements IFormAlg<IDepsAndEvalE,ICreate,ICreateF>{
 				frame.render();
 				
 			}
-			
 		};
 	}
 

@@ -310,7 +310,7 @@ public class VUndefined extends VBase{
 
 	@Override
 	public Value not() {
-		return new VUndefined();
+		return new VBoolean(true);
 	}
 
 }
