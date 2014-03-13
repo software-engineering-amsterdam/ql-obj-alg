@@ -13,24 +13,21 @@ public class VisibilityObserver implements Observer {
 	final FormFrame frame;
 	final IWidget widget;
 	final ValueEnvironment valEnv;
-	final Conditions conditions;
+	final IDepsAndEvalE condition;
 	
-	public VisibilityObserver(String id, FormFrame frame, IWidget widget, ValueEnvironment valEnv, Conditions conditions){
+	public VisibilityObserver(String id, FormFrame frame, IWidget widget, ValueEnvironment valEnv, IDepsAndEvalE condition){
 		this.id = id;
 		this.frame = frame;
 		this.widget = widget;
 		this.valEnv = valEnv;
-		this.conditions = conditions;
+		this.condition = condition;
 	}
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		boolean visible = conditions.compute(valEnv);
-		valEnv.setQuestionValue(id, new VUndefined());
-		System.out.println("Visibility update called");			
+		boolean visible = condition.eval(valEnv).getBoolean();
 		valEnv.setQuestionValue(id, new VUndefined());
 		widget.setValue(new VUndefined());
-
 		widget.setVisible(visible);
 		valEnv.notifyObservers(id);
 		frame.pack();

@@ -45,9 +45,9 @@ public class ValueEnvironment {
 	}
 	
 	public void createVisibilityObservers(final String id,final FormFrame frame, 
-			final IWidget widget, final Conditions conditions) {
-		for(String dep : conditions.dependencies()){
-			this.getObservable(dep).addObserver(new VisibilityObserver(id, frame, widget, this, conditions));
+			final IWidget widget, final IDepsAndEvalE condition) {
+		for(String dep : condition.deps()){
+			this.getObservable(dep).addObserver(new VisibilityObserver(id, frame, widget, this, condition));
 		}
 	}
 

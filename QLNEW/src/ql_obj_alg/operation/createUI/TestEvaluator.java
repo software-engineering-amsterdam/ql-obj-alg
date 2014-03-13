@@ -22,8 +22,8 @@ public class TestEvaluator {
 	    	
 	    	if(Parser.typeCheckerForm(form)){
 		    	IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
-		    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI();
-		    	IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI();
+		    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
+		    	IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
 		    	
 		    	ValueEnvironment valEnv = new ValueEnvironment();
 		    	
