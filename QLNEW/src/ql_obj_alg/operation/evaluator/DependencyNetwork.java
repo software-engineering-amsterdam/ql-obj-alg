@@ -30,11 +30,10 @@ public class DependencyNetwork{
 	}
 
 	
-	public void notifyObservers(final String id, final FormFrame frame) {
+	public void notifyObservers(final String id) {
 		ObservableWidget obs = this.getObservable(id);
 		obs.setChanged();
 		obs.notifyObservers();
-		frame.pack();
 	}
 
 
@@ -48,7 +47,8 @@ public class DependencyNetwork{
 					boolean visible = ConditionalManagement.compute(localVisibility,frame);
 					frame.updateField(id,new VUndefined());
 					widget.setVisible(visible);
-					notifyObservers(id, frame);
+					notifyObservers(id);
+					frame.pack();
 				}
 			});
 		}
@@ -62,7 +62,8 @@ public class DependencyNetwork{
 				public void update(Observable arg0, Object arg1) {
 					Value val = e.eval(frame);
 					frame.updateField(id,val);
-					notifyObservers(id, frame);
+					notifyObservers(id);
+					frame.pack();
 				}
 			});		
 		}

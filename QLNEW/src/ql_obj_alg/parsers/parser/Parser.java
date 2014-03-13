@@ -39,16 +39,6 @@ public class Parser {
 		form.build(fFormat,fFormat,fFormat).format(0, false, w);
         System.out.println(w);
 	}
-
-//	private static void typeCheck(IBuildF form) {
-//		FormCollectQuestionTypes fcd = new FormCollectQuestionTypes();
-//    	form.build(fcd).collect();
-//    	ErrorReporting report = new ErrorReporting();
-//    	form.build(new FormTypeChecker(fcd.getTypeEnvironment(),report)).check();
-//    	form.build(new FormDependencies(report)).dependencies();
-//    	report.printErrors();
-//    	report.printWarnings();
-//	}
        
     public static QLParser parse(ANTLRInputStream input){
         QLLexer lexer = new QLLexer(input);
