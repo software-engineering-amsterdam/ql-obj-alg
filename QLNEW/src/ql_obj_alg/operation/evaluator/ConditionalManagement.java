@@ -1,12 +1,9 @@
-package ql_obj_alg.operation.createUI;
+package ql_obj_alg.operation.evaluator;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-
-import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
-import ql_obj_alg.operation.evaluator.ValueEnvironment;
 
 public class ConditionalManagement {
 
