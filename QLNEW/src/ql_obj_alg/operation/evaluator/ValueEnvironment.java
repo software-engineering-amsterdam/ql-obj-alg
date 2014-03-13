@@ -28,7 +28,7 @@ public class ValueEnvironment {
 		questions.put(id,v);
 	}	
 	
-	public void initObservable(String name) {
+	private void initObservable(String name) {
 		if (!registry.containsKey(name)) {
 			registry.put(name, new ObservableWidget());
 		}
@@ -69,8 +69,8 @@ public class ValueEnvironment {
 	}
 
 	public void createValueObservers(final String id, final IDepsAndEvalE e, final FormFrame frame, final IWidget widget) {
+		final ValueEnvironment valEnv = this;
 		for(String dep : e.deps()){
-			final ValueEnvironment valEnv = this;
 			this.getObservable(dep).addObserver(new Observer(){
 				@Override
 				public void update(Observable arg0, Object arg1) {

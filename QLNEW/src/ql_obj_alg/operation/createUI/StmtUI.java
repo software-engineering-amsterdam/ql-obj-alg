@@ -3,7 +3,6 @@ package ql_obj_alg.operation.createUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Stack;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.evaluator.Conditions;
@@ -67,7 +66,6 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				widget.setVisible(localConditions.compute(valEnv));
 				
 				valEnv.setQuestionValue(id, new VUndefined());
-				valEnv.initObservable(id);
 				
 				widget.addActionListener(new ActionListener(){
 					@Override
@@ -95,10 +93,9 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Conditions localVisibility = conditions.clone();
 				widget.setVisible(localVisibility.compute(valEnv));
-				valEnv.setQuestionValue(id, new VUndefined());
 				
+				valEnv.setQuestionValue(id, new VUndefined());
 				widget.setValue(e.eval(valEnv));
-				valEnv.initObservable(id);
 				
 				valEnv.createValueObservers(id, e,frame,widget);
 				valEnv.createVisibilityObservers(id, frame, widget,localVisibility);			
