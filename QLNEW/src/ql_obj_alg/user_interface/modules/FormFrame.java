@@ -2,6 +2,8 @@ package ql_obj_alg.user_interface.modules;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -27,7 +29,15 @@ public class FormFrame extends JFrame {
         getContentPane().add(labelPane, BorderLayout.CENTER);
         getContentPane().add(fieldPane, BorderLayout.LINE_END);
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
-
+        
+		JButton Submit = new JButton("Submit");
+		Submit.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("button clicked");
+			}
+		});
+		buttonPane.add(Submit);
 	}
 	
 	public void addLabel(JLabel label){
@@ -42,9 +52,6 @@ public class FormFrame extends JFrame {
         pack();
         setVisible(true);		
 	}
-	
-	public void addButton(JButton button){
-		buttonPane.add(button);
-	}
+
 
 }
