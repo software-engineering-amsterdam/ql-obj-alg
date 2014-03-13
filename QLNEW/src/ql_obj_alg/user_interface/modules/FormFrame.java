@@ -1,7 +1,6 @@
 package ql_obj_alg.user_interface.modules;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,9 +22,9 @@ public class FormFrame extends JFrame {
 		super(id);		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-        labelPane = new JPanel(new GridLayout(0,1));
-        fieldPane = new JPanel(new GridLayout(0,1));
-        buttonPane = new JPanel(new GridLayout(0,1));
+        labelPane = new JPanel(new InvisibleGridLayout(0,1));
+        fieldPane = new JPanel(new InvisibleGridLayout(0,1));
+        buttonPane = new JPanel(new InvisibleGridLayout(0,1));
         getContentPane().add(labelPane, BorderLayout.CENTER);
         getContentPane().add(fieldPane, BorderLayout.LINE_END);
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
