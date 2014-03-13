@@ -21,7 +21,7 @@ public class IntegerWidget implements IWidget{
 		this.id = id;
 		
 		this.field = new JFormattedTextField(NumberFormat.getNumberInstance());
-		this.field.setColumns(15);
+		this.field.setColumns(10);
 		this.label = new JLabel(label);
 		this.label.setLabelFor(this.field);
 	}

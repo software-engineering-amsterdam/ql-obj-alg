@@ -4,9 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
-import ql_obj_alg.operation.evaluator.Conditions;
-import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
@@ -16,19 +15,23 @@ import ql_obj_alg.user_interface.widgets.FieldFactory;
 import ql_obj_alg.user_interface.widgets.IWidget;
 
 
-public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICreate>{
+public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 
+	private IExpAlg<IDepsAndEvalE> expAlg;
+
+	public StmtUI(IExpAlg<IDepsAndEvalE> expAlg){
+		this.expAlg = expAlg;
+	}
+	
 	@Override
 	public ICreate iff(final IDepsAndEvalE cond, final List<ICreate> b) {
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame,final ValueEnvironment valEnv,
-					Conditions conditions) {
-				conditions.addConditional(cond);
+					IDepsAndEvalE condition) {
 				for(ICreate stmt : b){
-					stmt.create(frame,valEnv,conditions);
+					stmt.create(frame,valEnv,expAlg.and(condition,cond));
 				}
-				conditions.removeConditional();
 			}
 		};
 	}
@@ -38,18 +41,15 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
-					Conditions conditions) {
-				conditions.addConditional(cond);
+					IDepsAndEvalE condition) {
 				for(ICreate stmt : b1){
-					stmt.create(frame,valEnv,conditions);
+					stmt.create(frame,valEnv,expAlg.and(cond,condition));
 				}
-				conditions.removeConditional();
-				
-				conditions.addConditional(not(cond));
+
 				for(ICreate stmt : b2){
-					stmt.create(frame,valEnv,conditions);
+					stmt.create(frame,valEnv,expAlg.and(expAlg.not(cond),condition));
 				}
-				conditions.removeConditional();
+
 			}
 		};
 	}
@@ -59,11 +59,10 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
-					 Conditions conditions) {
+					 final IDepsAndEvalE condition) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
-				final Conditions localConditions = conditions.clone();
-				widget.setVisible(localConditions.compute(valEnv));
+				widget.setVisible(condition.eval(valEnv).getBoolean());
 				
 				valEnv.setQuestionValue(id, new VUndefined());
 				
@@ -76,7 +75,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					}
 				});
 				
-				valEnv.createVisibilityObservers(id, frame, widget,conditions);
+				valEnv.createVisibilityObservers(id, frame, widget,condition);
 				widget.addAnswerableQuestionToFrame(frame);
 			}
 		};
@@ -88,17 +87,16 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
-					Conditions conditions) {
+					final IDepsAndEvalE condition) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
-				final Conditions localVisibility = conditions.clone();
-				widget.setVisible(localVisibility.compute(valEnv));
+				widget.setVisible(condition.eval(valEnv).getBoolean());
 				
 				valEnv.setQuestionValue(id, new VUndefined());
 				widget.setValue(e.eval(valEnv));
 				
 				valEnv.createValueObservers(id, e,frame,widget);
-				valEnv.createVisibilityObservers(id, frame, widget,localVisibility);			
+				valEnv.createVisibilityObservers(id, frame, widget,condition);			
 				widget.addComputedQuestionToFrame(frame);
 			}
 		};

@@ -13,7 +13,7 @@ import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 
-public class TestEvaluator {
+public class CreateUI {
 
 	public static void main(String[] args) {
 		try {
@@ -22,8 +22,8 @@ public class TestEvaluator {
 	    	
 	    	if(Parser.typeCheckerForm(form)){
 		    	IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
-		    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI();
-		    	IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI();
+		    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
+		    	IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
 		    	
 		    	ValueEnvironment valEnv = new ValueEnvironment();
 		    	
