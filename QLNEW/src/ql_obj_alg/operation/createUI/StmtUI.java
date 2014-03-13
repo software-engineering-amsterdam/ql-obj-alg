@@ -30,11 +30,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 			@Override
 			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
-				visibilityConditions.push(cond);
-				for(ICreate stmt : b){
-					stmt.create(frame,depNetwork,visibilityConditions);
-				}
-				visibilityConditions.pop();
+				createConditional(cond, b, frame, depNetwork,visibilityConditions);
 			}
 		};
 	}
@@ -45,18 +41,8 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 			@Override
 			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
-				
-				visibilityConditions.push(cond);
-				for(ICreate stmt : b1){
-					stmt.create(frame,depNetwork,visibilityConditions);
-				}
-				visibilityConditions.pop();
-				
-				visibilityConditions.push(not(cond));
-				for(ICreate stmt : b2){
-					stmt.create(frame,depNetwork,visibilityConditions);
-				}
-				visibilityConditions.pop();
+				createConditional(cond, b1, frame, depNetwork,visibilityConditions);
+				createConditional(not(cond), b1, frame, depNetwork,visibilityConditions);
 			}
 		};
 	}
@@ -70,11 +56,9 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
-
 				widget.setVisible(computeConditionals(localVisibility,frame));
 				
 				depNetwork.initObservable(id);
-
 				
 				widget.addActionListener(new ActionListener(){
 					@Override
@@ -84,17 +68,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					}
 				});
 				
-				for(String dep : ConditionalsDependencies(localVisibility)){
-					depNetwork.getObservable(dep).addObserver(new Observer(){
-						@Override
-						public void update(Observable arg0, Object arg1) {
-							boolean visible = computeConditionals(localVisibility,frame);
-							frame.updateField(id,new VUndefined());
-							widget.setVisible(visible);
-							notifyObservers(id, frame, depNetwork);
-						}
-					});
-				}
+				createVisibilityObservers(id, frame, depNetwork, widget,localVisibility);
 				widget.addAnswerableQuestionToFrame(frame);
 			}
 		};
@@ -111,37 +85,12 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
 				widget.setVisible(computeConditionals(localVisibility,frame));
+				
 				widget.setValue(e.eval(frame));
 				depNetwork.initObservable(id);
-
 				
-				for(String dep : e.deps()){
-					depNetwork.getObservable(dep).addObserver(new Observer(){
-						@Override
-						public void update(Observable arg0, Object arg1) {
-							Value val = e.eval(frame);
-							frame.updateField(id,val);
-							widget.setValue(val);
-							notifyObservers(id, frame, depNetwork);
-						}
-					});
-					
-				}
-				
-				for(String dep : ConditionalsDependencies(localVisibility)){
-					depNetwork.getObservable(dep).addObserver(new Observer(){
-						@Override
-						public void update(Observable arg0, Object arg1) {
-
-							boolean visible = computeConditionals(localVisibility,frame);
-							widget.setValue(new VUndefined());
-							frame.updateField(id,new VUndefined());
-							widget.setVisible(visible);
-							notifyObservers(id, frame, depNetwork);
-						}
-					});
-				}				
-				
+				createValueObservers(id, e, frame, depNetwork);
+				createVisibilityObservers(id, frame, depNetwork, widget,localVisibility);			
 				widget.addComputedQuestionToFrame(frame);
 			}
 		};
@@ -175,5 +124,46 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		obs.setChanged();
 		obs.notifyObservers();
 		frame.pack();
+	}
+
+	private void createConditional(final IDepsAndEvalE cond,
+			final List<ICreate> b, final FormFrame frame,
+			final DependencyNetwork depNetwork,
+			Stack<IDepsAndEvalE> visibilityConditions) {
+		visibilityConditions.push(cond);
+		for(ICreate stmt : b){
+			stmt.create(frame,depNetwork,visibilityConditions);
+		}
+		visibilityConditions.pop();
+	}
+
+	private void createVisibilityObservers(final String id,
+			final FormFrame frame, final DependencyNetwork depNetwork,
+			final IWidget widget, final Stack<IDepsAndEvalE> localVisibility) {
+		for(String dep : ConditionalsDependencies(localVisibility)){
+			depNetwork.getObservable(dep).addObserver(new Observer(){
+				@Override
+				public void update(Observable arg0, Object arg1) {
+					boolean visible = computeConditionals(localVisibility,frame);
+					frame.updateField(id,new VUndefined());
+					widget.setVisible(visible);
+					notifyObservers(id, frame, depNetwork);
+				}
+			});
+		}
+	}
+
+	private void createValueObservers(final String id, final IDepsAndEvalE e,
+			final FormFrame frame, final DependencyNetwork depNetwork) {
+		for(String dep : e.deps()){
+			depNetwork.getObservable(dep).addObserver(new Observer(){
+				@Override
+				public void update(Observable arg0, Object arg1) {
+					Value val = e.eval(frame);
+					frame.updateField(id,val);
+					notifyObservers(id, frame, depNetwork);
+				}
+			});		
+		}
 	}
 }
