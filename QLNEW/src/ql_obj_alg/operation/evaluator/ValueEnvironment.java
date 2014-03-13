@@ -57,7 +57,6 @@ public class ValueEnvironment {
 					boolean visible = conditions.compute(valEnv);
 					valEnv.setQuestionValue(id, new VUndefined());
 					System.out.println("Visibility update called");
-					valEnv.setQuestionValue(id, new VUndefined());
 					widget.setValue(new VUndefined());
 
 					widget.setVisible(visible);
