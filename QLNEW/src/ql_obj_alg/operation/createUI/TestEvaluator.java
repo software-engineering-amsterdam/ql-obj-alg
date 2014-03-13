@@ -9,7 +9,7 @@ import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.builder.IBuildF;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
-import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg.operation.evaluator.DependencyNetwork;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 public class TestEvaluator {
@@ -23,7 +23,7 @@ public class TestEvaluator {
 	    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI();
 	    	IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI();
 	    	
-	    	ValueEnvironment valEnv = new ValueEnvironment();
+	    	DependencyNetwork valEnv = new DependencyNetwork();
 	    	
 	    	form.build(expAlg, stmtAlg,formAlg).create(valEnv);
 		} catch (IOException e) {
