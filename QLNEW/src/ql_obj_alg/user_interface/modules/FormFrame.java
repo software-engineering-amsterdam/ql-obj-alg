@@ -38,6 +38,7 @@ public class FormFrame extends JFrame {
 			}
 		});
 		buttonPane.add(Submit);
+
 	}
 	
 	public void addLabel(JLabel label){
