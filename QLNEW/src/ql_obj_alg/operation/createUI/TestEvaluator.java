@@ -30,16 +30,16 @@ import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
+
 public class TestEvaluator {
 
 	public static void main(String[] args) {
 		try {
 			QLParser qlParser = Parser.parse(Parser.getInputStream(new FileInputStream(args[0])));
-	    	IBuildF form = qlParser.form().frm;
-	    	
+	    	IBuildF form = qlParser.form().frm;	    	
 	    	
 	    	if(typeCheckerAndCyclicDependencyFree(form)){
-	    		IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
+		    	IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
 		    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI();
 		    	IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI();
 		    	
