@@ -59,7 +59,9 @@ public class ValueEnvironment {
 					boolean visible = ConditionalManagement.compute(localVisibility,valEnv);
 					valEnv.setQuestionValue(id, new VUndefined());
 					System.out.println("Visibility update called");
-					frame.updateField(id,new VUndefined());
+					valEnv.setQuestionValue(id, new VUndefined());
+					widget.setValue(new VUndefined());
+
 					widget.setVisible(visible);
 					notifyObservers(id);
 					frame.pack();
@@ -68,7 +70,7 @@ public class ValueEnvironment {
 		}
 	}
 
-	public void createValueObservers(final String id, final IDepsAndEvalE e, final FormFrame frame) {
+	public void createValueObservers(final String id, final IDepsAndEvalE e, final FormFrame frame, final IWidget widget) {
 		for(String dep : e.deps()){
 			final ValueEnvironment valEnv = this;
 			this.getObservable(dep).addObserver(new Observer(){
@@ -77,7 +79,8 @@ public class ValueEnvironment {
 					Value val = e.eval(valEnv);
 					valEnv.setQuestionValue(id, val);
 					System.out.println("Value update called");
-					frame.updateField(id,val);
+					valEnv.setQuestionValue(id, val);
+					widget.setValue(val);
 					notifyObservers(id);
 					frame.pack();
 				}
