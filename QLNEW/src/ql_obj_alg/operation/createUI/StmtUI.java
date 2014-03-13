@@ -42,7 +42,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
 				createConditional(cond, b1, frame, depNetwork,visibilityConditions);
-				createConditional(not(cond), b1, frame, depNetwork,visibilityConditions);
+				createConditional(not(cond), b2, frame, depNetwork,visibilityConditions);
 			}
 		};
 	}
