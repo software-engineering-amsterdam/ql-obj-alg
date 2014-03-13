@@ -2,10 +2,7 @@ package ql_obj_alg.operation.evaluator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
-import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.user_interface.modules.FormFrame;
 import ql_obj_alg.user_interface.widgets.IWidget;
@@ -49,40 +46,14 @@ public class ValueEnvironment {
 	
 	public void createVisibilityObservers(final String id,final FormFrame frame, 
 			final IWidget widget, final Conditions conditions) {
-		final ValueEnvironment valEnv = this;
 		for(String dep : conditions.dependencies()){
-			this.getObservable(dep).addObserver(new Observer(){
-				@Override
-				public void update(Observable arg0, Object arg1) {
-					boolean visible = conditions.compute(valEnv);
-					valEnv.setQuestionValue(id, new VUndefined());
-					System.out.println("Visibility update called");
-					valEnv.setQuestionValue(id, new VUndefined());
-					widget.setValue(new VUndefined());
-
-					widget.setVisible(visible);
-					notifyObservers(id);
-					frame.pack();
-				}
-			});
+			this.getObservable(dep).addObserver(new VisibilityObserver(id, frame, widget, this, conditions));
 		}
 	}
 
 	public void createValueObservers(final String id, final IDepsAndEvalE e, final FormFrame frame, final IWidget widget) {
-		final ValueEnvironment valEnv = this;
 		for(String dep : e.deps()){
-			this.getObservable(dep).addObserver(new Observer(){
-				@Override
-				public void update(Observable arg0, Object arg1) {
-					Value val = e.eval(valEnv);
-					valEnv.setQuestionValue(id, val);
-					System.out.println("Value update called");
-					valEnv.setQuestionValue(id, val);
-					widget.setValue(val);
-					notifyObservers(id);
-					frame.pack();
-				}
-			});		
+			this.getObservable(dep).addObserver(new ValueObserver(id, e, frame, widget,this));		
 		}
 	}
 }
