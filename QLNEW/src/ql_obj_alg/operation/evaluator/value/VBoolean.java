@@ -17,7 +17,7 @@ public class VBoolean extends VBase {
 	}
 	
 	public Value eq(VBoolean v){
-		return new VBoolean(b == v.getBoolean());
+		return new VBoolean(v.getBoolean().equals(b));
 	}
 
 	public Value neq(Value v){

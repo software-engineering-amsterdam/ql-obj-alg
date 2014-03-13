@@ -8,7 +8,6 @@ import ql_obj_alg.operation.evaluator.value.VBoolean;
 import ql_obj_alg.operation.evaluator.value.VInteger;
 import ql_obj_alg.operation.evaluator.value.VString;
 import ql_obj_alg.operation.evaluator.value.Value;
-import ql_obj_alg.user_interface.modules.FormFrame;
 
 public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 
@@ -16,7 +15,7 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE lit(final int x) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
+			public Value eval(ValueEnvironment valEnv) {
 				return new VInteger(x);
 			}
 
@@ -31,7 +30,7 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE bool(final boolean b) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
+			public Value eval(ValueEnvironment valEnv) {
 				return new VBoolean(b);
 			}
 
@@ -46,7 +45,7 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE string(final String s) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
+			public Value eval(ValueEnvironment valEnv) {
 				return new VString(s);
 			}
 
@@ -61,8 +60,8 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE var(final String varName) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				return frame.getValueOfField(varName);
+			public Value eval(ValueEnvironment valEnv) {
+				return valEnv.getQuestionValue(varName);
 			}
 
 			@Override
@@ -78,9 +77,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE mul(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.mul(v2);
 			}
 
@@ -95,9 +94,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE div(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.div(v2);
 			}
 
@@ -112,9 +111,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE add(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.add(v2);
 			}
 
@@ -129,9 +128,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE sub(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.min(v2);
 			}
 
@@ -146,9 +145,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE eq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.eq(v2);
 			}
 
@@ -163,9 +162,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE neq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.neq(v2);
 			}
 
@@ -180,9 +179,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE lt(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.lt(v2);
 			}
 
@@ -197,9 +196,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE leq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.leq(v2);
 			}
 
@@ -214,9 +213,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE gt(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.gt(v2);
 			}
 
@@ -231,9 +230,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE geq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.geq(v2);
 			}
 
@@ -248,8 +247,8 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE not(final IDepsAndEvalE a) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v = a.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v = a.eval(valEnv);
 				return v.not();
 			}
 
@@ -264,9 +263,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE and(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.and(v2);
 			}
 
@@ -281,9 +280,9 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	public IDepsAndEvalE or(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
 		return new IDepsAndEvalE(){
 			@Override
-			public Value eval(FormFrame frame) {
-				Value v1 = a1.eval(frame);
-				Value v2 = a2.eval(frame);
+			public Value eval(ValueEnvironment valEnv) {
+				Value v1 = a1.eval(valEnv);
+				Value v2 = a2.eval(valEnv);
 				return v1.or(v2);
 			}
 

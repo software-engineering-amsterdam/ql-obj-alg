@@ -6,13 +6,13 @@ import java.util.Set;
 import java.util.Stack;
 
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
-import ql_obj_alg.user_interface.modules.FormFrame;
+import ql_obj_alg.operation.evaluator.ValueEnvironment;
 
 public class ConditionalManagement {
 
-	public static boolean compute(List<IDepsAndEvalE> conditionals, FormFrame frame){
+	public static boolean compute(List<IDepsAndEvalE> conditionals, ValueEnvironment valEnv){
 		for(IDepsAndEvalE cond : conditionals){
-			if(!cond.eval(frame).getBoolean())
+			if(!cond.eval(valEnv).getBoolean())
 				return false;
 		}
 		return true;

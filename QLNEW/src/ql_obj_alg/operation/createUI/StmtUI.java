@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Stack;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
-import ql_obj_alg.operation.evaluator.DependencyNetwork;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
+import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.types.Type;
 import ql_obj_alg.user_interface.modules.FormFrame;
 import ql_obj_alg.user_interface.widgets.FieldFactory;
@@ -21,11 +22,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate iff(final IDepsAndEvalE cond, final List<ICreate> b) {
 		return new ICreate(){
 			@Override
-			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
+			public void create(final FormFrame frame,final ValueEnvironment valEnv,
 					Stack<IDepsAndEvalE> visibilityConditions) {
 				visibilityConditions.push(cond);
 				for(ICreate stmt : b){
-					stmt.create(frame,depNetwork,visibilityConditions);
+					stmt.create(frame,valEnv,visibilityConditions);
 				}
 				visibilityConditions.pop();
 			}
@@ -36,17 +37,17 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate iffelse(final IDepsAndEvalE cond,final List<ICreate> b1, final List<ICreate> b2) {
 		return new ICreate(){
 			@Override
-			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
+			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
 				visibilityConditions.push(cond);
 				for(ICreate stmt : b1){
-					stmt.create(frame,depNetwork,visibilityConditions);
+					stmt.create(frame,valEnv,visibilityConditions);
 				}
 				visibilityConditions.pop();
 				
 				visibilityConditions.push(not(cond));
 				for(ICreate stmt : b2){
-					stmt.create(frame,depNetwork,visibilityConditions);
+					stmt.create(frame,valEnv,visibilityConditions);
 				}
 				visibilityConditions.pop();
 			}
@@ -57,25 +58,28 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate question(final String id, final String label, final Type type) {
 		return new ICreate(){
 			@Override
-			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
-					Stack<IDepsAndEvalE> visibilityConditions) {
+			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
+					 Stack<IDepsAndEvalE> visibilityConditions) {
 				
+				valEnv.setQuestionValue(id, new VUndefined());
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = ConditionalManagement.clone(visibilityConditions);
-				widget.setVisible(ConditionalManagement.compute(localVisibility,frame));
+				widget.setVisible(ConditionalManagement.compute(localVisibility,valEnv));
 				
-				depNetwork.initObservable(id);
+				
+				valEnv.initObservable(id);
 				
 				widget.addActionListener(new ActionListener(){
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						valEnv.setQuestionValue(id, widget.getValue());
 						frame.updateField(id,widget.getValue());
-						depNetwork.notifyObservers(id);
+						valEnv.notifyObservers(id);
 						frame.pack();
 					}
 				});
-				
-				depNetwork.createVisibilityObservers(id, frame, widget,localVisibility);
+
+				valEnv.createVisibilityObservers(id, frame, widget,localVisibility);
 				widget.addAnswerableQuestionToFrame(frame);
 			}
 		};
@@ -86,18 +90,19 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
+			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = ConditionalManagement.clone(visibilityConditions);
-				widget.setVisible(ConditionalManagement.compute(localVisibility,frame));
+				widget.setVisible(ConditionalManagement.compute(localVisibility,valEnv));
+				valEnv.setQuestionValue(id, new VUndefined());
 				
-				widget.setValue(e.eval(frame));
-				depNetwork.initObservable(id);
+				widget.setValue(e.eval(valEnv));
+				valEnv.initObservable(id);
 				
-				depNetwork.createValueObservers(id, e, frame);
-				depNetwork.createVisibilityObservers(id, frame, widget,localVisibility);			
+				valEnv.createValueObservers(id, e,frame);
+				valEnv.createVisibilityObservers(id, frame, widget,localVisibility);			
 				widget.addComputedQuestionToFrame(frame);
 			}
 		};
