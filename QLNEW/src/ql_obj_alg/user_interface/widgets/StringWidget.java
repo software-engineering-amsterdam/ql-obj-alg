@@ -2,6 +2,7 @@ package ql_obj_alg.user_interface.widgets;
 
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -53,15 +54,13 @@ public class StringWidget implements IWidget{
 	@Override
 	public void addComputedQuestionToFrame(FormFrame frame) {
 		text.setEnabled(false);
-		frame.addField(text);
-		frame.addLabel(label);
+		frame.addWidget(id, this);
 	}
 	
 	@Override
 	public void addAnswerableQuestionToFrame(FormFrame frame) {
 		text.setEnabled(true);
-		frame.addField(text);
-		frame.addLabel(label);
+		frame.addWidget(id, this);
 	}
 
 	@Override
@@ -97,6 +96,16 @@ public class StringWidget implements IWidget{
 	@Override
 	public void addActionListener(ActionListener al) {
 		text.addActionListener(al);
+	}
+
+	@Override
+	public JLabel getLabel() {
+		return this.label;
+	}
+
+	@Override
+	public JComponent getComponent() {
+		return this.text;
 	}
 	
 }

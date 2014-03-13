@@ -3,6 +3,7 @@ package ql_obj_alg.user_interface.widgets;
 import java.awt.event.ActionListener;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import ql_obj_alg.operation.evaluator.value.VBoolean;
@@ -41,15 +42,13 @@ public class BooleanWidget implements IWidget{
 	@Override
 	public void addComputedQuestionToFrame(FormFrame frame) {
 		checkBox.setEnabled(false);
-		frame.addField(checkBox);
-		frame.addLabel(label);
+		frame.addWidget(id,this);
 	}
 	
 	@Override
 	public void addAnswerableQuestionToFrame(FormFrame frame) {
 		checkBox.setEnabled(true);
-		frame.addField(checkBox);
-		frame.addLabel(label);
+		frame.addWidget(id,this);
 	}
 
 	@Override
@@ -91,6 +90,13 @@ public class BooleanWidget implements IWidget{
 		checkBox.addActionListener(al);
 	}
 
+	@Override
+	public JLabel getLabel() {
+		return this.label;
+	}
 
-
+	@Override
+	public JComponent getComponent() {
+		return this.checkBox;
+	}
 }
