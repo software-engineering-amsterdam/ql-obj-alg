@@ -8,7 +8,7 @@ import org.junit.Test;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
-import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg.operation.evaluator.DependencyNetwork;
 import ql_obj_alg.operation.evaluator.value.VInteger;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
@@ -18,11 +18,11 @@ import ql_obj_alg.operation.evaluator.value.Value;
 public class ExprEvalTests {
 
 	ExprEvaluator exprEval = null;
-	ValueEnvironment valEnv = null;
+	DependencyNetwork valEnv = null;
 	@Before
 	public void SetUp(){
 		exprEval = new ExprEvaluator();
-		valEnv = new ValueEnvironment();
+		valEnv = new DependencyNetwork();
 	}
 	@Test
 	public void TestSimpleAdditionEval(){

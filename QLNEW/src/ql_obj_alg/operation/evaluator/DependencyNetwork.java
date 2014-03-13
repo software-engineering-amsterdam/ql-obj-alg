@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ql_obj_alg.user_interface.widgets.ObservableWidget;
-public class ValueEnvironment{
+public class DependencyNetwork{
 
 	private Map<String, ObservableWidget> registry = new HashMap<String,ObservableWidget>();
 	

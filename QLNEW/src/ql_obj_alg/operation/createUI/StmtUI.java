@@ -12,7 +12,7 @@ import java.util.Stack;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
-import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg.operation.evaluator.DependencyNetwork;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.types.Type;
@@ -28,12 +28,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate iff(final IDepsAndEvalE cond, final List<ICreate> b) {
 		return new ICreate(){
 			@Override
-			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
-				
 				visibilityConditions.push(cond);
 				for(ICreate stmt : b){
-					stmt.create(frame,valEnv,visibilityConditions);
+					stmt.create(frame,depNetwork,visibilityConditions);
 				}
 				visibilityConditions.pop();
 			}
@@ -44,18 +43,18 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate iffelse(final IDepsAndEvalE cond,final List<ICreate> b1, final List<ICreate> b2) {
 		return new ICreate(){
 			@Override
-			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				visibilityConditions.push(cond);
 				for(ICreate stmt : b1){
-					stmt.create(frame,valEnv,visibilityConditions);
+					stmt.create(frame,depNetwork,visibilityConditions);
 				}
 				visibilityConditions.pop();
 				
 				visibilityConditions.push(not(cond));
 				for(ICreate stmt : b2){
-					stmt.create(frame,valEnv,visibilityConditions);
+					stmt.create(frame,depNetwork,visibilityConditions);
 				}
 				visibilityConditions.pop();
 			}
@@ -66,7 +65,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 	public ICreate question(final String id, final String label, final Type type) {
 		return new ICreate(){
 			@Override
-			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
@@ -74,7 +73,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 				widget.setVisible(computeConditionals(localVisibility,frame));
 				
-				valEnv.initObservable(id);
+				depNetwork.initObservable(id);
 
 				
 				widget.addActionListener(new ActionListener(){
@@ -82,16 +81,15 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					public void actionPerformed(ActionEvent arg0) {
 						frame.updateField(id,widget.getValue());
 						System.out.println("Action Listener " + id + arg0.getActionCommand());
-						ObservableWidget obs = valEnv.getObservable(id);
-						synchronized(obs){
-							obs.setChanged();
-							obs.notifyObservers();
-						}
+						ObservableWidget obs = depNetwork.getObservable(id);
+						obs.setChanged();
+						obs.notifyObservers();
+						
 					}
 				});
 				
 				for(String dep : ConditionalsDependencies(localVisibility)){
-					valEnv.getObservable(dep).addObserver(new Observer(){
+					depNetwork.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
 
@@ -100,11 +98,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 							frame.updateField(id,new VUndefined());
 
 							widget.setVisible(visible);
-							ObservableWidget obs = valEnv.getObservable(id);
-							synchronized(obs){
+							ObservableWidget obs = depNetwork.getObservable(id);
+					
 								obs.setChanged();
 								obs.notifyObservers();
-							}
+							
 							frame.pack();
 						}
 					});
@@ -119,18 +117,18 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 
 			@Override
-			public void create(final FormFrame frame,final ValueEnvironment valEnv, 
+			public void create(final FormFrame frame,final DependencyNetwork depNetwork, 
 					Stack<IDepsAndEvalE> visibilityConditions) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = cloneToLocalConditions(visibilityConditions);
 				widget.setVisible(computeConditionals(localVisibility,frame));
 				widget.setValue(e.eval(frame));
-				valEnv.initObservable(id);
+				depNetwork.initObservable(id);
 
 				
 				for(String dep : e.deps()){
-					valEnv.getObservable(dep).addObserver(new Observer(){
+					depNetwork.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
 
@@ -138,11 +136,10 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 							frame.updateField(id,val);
 
 							widget.setValue(val);
-							ObservableWidget a = valEnv.getObservable(id);
-							synchronized(a){
-								a.setChanged();
-								a.notifyAll();
-							}
+							ObservableWidget a = depNetwork.getObservable(id);
+							a.setChanged();
+							a.notifyObservers();
+							
 							frame.pack();
 						}
 					});
@@ -150,7 +147,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 				}
 				
 				for(String dep : ConditionalsDependencies(localVisibility)){
-					valEnv.getObservable(dep).addObserver(new Observer(){
+					depNetwork.getObservable(dep).addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {
 
