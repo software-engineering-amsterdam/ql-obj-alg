@@ -66,4 +66,9 @@ public class VString extends VBase {
 	public String toString(){
 		return s;
 	}
+	
+	@Override
+	public boolean isUndefined(){
+		return false;
+	}
 }

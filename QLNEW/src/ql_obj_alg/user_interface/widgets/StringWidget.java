@@ -90,7 +90,9 @@ public class StringWidget implements IWidget{
 
 	@Override
 	public void setValue(Value v) {
-		text.setText(v.getString());
+		if(!v.isUndefined()){
+			text.setText(v.getString());
+		}
 	}
 
 	@Override

@@ -100,5 +100,8 @@ public class VInteger extends VBase {
 	public String toString(){
 		return ""+x;
 	}
-		
+	@Override
+	public boolean isUndefined(){
+		return false;
+	}	
 }

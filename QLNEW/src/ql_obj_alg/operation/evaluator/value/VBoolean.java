@@ -52,4 +52,8 @@ public class VBoolean extends VBase {
 	public String toString(){
 		return ""+b;
 	}
+	@Override
+	public boolean isUndefined(){
+		return false;
+	}
 }

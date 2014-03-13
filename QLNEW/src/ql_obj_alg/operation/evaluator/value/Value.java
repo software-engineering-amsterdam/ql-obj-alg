@@ -6,6 +6,9 @@ public abstract class Value {
 	public abstract Boolean getBoolean();
 	public abstract String getString();
 
+	public abstract boolean isUndefined();
+	
+	
 	public abstract Value mul(Value v);
 	public abstract Value mul(VInteger v);
 	public abstract Value mul(VBoolean v);

@@ -90,7 +90,9 @@ public class IntegerWidget implements IWidget{
 	
 	@Override
 	public void setValue(Value v) {
-		field.setValue(v.getInteger());
+		if(!v.isUndefined()){
+			field.setValue(v.getInteger());
+		}
 	}
 
 	@Override

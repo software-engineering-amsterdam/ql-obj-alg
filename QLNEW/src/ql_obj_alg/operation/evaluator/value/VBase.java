@@ -333,4 +333,9 @@ public class VBase extends Value {
 	public String toString(){
 		return "Undefined";
 	}
+
+	@Override
+	public boolean isUndefined() {
+		return true;
+	}
 }
