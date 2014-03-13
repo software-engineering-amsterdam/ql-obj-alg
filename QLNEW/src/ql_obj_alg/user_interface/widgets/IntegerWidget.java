@@ -3,7 +3,6 @@ package ql_obj_alg.user_interface.widgets;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 
@@ -40,8 +39,7 @@ public class IntegerWidget implements IWidget{
 			return new VInteger(Integer.parseInt(field.getText().replace(".", "")));
 	}
 	
-	@Override
-	public boolean isUndefined() {
+	private boolean isUndefined() {
 		return field.getText() == null || field.getText().equals("");
 	}
 
@@ -54,14 +52,15 @@ public class IntegerWidget implements IWidget{
 	@Override
 	public void addComputedQuestionToFrame(FormFrame frame) {
 		field.setEnabled(false);
-		frame.addWidget(id, this);
+		frame.addLabel(label);
+		frame.addField(field);
 	}
 	
 	@Override
 	public void addAnswerableQuestionToFrame(FormFrame frame) {
 		field.setEnabled(true);
-		frame.addWidget(id, this);
-
+		frame.addLabel(label);
+		frame.addField(field);
 	}
 
 	@Override
@@ -100,13 +99,4 @@ public class IntegerWidget implements IWidget{
 		field.addActionListener(al);
 	}
 
-	@Override
-	public JLabel getLabel() {
-		return this.label;
-	}
-
-	@Override
-	public JComponent getComponent() {
-		return this.field;
-	}
 }
