@@ -6,7 +6,6 @@ import java.util.List;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.ConflictingTypeInAssignmentError;
-import ql_obj_alg.report_system.errors.DuplicateQuestionError;
 import ql_obj_alg.report_system.errors.UnexpectedTypeError;
 import ql_obj_alg.report_system.warnings.DuplicateLabelWarning;
 import ql_obj_alg.types.TBoolean;
@@ -54,9 +53,6 @@ public class StmtTypeChecker extends ExprTypeChecker implements
 				Type t = tenv.getType(id);
 				if(t == null) 
 					assert(false) : "Missing question with id "+id+" from memory.";
-				if(!t.equals(type)){
-					report.addError(new DuplicateQuestionError(id,t,type));
-				}
 				if(tenv.containsLabel(label)){
 					report.addWarning(new DuplicateLabelWarning(label));
 				}

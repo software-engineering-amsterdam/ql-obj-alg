@@ -81,7 +81,7 @@ public class Parser {
 		IExpAlg<INoop> noopExpr = new ExprNoop();
 		IStmtAlg<INoop, ICollect> collectQuestions = new StmtCollectQuestionTypes();
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
-		form.build(noopExpr,collectQuestions,collectForm).collect(typeEnv);
+		form.build(noopExpr,collectQuestions,collectForm).collect(typeEnv,report);
 		
 		IExpAlg<IExpType> expTypeCheck = new ExprTypeChecker();
 		IStmtAlg<IExpType, ITypeCheck> typeCheckQuestions = new StmtTypeChecker();

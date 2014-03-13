@@ -21,7 +21,6 @@ import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.ConflictingTypeError;
-import ql_obj_alg.report_system.errors.DuplicateQuestionError;
 import ql_obj_alg.report_system.errors.GenError;
 import ql_obj_alg.report_system.errors.UndefinedQuestionError;
 import ql_obj_alg.report_system.errors.UnexpectedTypeError;
@@ -31,7 +30,6 @@ import ql_obj_alg.report_system.warnings.Warning;
 import ql_obj_alg.types.TBoolean;
 import ql_obj_alg.types.TInteger;
 import ql_obj_alg.types.TNumber;
-import ql_obj_alg.types.TString;
 import ql_obj_alg.types.TypeEnvironment;
 
 public class TypeCheckerTest {
@@ -54,7 +52,7 @@ public class TypeCheckerTest {
 	public void testDuplicateLabels() {
 		ICollect collector = duplicateLabels(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
 
-		collector.collect(tenv);
+		collector.collect(tenv,report);
 		
 		ITypeCheck form = duplicateLabels(new FormTypeChecker(),new StmtTypeChecker());
 		form.check(tenv, report);
@@ -76,60 +74,10 @@ public class TypeCheckerTest {
 	}
 	
 	@Test
-	public void testAcceptableDuplicateDefinitions() {
-		
-		
-		ICollect collector = acceptableDuplicateDefinitions(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
-
-		collector.collect(tenv);
-		
-		ITypeCheck form = acceptableDuplicateDefinitions(new FormTypeChecker(),new StmtTypeChecker());
-		form.check(tenv, report);
-
-		assertEquals(0, report.numberOfWarnings());
-				
-		assertEquals(0,report.numberOfErrors());
-	}
-	
-	private static <E,S,F> F acceptableDuplicateDefinitions(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
-		List<S> questions = new ArrayList<S>();
-		questions.add(s.question("id", "label", new TInteger()));
-		questions.add(s.question("id", "label1", new TInteger()));
-		
-		return f.form("Form id", questions);
-	}
-	
-	@Test
-	public void testUnacceptableDuplicateDefinitions() {
-		
-		ICollect collector = unacceptableDuplicateDefinitions(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
-
-		collector.collect(tenv);
-		
-		ITypeCheck form = unacceptableDuplicateDefinitions(new FormTypeChecker(),new StmtTypeChecker());
-		form.check(tenv, report);
-
-		assertEquals(0, report.numberOfWarnings());
-				
-		assertEquals(1,report.numberOfErrors());
-		
-		expectedError = new DuplicateQuestionError("id", new TInteger(), new TString());
-		assertTrue(report.containsError(expectedError));
-	}
-	
-	private static <E,S,F> F unacceptableDuplicateDefinitions(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
-		List<S> questions = new ArrayList<S>();
-		questions.add(s.question("id", "label", new TInteger()));
-		questions.add(s.question("id", "label1", new TString()));
-		
-		return f.form("Form id", questions);
-	}
-	
-	@Test
 	public void testUndefinedVariable() {
 		ICollect collector = undefinedVariable(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
 
-		collector.collect(tenv);
+		collector.collect(tenv,report);
 		
 		ITypeCheck form = undefinedVariable(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
 		form.check(tenv, report);
@@ -159,7 +107,7 @@ public class TypeCheckerTest {
 
 		ICollect collector = wrongTypeInAdd(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
 
-		collector.collect(tenv);
+		collector.collect(tenv,report);
 		
 		ITypeCheck form = wrongTypeInAdd(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
 		form.check(tenv, report);
@@ -189,7 +137,7 @@ public class TypeCheckerTest {
 		
 		ICollect collector = incompatibleTypeInEquals(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
 
-		collector.collect(tenv);
+		collector.collect(tenv,report);
 		
 		ITypeCheck form = incompatibleTypeInEquals(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
 		form.check(tenv, report);
@@ -219,7 +167,7 @@ public class TypeCheckerTest {
 
 		ICollect collector = wrongTypeInCondition(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes(),null);
 
-		collector.collect(tenv);
+		collector.collect(tenv,report);
 		
 		ITypeCheck form = wrongTypeInCondition(new FormTypeChecker(),new StmtTypeChecker(),new ExprTypeChecker());
 		form.check(tenv, report);
