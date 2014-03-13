@@ -21,6 +21,10 @@ public class TypeEnvironment {
 		}
 	}
 	
+	public boolean isDefined(String varName){
+		return typeEnvironment.containsKey(varName);
+	}
+	
 	public Type getType(String varName){
 		return typeEnvironment.get(varName);
 	}

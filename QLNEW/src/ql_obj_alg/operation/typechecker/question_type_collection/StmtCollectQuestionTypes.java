@@ -4,6 +4,8 @@ import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.noop.INoop;
+import ql_obj_alg.report_system.error_reporting.ErrorReporting;
+import ql_obj_alg.report_system.errors.DuplicateQuestionError;
 import ql_obj_alg.types.Type;
 import ql_obj_alg.types.TypeEnvironment;
 
@@ -14,9 +16,9 @@ public class StmtCollectQuestionTypes implements
 	@Override
 	public ICollect iff(final INoop cond, final List<ICollect> stmtList) {
 		return new ICollect(){
-			public void collect(TypeEnvironment tenv){
+			public void collect(TypeEnvironment tenv, ErrorReporting report){
 				for(ICollect stmt : stmtList)
-					stmt.collect(tenv);
+					stmt.collect(tenv,report);
 			}
 		};
 	}
@@ -25,11 +27,11 @@ public class StmtCollectQuestionTypes implements
 	public ICollect iffelse(final INoop cond, final List<ICollect> stmtList1,
 			final List<ICollect> stmtList2) {
 		return new ICollect(){
-			public void collect(TypeEnvironment tenv){
+			public void collect(TypeEnvironment tenv, ErrorReporting report){
 				for(ICollect stmt : stmtList1)
-					stmt.collect(tenv);
+					stmt.collect(tenv, report);
 				for(ICollect stmt : stmtList2)
-					stmt.collect(tenv);
+					stmt.collect(tenv,report);
 			}
 		};
 	}
@@ -37,8 +39,13 @@ public class StmtCollectQuestionTypes implements
 	@Override
 	public ICollect question(final String id, final String label, final Type type) {
 		return new ICollect(){
-			public void collect(TypeEnvironment tenv){
-				tenv.setNewTypeIfUndefined(id, type);
+			public void collect(TypeEnvironment tenv, ErrorReporting report){
+				if(tenv.isDefined(id)){
+					report.addError(new DuplicateQuestionError(id));
+				}
+				else{
+					tenv.setNewTypeIfUndefined(id, type);
+				}
 			}
 		};
 	}
@@ -47,8 +54,13 @@ public class StmtCollectQuestionTypes implements
 	public ICollect question(final String id, final String label, final Type type,
 			final INoop e) {
 		return new ICollect(){
-			public void collect(TypeEnvironment tenv){
-				tenv.setNewTypeIfUndefined(id, type);
+			public void collect(TypeEnvironment tenv,ErrorReporting report){
+				if(tenv.isDefined(id)){
+					report.addError(new DuplicateQuestionError(id));
+				}
+				else{
+					tenv.setNewTypeIfUndefined(id, type);
+				}
 			}
 		};
 	}
