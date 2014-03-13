@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.evaluator.ConditionalManagement;
+import ql_obj_alg.operation.evaluator.Conditions;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
@@ -24,12 +25,12 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame,final ValueEnvironment valEnv,
-					Stack<IDepsAndEvalE> visibilityConditions) {
-				visibilityConditions.push(cond);
+					Conditions conditions) {
+				conditions.addConditional(cond);
 				for(ICreate stmt : b){
-					stmt.create(frame,valEnv,visibilityConditions);
+					stmt.create(frame,valEnv,conditions);
 				}
-				visibilityConditions.pop();
+				conditions.removeConditional();
 			}
 		};
 	}
@@ -39,18 +40,18 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
-					Stack<IDepsAndEvalE> visibilityConditions) {
-				visibilityConditions.push(cond);
+					Conditions conditions) {
+				conditions.addConditional(cond);
 				for(ICreate stmt : b1){
-					stmt.create(frame,valEnv,visibilityConditions);
+					stmt.create(frame,valEnv,conditions);
 				}
-				visibilityConditions.pop();
+				conditions.removeConditional();
 				
-				visibilityConditions.push(not(cond));
+				conditions.addConditional(not(cond));
 				for(ICreate stmt : b2){
-					stmt.create(frame,valEnv,visibilityConditions);
+					stmt.create(frame,valEnv,conditions);
 				}
-				visibilityConditions.pop();
+				conditions.removeConditional();
 			}
 		};
 	}
@@ -60,11 +61,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
-					 Stack<IDepsAndEvalE> visibilityConditions) {
+					 Conditions conditions) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
-				final Stack<IDepsAndEvalE> localVisibility = ConditionalManagement.clone(visibilityConditions);
-				widget.setVisible(ConditionalManagement.compute(localVisibility,valEnv));
+				final Conditions localConditions = conditions.clone();
+				widget.setVisible(localConditions.compute(valEnv));
 				
 				valEnv.setQuestionValue(id, new VUndefined());
 				valEnv.initObservable(id);
@@ -91,11 +92,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
-					Stack<IDepsAndEvalE> visibilityConditions) {
+					Conditions conditions) {
 				
 				final IWidget widget = FieldFactory.createField(id,label,type);
-				final Stack<IDepsAndEvalE> localVisibility = ConditionalManagement.clone(visibilityConditions);
-				widget.setVisible(ConditionalManagement.compute(localVisibility,valEnv));
+				final Conditions localVisibility = conditions.clone();
+				widget.setVisible(localVisibility.compute(valEnv));
 				valEnv.setQuestionValue(id, new VUndefined());
 				
 				widget.setValue(e.eval(valEnv));
