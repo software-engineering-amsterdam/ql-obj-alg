@@ -1,0 +1,75 @@
+package ql_obj_alg.unit_tests.eval;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.operation.evaluator.ExprEvaluator;
+import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
+import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg.operation.evaluator.value.VInteger;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
+import ql_obj_alg.operation.evaluator.value.Value;
+
+
+
+public class ExprEvalTests {
+
+	ExprEvaluator exprEval = null;
+	ValueEnvironment valEnv = null;
+	@Before
+	public void SetUp(){
+		exprEval = new ExprEvaluator();
+		valEnv = new ValueEnvironment();
+	}
+	@Test
+	public void TestSimpleAdditionEval(){
+		IDepsAndEvalE eval = SimpleAddition(exprEval);
+		Value v = eval.eval(valEnv);
+		assertTrue(v.getInteger().equals(3));
+
+	}
+	private static <E> E SimpleAddition(IExpAlg<E> alg){
+		//1+2
+		return alg.add(alg.lit(1), alg.lit(2));
+	}
+
+	@Test
+	public void TestDividedByZero(){
+		IDepsAndEvalE eval = DividedByZero(exprEval);
+		Value v = eval.eval(valEnv);
+		assertTrue(v.eq(new VUndefined()).getBoolean());
+
+	}	
+	private static <E> E DividedByZero(IExpAlg<E> alg){
+		//5:0
+		return alg.div(alg.lit(5), alg.lit(0));
+	}
+
+	@Test
+	public void TestAssociativityOfDoubleDispatch(){
+		IDepsAndEvalE eval = Min(exprEval);
+		Value v = eval.eval(valEnv);
+		assertTrue(v.getInteger().equals(2));		
+	}
+
+	private static <E> E Min(IExpAlg<E> alg){
+		return alg.sub(alg.lit(5), alg.lit(3));
+	}
+
+
+	@Test
+	public void TestLookUpfromVarEnvironment(){
+		valEnv.setQuestionValue("var1", new VInteger(5));
+		IDepsAndEvalE eval = LookUp(exprEval);
+		Value v = eval.eval(valEnv);
+		assertTrue(v.getInteger().equals(0));		
+	}
+
+	private static <E> E LookUp(IExpAlg<E> alg){
+		return alg.sub(alg.lit(5), alg.var("var1"));
+	}
+
+}
