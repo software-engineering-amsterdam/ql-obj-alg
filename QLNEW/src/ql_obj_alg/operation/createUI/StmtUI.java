@@ -57,7 +57,8 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						frame.updateField(id,widget.getValue());
-						depNetwork.notifyObservers(id, frame);
+						depNetwork.notifyObservers(id);
+						frame.pack();
 					}
 				});
 				
