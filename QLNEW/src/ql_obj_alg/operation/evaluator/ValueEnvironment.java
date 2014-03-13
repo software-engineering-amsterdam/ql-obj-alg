@@ -6,7 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Stack;
 
-import ql_obj_alg.operation.createUI.ConditionalManagement;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.user_interface.modules.FormFrame;

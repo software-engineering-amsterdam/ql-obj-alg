@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.evaluator.ConditionalManagement;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
@@ -61,12 +62,11 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
 					 Stack<IDepsAndEvalE> visibilityConditions) {
 				
-				valEnv.setQuestionValue(id, new VUndefined());
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				final Stack<IDepsAndEvalE> localVisibility = ConditionalManagement.clone(visibilityConditions);
 				widget.setVisible(ConditionalManagement.compute(localVisibility,valEnv));
 				
-				
+				valEnv.setQuestionValue(id, new VUndefined());
 				valEnv.initObservable(id);
 				
 				widget.addActionListener(new ActionListener(){
@@ -78,7 +78,7 @@ public class StmtUI extends ExprEvaluator implements IStmtAlg<IDepsAndEvalE,ICre
 						frame.pack();
 					}
 				});
-
+				
 				valEnv.createVisibilityObservers(id, frame, widget,localVisibility);
 				widget.addAnswerableQuestionToFrame(frame);
 			}
