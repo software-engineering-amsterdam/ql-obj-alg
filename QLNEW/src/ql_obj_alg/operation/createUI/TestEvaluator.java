@@ -23,9 +23,9 @@ public class TestEvaluator {
 	    	IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI();
 	    	IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI();
 	    	
-	    	DependencyNetwork valEnv = new DependencyNetwork();
+	    	DependencyNetwork depNetwork = new DependencyNetwork();
 	    	
-	    	form.build(expAlg, stmtAlg,formAlg).create(valEnv);
+	    	form.build(expAlg, stmtAlg,formAlg).create(depNetwork);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

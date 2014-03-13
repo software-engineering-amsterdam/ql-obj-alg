@@ -15,10 +15,10 @@ public class FormUI implements IFormAlg<IDepsAndEvalE,ICreate,ICreateF>{
 		return new ICreateF(){
 
 			@Override
-			public void create(final DependencyNetwork valEnv) {
+			public void create(final DependencyNetwork depNetwork) {
 				final FormFrame frame = new FormFrame(id);
 				for(ICreate stmt : s){
-					stmt.create(frame, valEnv, new Stack<IDepsAndEvalE>());
+					stmt.create(frame, depNetwork, new Stack<IDepsAndEvalE>());
 				}
 				frame.render();
 				
