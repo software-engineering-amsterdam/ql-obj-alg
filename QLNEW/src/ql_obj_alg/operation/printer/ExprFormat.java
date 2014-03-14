@@ -41,6 +41,10 @@ class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 			String op, IPrecedence myPrec) {
 		return box.H(1,parens(myPrec, l), box.L(op), parens(myPrec, r));
 	}
+	
+	private IFormat unary(IFormatWithPrecedence l, String op, IPrecedence myPrec) {
+		return box.H(1,box.L(op), parens(myPrec, l));
+	}
 
 
 	private IFormat parens(IPrecedence parent, IFormatWithPrecedence kid) {
@@ -157,7 +161,7 @@ class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 	@Override
 	public IFormatWithPrecedence not(IFormatWithPrecedence a) {
 		IPrecedence myPrec = prec.not(a);
-		return new FP(a,myPrec);
+		return new FP(unary(a,"!",myPrec),myPrec);
 	}
 
 

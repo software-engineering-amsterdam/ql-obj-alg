@@ -29,6 +29,10 @@ import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
 import ql_obj_alg.operation.noop.ExprNoop;
 import ql_obj_alg.operation.noop.INoop;
+import ql_obj_alg.operation.normalizer.INormalizeF;
+import ql_obj_alg.operation.normalizer.INormalizerE;
+import ql_obj_alg.operation.normalizer.INormalizerF;
+import ql_obj_alg.operation.normalizer.INormalizerS;
 import ql_obj_alg.operation.printer.ExprPrecedence;
 import ql_obj_alg.operation.printer.FormFormat;
 import ql_obj_alg.operation.typechecker.ExprTypeChecker;
@@ -50,6 +54,7 @@ public class Parser {
     	IBuildF form = qlParser.form().frm;
     	//typeCheck(form);
     	printForm(form);
+    	printNormalized(form);
     }
 
 	private static void printForm(IBuildF form) {
@@ -57,6 +62,16 @@ public class Parser {
 		FormFormat fFormat = new FormFormat(new ExprPrecedence());
 		StringWriter w = new StringWriter();
 		form.build(fFormat,fFormat,fFormat).format(0, false, w);
+        System.out.println(w);
+	}
+	
+	private static void printNormalized(IBuildF form) {
+		
+		INormalizeF normalizedForm = form.build(new INormalizerE(),new INormalizerS(),new INormalizerF());
+
+		FormFormat fFormat = new FormFormat(new ExprPrecedence());
+		StringWriter w = new StringWriter();
+		normalizedForm.normalize(fFormat,fFormat,fFormat).format(0, false, w);
         System.out.println(w);
 	}
        
