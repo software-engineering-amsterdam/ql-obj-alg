@@ -33,7 +33,8 @@ public class FormFrame extends JFrame {
 		Submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Button pushed");
+				setVisible(false);
+				dispose();
 			}
 		});
 		buttonPane.add(Submit);
