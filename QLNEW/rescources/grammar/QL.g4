@@ -6,18 +6,22 @@ import CommonLexerRules,Op;
 package ql_obj_alg.parsers.antlr4_generated_parser;
 import ql_obj_alg.operation.builder.*;
 import ql_obj_alg.types.TypeFactory;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import java.util.ArrayList;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 }
 
 @parser::members{
-	FormBuilder formBuilder = new FormBuilder();
-	StmtBuilder stmtBuilder = new StmtBuilder();
-	ExprBuilder exprBuilder = new ExprBuilder();
+	IFormAlg formBuilder = (IFormAlg) Proxy.newProxyInstance(IFormAlg.class.getClassLoader(),new Class[]{IFormAlg.class},new BuilderHandler());
+	IStmtAlg stmtBuilder = (IStmtAlg)Proxy.newProxyInstance(IStmtAlg.class.getClassLoader(),new Class[]{IStmtAlg.class},new BuilderHandler());
+	IExpAlg exprBuilder = (IExpAlg) Proxy.newProxyInstance(IExpAlg.class.getClassLoader(),new Class[]{IExpAlg.class},new BuilderHandler());
 	
-	protected List<IBuildS> composeStmt(List<QLParser.StatContext> antlr4StmtList){
-		List<IBuildS> stmtList = new ArrayList<IBuildS>();
+	protected List<Object> composeStmt(List<QLParser.StatContext> antlr4StmtList){
+		List<Object> stmtList = new ArrayList<Object>();
 		for(QLParser.StatContext stmt : antlr4StmtList)
 		{
 			stmtList.add(stmt.stmt);
@@ -27,27 +31,27 @@ import java.util.List;
 
 }
 
-form returns [IBuildF frm]: 
+form returns [Object frm]: 
 		'form' ID LB a+=stat+ RB {$frm = formBuilder.form($ID.text,composeStmt($a));};
 
-stat returns [IBuildS stmt]: 
+stat returns [Object stmt]: 
 		question {$stmt = $question.stmt;}
 		| ifstat {$stmt = $ifstat.stmt;};
 
-question returns [IBuildS stmt]: 
+question returns [Object stmt]: 
 		ID ':' STRING TYPE b=assign? {if($b.ctx != null){ $stmt = stmtBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text),$assign.exp);} else {$stmt = stmtBuilder.question($ID.text,$STRING.text,TypeFactory.createType($TYPE.text));};};
 
-assign returns [IBuildE exp]: 
+assign returns [Object exp]: 
 		LP a=expr RP	{$exp = $a.exp;};
 
-ifstat returns [IBuildS stmt]: 
+ifstat returns [Object stmt]: 
 		'if' LP a=expr RP LB b+=stat* RB c=elsestat? {if($c.ctx != null){ $stmt = stmtBuilder.iffelse($a.exp,composeStmt($b),$elsestat.stmt);} else { $stmt = stmtBuilder.iff($a.exp,composeStmt($b));};};
 
-elsestat returns [List<IBuildS> stmt]:
+elsestat returns [List<Object> stmt]:
 		'else' LB a+=stat* RB		{$stmt = composeStmt($a);};
 
 //precedence http://introcs.cs.princeton.edu/java/11precedence/
-expr returns [IBuildE exp]: 	
+expr returns [Object exp]: 	
 		LP a=expr RP 				{$exp = $a.exp;}
 		| NOT a=expr 				{$exp = exprBuilder.not($a.exp);} 
 		| a=expr MUL b=expr 		{$exp = exprBuilder.mul($a.exp,$b.exp);} 

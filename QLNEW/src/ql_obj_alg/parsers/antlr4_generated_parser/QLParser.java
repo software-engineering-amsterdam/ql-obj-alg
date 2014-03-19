@@ -3,7 +3,11 @@
 package ql_obj_alg.parsers.antlr4_generated_parser;
 import ql_obj_alg.operation.builder.*;
 import ql_obj_alg.types.TypeFactory;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import java.util.ArrayList;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 
@@ -54,12 +58,12 @@ public class QLParser extends Parser {
 	public ATN getATN() { return _ATN; }
 
 
-		FormBuilder formBuilder = new FormBuilder();
-		StmtBuilder stmtBuilder = new StmtBuilder();
-		ExprBuilder exprBuilder = new ExprBuilder();
+		IFormAlg formBuilder = (IFormAlg) Proxy.newProxyInstance(IFormAlg.class.getClassLoader(),new Class[]{IFormAlg.class},new BuilderHandler());
+		IStmtAlg stmtBuilder = (IStmtAlg) Proxy.newProxyInstance(IStmtAlg.class.getClassLoader(),new Class[]{IStmtAlg.class},new BuilderHandler());
+		IExpAlg exprBuilder = (IExpAlg) Proxy.newProxyInstance(IExpAlg.class.getClassLoader(),new Class[]{IExpAlg.class},new BuilderHandler());
 		
-		protected List<IBuildS> composeStmt(List<QLParser.StatContext> antlr4StmtList){
-			List<IBuildS> stmtList = new ArrayList<IBuildS>();
+		protected List<Object> composeStmt(List<QLParser.StatContext> antlr4StmtList){
+			List<Object> stmtList = new ArrayList<Object>();
 			for(QLParser.StatContext stmt : antlr4StmtList)
 			{
 				stmtList.add(stmt.stmt);
@@ -73,7 +77,7 @@ public class QLParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class FormContext extends ParserRuleContext {
-		public IBuildF frm;
+		public Object frm;
 		public Token ID;
 		public StatContext stat;
 		public List<StatContext> a = new ArrayList<StatContext>();
@@ -132,7 +136,7 @@ public class QLParser extends Parser {
 	}
 
 	public static class StatContext extends ParserRuleContext {
-		public IBuildS stmt;
+		public Object stmt;
 		public QuestionContext question;
 		public IfstatContext ifstat;
 		public QuestionContext question() {
@@ -183,7 +187,7 @@ public class QLParser extends Parser {
 	}
 
 	public static class QuestionContext extends ParserRuleContext {
-		public IBuildS stmt;
+		public Object stmt;
 		public Token ID;
 		public Token STRING;
 		public Token TYPE;
@@ -235,7 +239,7 @@ public class QLParser extends Parser {
 	}
 
 	public static class AssignContext extends ParserRuleContext {
-		public IBuildE exp;
+		public Object exp;
 		public ExprContext a;
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -272,7 +276,7 @@ public class QLParser extends Parser {
 	}
 
 	public static class IfstatContext extends ParserRuleContext {
-		public IBuildS stmt;
+		public Object stmt;
 		public ExprContext a;
 		public StatContext stat;
 		public List<StatContext> b = new ArrayList<StatContext>();
@@ -350,7 +354,7 @@ public class QLParser extends Parser {
 	}
 
 	public static class ElsestatContext extends ParserRuleContext {
-		public List<IBuildS> stmt;
+		public List<Object> stmt;
 		public StatContext stat;
 		public List<StatContext> a = new ArrayList<StatContext>();
 		public StatContext stat(int i) {
@@ -406,7 +410,7 @@ public class QLParser extends Parser {
 	}
 
 	public static class ExprContext extends ParserRuleContext {
-		public IBuildE exp;
+		public Object exp;
 		public ExprContext a;
 		public Token BOOL;
 		public Token STRING;
