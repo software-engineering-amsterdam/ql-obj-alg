@@ -73,12 +73,8 @@ public class StringWidget implements IWidget{
 		if(obj == null)
 			return false;
 		
-		if(obj instanceof StringWidget){
-			StringWidget w = (StringWidget) obj;
-			
-			if(this.id == w.id || (this.id != null && this.id.equals(w.id)))
-				return true;
-		}
+		if(obj instanceof StringWidget)
+			return equals((StringWidget) obj);
 		return false;
 	}
 	
@@ -98,6 +94,23 @@ public class StringWidget implements IWidget{
 	@Override
 	public void addActionListener(ActionListener al) {
 		text.addActionListener(al);
+	}
+	
+	@Override
+	public boolean equals(BooleanWidget other) {
+		return false;
+	}
+
+	@Override
+	public boolean equals(IntegerWidget other) {
+		return false;
+	}
+
+	@Override
+	public boolean equals(StringWidget other) {
+		if(this.id == other.id || (this.id != null && this.id.equals(other.id)))
+			return true;
+		return false;
 	}
 	
 }

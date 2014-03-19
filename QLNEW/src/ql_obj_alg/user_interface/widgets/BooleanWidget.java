@@ -67,14 +67,11 @@ public class BooleanWidget implements IWidget{
 			return false;
 		
 		if(obj instanceof BooleanWidget){
-			BooleanWidget w = (BooleanWidget) obj;
-			
-			if(this.id == w.id || (this.id != null && this.id.equals(w.id)))
-				return true;
+			return equals((BooleanWidget) obj);
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return id.hashCode();
@@ -88,5 +85,22 @@ public class BooleanWidget implements IWidget{
 	@Override
 	public void addActionListener(ActionListener al) {
 		checkBox.addActionListener(al);
+	}
+
+	@Override
+	public boolean equals(BooleanWidget other) {
+		if(this.id == other.id || (this.id != null && this.id.equals(other.id)))
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean equals(IntegerWidget other) {
+		return false;
+	}
+
+	@Override
+	public boolean equals(StringWidget other) {
+		return false;
 	}
 }

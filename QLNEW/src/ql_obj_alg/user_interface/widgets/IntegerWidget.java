@@ -74,10 +74,7 @@ public class IntegerWidget implements IWidget{
 			return false;
 		
 		if(obj instanceof IntegerWidget){
-			IntegerWidget w = (IntegerWidget) obj;
-			
-			if(this.id == w.id || (this.id != null && this.id.equals(w.id)))
-				return true;
+			return equals((IntegerWidget) obj);
 		}
 		return false;
 	}
@@ -97,6 +94,23 @@ public class IntegerWidget implements IWidget{
 	@Override
 	public void addActionListener(ActionListener al) {
 		field.addActionListener(al);
+	}
+	
+	@Override
+	public boolean equals(BooleanWidget other) {
+		return false;
+	}
+
+	@Override
+	public boolean equals(IntegerWidget other) {
+		if(this.id == other.id || (this.id != null && this.id.equals(other.id)))
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean equals(StringWidget other) {
+		return false;
 	}
 
 }
