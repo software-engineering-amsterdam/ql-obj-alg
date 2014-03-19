@@ -27,7 +27,6 @@ public class ValueObserver implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		Value val = e.eval(valEnv);
 		valEnv.setQuestionValue(id, val);
-		System.out.println("Value update called");
 		valEnv.setQuestionValue(id, val);
 		widget.setValue(val);
 		valEnv.notifyObservers(id);
