@@ -49,20 +49,67 @@ public class ExecuteOperations {
     	runUI(form,errorReport);
     }
     
-
-
-	public static void printForm(Builder form) {
+	private static void printForm(Builder form) {
 		
 		FormFormat fFormat = new FormFormat();
 		StringWriter w = new StringWriter();
+		printForm(form, fFormat, w);
+	}
+
+	protected static void printForm(Builder form, FormFormat fFormat,
+			StringWriter w) {
 		IFormat printingForm = (IFormat) form.build(fFormat);
 		printingForm.format(0, false, w);
         System.out.println(w);
 	}
 	
-	public static boolean typeCheckerForm(Builder form, ErrorReporting report) {
+	private static boolean typeCheckerForm(Builder form, ErrorReporting report) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
-	
+		
+		collectQuestions(form, report, typeEnv);
+		checkTypes(form, report, typeEnv);
+		checkCyclicDependencies(form, report);
+		return report.numberOfErrors() == 0;
+	}
+
+	private static void checkCyclicDependencies(Builder form,
+			ErrorReporting report) {
+		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
+		IStmtAlg<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependencies();
+		IExpAlg<IExpDependency> expDependencies = new ExprDependencies();
+		List<Object> algebras = new ArrayList<Object>();
+		algebras.add(formDependencies);
+		algebras.add(stmtDependencies);
+		algebras.add(expDependencies);
+		checkCyclicDependencies(form, algebras);
+	}
+
+	protected static void checkCyclicDependencies(Builder form,
+			List<Object> algebras) {
+		IDependencyGraph cyclesDetection = (IDependencyGraph) form.build(algebras);
+		cyclesDetection.dependencies(new FillDependencyGraph());
+	}
+
+	private static void checkTypes(Builder form, ErrorReporting report,
+			TypeEnvironment typeEnv) {
+		IFormAlg<IExpType,ITypeCheck,ITypeCheck> typeCheckForm = new FormTypeChecker();
+		IStmtAlg<IExpType,ITypeCheck> typeCheckStmt = new StmtTypeChecker();
+		IExpAlg<IExpType> typeCheckExpr = new ExprTypeChecker();
+		List<Object> algebras = new ArrayList<Object>();
+		algebras.add(typeCheckForm);
+		algebras.add(typeCheckStmt);
+		algebras.add(typeCheckExpr);
+		checkTypes(form, report, typeEnv, algebras);
+	}
+
+	protected static void checkTypes(Builder form, ErrorReporting report,
+			TypeEnvironment typeEnv, List<Object> algebras) {
+		ITypeCheck checkTypes = (ITypeCheck) form.build(algebras);
+		checkTypes.check(typeEnv, report);
+	}
+
+	private static void collectQuestions(Builder form, ErrorReporting report,
+			TypeEnvironment typeEnv) {
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
 		IExpAlg<INoop> exprAlg = new ExprNoop();
@@ -72,35 +119,16 @@ public class ExecuteOperations {
 		algebras.add(collectStmt);
 		algebras.add(exprAlg);
 		
+		collectQuestions(form, report, typeEnv, algebras);
+	}
+
+	protected static void collectQuestions(Builder form, ErrorReporting report,
+			TypeEnvironment typeEnv, List<Object> algebras) {
 		ICollect collectTypes = (ICollect) form.build(algebras);
 		collectTypes.collect(typeEnv,report);
-		
-		IFormAlg<IExpType,ITypeCheck,ITypeCheck> typeCheckForm = new FormTypeChecker();
-		IStmtAlg<IExpType,ITypeCheck> typeCheckStmt = new StmtTypeChecker();
-		IExpAlg<IExpType> typeCheckExpr = new ExprTypeChecker();
-		algebras = new ArrayList<Object>();
-		algebras.add(typeCheckForm);
-		algebras.add(typeCheckStmt);
-		algebras.add(typeCheckExpr);
-		
-		ITypeCheck checkTypes = (ITypeCheck) form.build(algebras);
-		checkTypes.check(typeEnv, report);
-		
-		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
-		IStmtAlg<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependencies();
-		IExpAlg<IExpDependency> expDependencies = new ExprDependencies();
-		algebras = new ArrayList<Object>();
-		algebras.add(formDependencies);
-		algebras.add(stmtDependencies);
-		algebras.add(expDependencies);
-		
-		IDependencyGraph cyclesDetection = (IDependencyGraph) form.build(algebras);
-		cyclesDetection.dependencies(new FillDependencyGraph());
-		
-		return report.numberOfErrors() == 0;
 	}
 	
-	public static void runUI(Builder form, ErrorReporting errorReport){
+	private static void runUI(Builder form, ErrorReporting errorReport){
 		if(!typeCheckerForm(form,errorReport)){
 			errorReport.printErrors();
 		}
@@ -110,12 +138,17 @@ public class ExecuteOperations {
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
 
 		ValueEnvironment valEnv = new ValueEnvironment();
-		List<Object> factoryList = new ArrayList<Object>();
-		factoryList.add(expAlg);
-		factoryList.add(stmtAlg);
-		factoryList.add(formAlg);
+		List<Object> algebras = new ArrayList<Object>();
+		algebras.add(expAlg);
+		algebras.add(stmtAlg);
+		algebras.add(formAlg);
 
-		((ICreateF)form.build(factoryList)).create(valEnv);
+		createUI(form, valEnv, algebras);
+	}
+
+	protected static void createUI(Builder form, ValueEnvironment valEnv,
+			List<Object> algebras) {
+		((ICreateF)form.build(algebras)).create(valEnv);
 	}
     
 }
