@@ -2,6 +2,8 @@ package ql_obj_alg.parsers.parser;
 
 import java.io.FileInputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
@@ -42,7 +44,7 @@ public class ExecuteOperations {
 		
 		FormFormat fFormat = new FormFormat(new ExprPrecedence());
 		StringWriter w = new StringWriter();
-		IFormat printingForm = (IFormat) form.build(fFormat,fFormat,fFormat);
+		IFormat printingForm = (IFormat) form.build(fFormat);
 		printingForm.format(0, false, w);
         System.out.println(w);
 	}
@@ -54,19 +56,35 @@ public class ExecuteOperations {
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
 		IExpAlg<INoop> exprAlg = new ExprNoop();
-		ICollect collectTypes = (ICollect) form.build(collectForm,collectStmt,exprAlg);
+		
+		List<Object> algebras = new ArrayList<Object>();
+		algebras.add(collectForm);
+		algebras.add(collectStmt);
+		algebras.add(exprAlg);
+		
+		ICollect collectTypes = (ICollect) form.build(algebras);
 		collectTypes.collect(typeEnv,report);
 		
 		IFormAlg<IExpType,ITypeCheck,ITypeCheck> typeCheckForm = new FormTypeChecker();
 		IStmtAlg<IExpType,ITypeCheck> typeCheckStmt = new StmtTypeChecker();
 		IExpAlg<IExpType> typeCheckExpr = new ExprTypeChecker();
-		ITypeCheck checkTypes = (ITypeCheck) form.build(typeCheckForm,typeCheckStmt,typeCheckExpr);
+		algebras = new ArrayList<Object>();
+		algebras.add(typeCheckForm);
+		algebras.add(typeCheckStmt);
+		algebras.add(typeCheckExpr);
+		
+		ITypeCheck checkTypes = (ITypeCheck) form.build(algebras);
 		checkTypes.check(typeEnv, report);
 		
 		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
 		IStmtAlg<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependencies();
 		IExpAlg<IExpDependency> expDependencies = new ExprDependencies();
-		IDependencyGraph cyclesDetection = (IDependencyGraph) form.build(formDependencies,stmtDependencies,expDependencies);
+		algebras = new ArrayList<Object>();
+		algebras.add(formDependencies);
+		algebras.add(stmtDependencies);
+		algebras.add(expDependencies);
+		
+		IDependencyGraph cyclesDetection = (IDependencyGraph) form.build(algebras);
 		cyclesDetection.dependencies(new FillDependencyGraph());
 
 		report.printErrors();
