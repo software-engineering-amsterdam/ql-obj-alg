@@ -18,7 +18,7 @@ public class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 	}
 
 
-	static class FP implements IFormatWithPrecedence {
+	protected static class FP implements IFormatWithPrecedence {
 		private IFormat f;
 		private IPrecedence p;
 
