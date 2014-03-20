@@ -13,7 +13,6 @@ import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
 
 public class Parser {
 
-	
 	public static Builder getExpressions(FileInputStream fis, boolean useANTLRParseErrors){
 		ANTLRInputStream inputStream;
 		try {

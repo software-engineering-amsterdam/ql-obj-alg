@@ -41,7 +41,11 @@ import ql_obj_alg.types.TypeEnvironment;
 public class ExecuteOperations {
     public static void main(String[] args) throws Exception {
     	Builder form = Parser.getForm(new FileInputStream(args[0]),true);
-    	typeCheckerForm(form);
+    	ErrorReporting errorReport = new ErrorReporting();
+    	if(!typeCheckerForm(form,errorReport)){
+    		errorReport.printErrors();
+    		errorReport.printWarnings();
+    	};
     	printForm(form);
     	runUI(form);
     }
@@ -57,10 +61,9 @@ public class ExecuteOperations {
         System.out.println(w);
 	}
 	
-	public static boolean typeCheckerForm(Builder form) {
+	public static boolean typeCheckerForm(Builder form, ErrorReporting report) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
-		ErrorReporting report = new ErrorReporting();
-		
+	
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
 		IExpAlg<INoop> exprAlg = new ExprNoop();
@@ -94,28 +97,22 @@ public class ExecuteOperations {
 		
 		IDependencyGraph cyclesDetection = (IDependencyGraph) form.build(algebras);
 		cyclesDetection.dependencies(new FillDependencyGraph());
-
-		report.printErrors();
-		report.printWarnings();
 		
 		return report.numberOfErrors() == 0;
 	}
 	
 	public static void runUI(Builder form){
-		if(ExecuteOperations.typeCheckerForm(form)){
-			IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
-			IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
-			IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
+		IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
+		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
+		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
 
-			ValueEnvironment valEnv = new ValueEnvironment();
-			List<Object> factoryList = new ArrayList<Object>();
-			factoryList.add(expAlg);
-			factoryList.add(stmtAlg);
-			factoryList.add(formAlg);
+		ValueEnvironment valEnv = new ValueEnvironment();
+		List<Object> factoryList = new ArrayList<Object>();
+		factoryList.add(expAlg);
+		factoryList.add(stmtAlg);
+		factoryList.add(formAlg);
 
-			((ICreateF)form.build(factoryList)).create(valEnv);
-
-		}
+		((ICreateF)form.build(factoryList)).create(valEnv);
 	}
     
 }
