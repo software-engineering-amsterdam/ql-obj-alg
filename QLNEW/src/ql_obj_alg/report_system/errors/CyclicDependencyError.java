@@ -13,6 +13,11 @@ public class CyclicDependencyError extends GenError {
 		return "Cyclic dependency: "+cycle.toString()+".";
 	}
 	
+	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+	
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;

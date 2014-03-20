@@ -15,6 +15,11 @@ public class UnexpectedTypeInBinaryOpError extends UnexpectedTypeError {
 		return "Unexpected type in "+exp+", "+expected.toString()+", found "+found.toString()+" and "+found2.toString()+".";
 	}
 	
+	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+		
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;

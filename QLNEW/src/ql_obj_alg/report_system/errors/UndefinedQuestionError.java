@@ -12,6 +12,11 @@ public class UndefinedQuestionError extends GenError{
 	}
 	
 	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+		
+	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;

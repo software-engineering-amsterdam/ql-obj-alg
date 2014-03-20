@@ -13,6 +13,11 @@ public class UnexpectedTypeError extends GenError {
 		this.exp = exp;
 	}
 	
+	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+		
 	public String toString(){
 		return "Unexpected type in "+exp+", "+expected.toString()+", "+found.toString()+".";
 	}

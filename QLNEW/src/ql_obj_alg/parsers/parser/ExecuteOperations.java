@@ -47,7 +47,7 @@ public class ExecuteOperations {
     		errorReport.printWarnings();
     	};
     	printForm(form);
-    	runUI(form);
+    	runUI(form,errorReport);
     }
     
 
@@ -101,7 +101,11 @@ public class ExecuteOperations {
 		return report.numberOfErrors() == 0;
 	}
 	
-	public static void runUI(Builder form){
+	public static void runUI(Builder form, ErrorReporting errorReport){
+		if(!typeCheckerForm(form,errorReport)){
+			errorReport.printErrors();
+		}
+		assert typeCheckerForm(form,errorReport) : "There are errors in the form";
 		IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);

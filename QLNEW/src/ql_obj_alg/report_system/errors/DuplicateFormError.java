@@ -11,6 +11,11 @@ public class DuplicateFormError extends GenError {
 		return "Duplicated form with id "+id+".";
 	}
 	
+	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+		
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;

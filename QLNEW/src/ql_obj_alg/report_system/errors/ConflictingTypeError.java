@@ -2,8 +2,6 @@ package ql_obj_alg.report_system.errors;
 
 import ql_obj_alg.types.Type;
 
-
-
 public class ConflictingTypeError extends GenError {
 	Type t1;
 	Type t2;
@@ -15,6 +13,10 @@ public class ConflictingTypeError extends GenError {
 		this.exp = exp;
 	}
 	
+	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
 	public String toString(){
 		return "Conflicting types in "+exp+", ("+t1.toString()+", "+t2.toString()+").";
 	}

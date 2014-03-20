@@ -13,6 +13,12 @@ public class ConflictingTypeInAssignmentError extends GenError {
 		this.variable = variable;
 	}
 	
+	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+	
+	
 	public String toString(){
 		return "Conflicting types in question "+variable+" assignment, variableected "+variableected.toString()+", "+found.toString()+").";
 	}

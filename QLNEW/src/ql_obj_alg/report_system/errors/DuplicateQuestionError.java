@@ -12,6 +12,11 @@ public class DuplicateQuestionError extends GenError {
 		return "Duplicate declaration of question "+variable+".";
 	}
 	
+	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+		
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;
