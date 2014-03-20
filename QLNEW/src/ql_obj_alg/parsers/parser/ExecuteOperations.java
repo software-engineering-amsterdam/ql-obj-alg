@@ -23,7 +23,10 @@ import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.noop.ExprNoop;
 import ql_obj_alg.operation.noop.INoop;
+import ql_obj_alg.operation.printer.ExprFormat;
+import ql_obj_alg.operation.printer.ExprPrecedence;
 import ql_obj_alg.operation.printer.FormFormat;
+import ql_obj_alg.operation.printer.StmtFormat;
 import ql_obj_alg.operation.printer.boxalg.IFormat;
 import ql_obj_alg.operation.typechecker.ExprTypeChecker;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
@@ -52,13 +55,21 @@ public class ExecuteOperations {
 	private static void printForm(Builder form) {
 		
 		FormFormat fFormat = new FormFormat();
+		StmtFormat sFormat = new StmtFormat();
+		ExprPrecedence prec = new ExprPrecedence();
+		ExprFormat<ExprPrecedence> eFormat = new ExprFormat<ExprPrecedence>(prec);
+		List<Object> algebras = new ArrayList<Object>();
+		algebras.add(fFormat);
+		algebras.add(sFormat);
+		algebras.add(eFormat);
+		
 		StringWriter w = new StringWriter();
-		printForm(form, fFormat, w);
+		printForm(form, algebras, w);
 	}
 
-	protected static void printForm(Builder form, FormFormat fFormat,
+	protected static void printForm(Builder form, List<Object> algebras,
 			StringWriter w) {
-		IFormat printingForm = (IFormat) form.build(fFormat);
+		IFormat printingForm = (IFormat) form.build(algebras);
 		printingForm.format(0, false, w);
         System.out.println(w);
 	}

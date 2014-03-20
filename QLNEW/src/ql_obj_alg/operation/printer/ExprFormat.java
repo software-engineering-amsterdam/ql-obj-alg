@@ -17,6 +17,9 @@ public class ExprFormat<V extends IExpAlg<IPrecedence>> implements IExpAlg<IForm
 		this.prec = myPrec;
 	}
 
+	protected V getPrecedence(){
+		return prec;
+	}
 
 	protected static class FP implements IFormatWithPrecedence {
 		private IFormat f;
