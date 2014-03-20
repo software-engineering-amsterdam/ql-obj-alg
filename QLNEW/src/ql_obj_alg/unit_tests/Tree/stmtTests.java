@@ -6,9 +6,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.junit.Test;
 
 import ql_obj_alg.parsers.antlr4_generated_parser.Builder;
-import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
-import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 
@@ -61,20 +59,9 @@ public class stmtTests{
 	}
 		
 	private static ITest getTestAlgebraObject(String expr){
-		Builder stmtBuilder = getStmtTree(expr);
+		Builder stmtBuilder = Parser.getStatements(expr);
 		Tester tester = new Tester();
-		return (ITest) stmtBuilder.build(tester,tester,tester);		
+		return (ITest) stmtBuilder.build(tester);		
 	}
 	
-	private static Builder getStmtTree(String expr){
-		QLParser qlParser = getParser(expr);
-		return (Builder)qlParser.stat().stmt;
-	}
-	
-	private static QLParser getParser(String expr) {
-		QLParser qlParser = Parser.parse(Parser.getInputStream(expr));
-		qlParser.removeErrorListeners();
-		qlParser.setErrorHandler(new BailErrorStrategy());
-		return qlParser;
-	}
 }

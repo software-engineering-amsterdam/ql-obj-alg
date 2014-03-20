@@ -14,6 +14,12 @@ public class Builder {
 		this.method = method;
 		this.args = args;		
 	}
+	
+	public Object build(Object factory){
+		List<Object> list = new ArrayList<Object>();
+		list.add(factory);
+		return build(list);
+	}
 
 	public Object build(List<Object> factories){
 		try {
