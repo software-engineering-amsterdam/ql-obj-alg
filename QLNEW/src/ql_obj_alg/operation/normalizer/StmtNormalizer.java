@@ -7,9 +7,9 @@ import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.types.Type;
 
-public class INormalizerS implements IStmtAlg<INormalizeE, INormalizeS> {
+public class StmtNormalizer implements IStmtAlg<INormalizeE, INormalizeS> {
 	
-	INormalizerE exprNormalizer = new INormalizerE();
+	ExprNormalizer exprNormalizer = new ExprNormalizer();
 
 	@Override
 	public INormalizeS iff(final INormalizeE cond, final List<INormalizeS> b) {

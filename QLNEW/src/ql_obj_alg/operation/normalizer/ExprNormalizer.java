@@ -2,7 +2,7 @@ package ql_obj_alg.operation.normalizer;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 
-public class INormalizerE implements IExpAlg<INormalizeE> {
+public class ExprNormalizer implements IExpAlg<INormalizeE> {
 		@Override
 		public INormalizeE lit(final int x) {
 			return new INormalizeE(){

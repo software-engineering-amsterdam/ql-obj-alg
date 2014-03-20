@@ -7,14 +7,14 @@ import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 
-public class INormalizerF implements
+public class FormNormalizer implements
 		IFormAlg<INormalizeE, INormalizeS, INormalizeF> {
 
 	@Override
 	public INormalizeF form(final String id, final List<INormalizeS> s) {
 		return new INormalizeF(){
 
-			INormalizerE exprNormalizer = new INormalizerE();
+			ExprNormalizer exprNormalizer = new ExprNormalizer();
 			
 			@Override
 			public <E, S, F> F normalize(IExpAlg<E> expAlg,
