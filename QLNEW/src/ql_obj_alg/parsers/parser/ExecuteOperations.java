@@ -48,7 +48,7 @@ public class ExecuteOperations {
     
 
 
-	private static void printForm(Builder form) {
+	public static void printForm(Builder form) {
 		
 		FormFormat fFormat = new FormFormat(new ExprPrecedence());
 		StringWriter w = new StringWriter();
@@ -57,7 +57,7 @@ public class ExecuteOperations {
         System.out.println(w);
 	}
 	
-	private static boolean typeCheckerForm(Builder form) {
+	public static boolean typeCheckerForm(Builder form) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
 		ErrorReporting report = new ErrorReporting();
 		
