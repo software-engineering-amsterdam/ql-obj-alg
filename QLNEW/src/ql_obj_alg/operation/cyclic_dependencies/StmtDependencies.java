@@ -6,7 +6,7 @@ import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
 import ql_obj_alg.types.Type;
 
-public class StmtDependencies extends ExprDependencies implements
+public class StmtDependencies implements
 		IStmtAlg<IExpDependency, IDependencyGraph> {
 	
 	@Override
