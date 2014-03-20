@@ -2,6 +2,7 @@ package ql_obj_alg.parsers.parser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -13,11 +14,37 @@ import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
 
 public class Parser {
 
-	public static Builder getExpressions(FileInputStream fis, boolean useANTLRParseErrors){
+	private boolean useANTLRParseErrors = true;
+	
+	public void setParseErrors(boolean ANTLRParseErrors){
+		this.useANTLRParseErrors = ANTLRParseErrors;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public <X> X makeForm(Class<X> operation, List<?> alg, FileInputStream fis){
+		Builder builder = getForm(fis);
+		return (X) builder.build(alg);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <X> X makeExpression(Class<X> operation, List<?> alg, String input){
+		Builder builder = getExpressions(input);
+		return (X) builder.build(alg);
+	}
+
+	@SuppressWarnings("unchecked")
+	public  <X> X makeStatements(Class<X> operation, List<?> alg, String input){
+		Builder builder = getStatements(input);
+		return (X) builder.build(alg);
+	}
+	
+	
+	public Builder getExpressions(FileInputStream fis){
 		ANTLRInputStream inputStream;
 		try {
 			inputStream = new ANTLRInputStream(fis);
-			return getExpressions(inputStream, useANTLRParseErrors);
+			return getExpressions(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -25,13 +52,13 @@ public class Parser {
 		return null;
 	}
 	
-	public static Builder getExpressions(String input, boolean useANTLRParseErrors){
+	public Builder getExpressions(String input){
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
-		return getExpressions(inputStream, useANTLRParseErrors);
+		return getExpressions(inputStream);
 	}
 
     
-	private static Builder getExpressions(ANTLRInputStream inputStream, boolean useANTLRParseErrors) {
+	private Builder getExpressions(ANTLRInputStream inputStream) {
 		QLParser qlParser = parse(inputStream);
 		if(!useANTLRParseErrors){
 			qlParser.setErrorHandler(new BailErrorStrategy());
@@ -41,11 +68,11 @@ public class Parser {
 		return (Builder) qlParser.expr().exp;
 	}
 
-	public static Builder getStatements(FileInputStream fis, boolean useANTLRParseErrors){
+	public Builder getStatements(FileInputStream fis){
 		ANTLRInputStream inputStream;
 		try {
 			inputStream = new ANTLRInputStream(fis);
-			return getStatements(inputStream,useANTLRParseErrors);
+			return getStatements(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -53,13 +80,13 @@ public class Parser {
 		return null;
 	}
 	
-	public static Builder getStatements(String input, boolean useANTLRParseErrors){
+	public Builder getStatements(String input){
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
-		return getStatements(inputStream,useANTLRParseErrors);
+		return getStatements(inputStream);
 	}
 
     
-	private static Builder getStatements(ANTLRInputStream inputStream, boolean useANTLRParseErrors) {
+	private Builder getStatements(ANTLRInputStream inputStream) {
 		QLParser qlParser = parse(inputStream);
 		if(!useANTLRParseErrors){
 			qlParser.setErrorHandler(new BailErrorStrategy());
@@ -69,16 +96,16 @@ public class Parser {
 	}	
 	
 
-	public static Builder getForm(String input, boolean useANTLRParseErrors){
+	public Builder getForm(String input){
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
-		return getForm(inputStream,  useANTLRParseErrors);
+		return getForm(inputStream);
 	}
 	
-	public static Builder getForm(FileInputStream fis, boolean useANTLRParseErrors){
+	public Builder getForm(FileInputStream fis){
 		ANTLRInputStream inputStream;
 		try {
 			inputStream = new ANTLRInputStream(fis);
-			return getForm(inputStream,  useANTLRParseErrors);
+			return getForm(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -87,7 +114,7 @@ public class Parser {
 	}	
 	
 	
-    private static Builder getForm(ANTLRInputStream inputStream, boolean useANTLRParseErrors) {
+    private Builder getForm(ANTLRInputStream inputStream) {
 		QLParser qlParser = parse(inputStream);
 		if(!useANTLRParseErrors){
 			qlParser.removeErrorListeners();
@@ -96,7 +123,7 @@ public class Parser {
 		return (Builder) qlParser.form().frm;
 	}
     
-	private static QLParser parse(ANTLRInputStream input){
+	private QLParser parse(ANTLRInputStream input){
         QLLexer lexer = new QLLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         return new QLParser(tokens);      	

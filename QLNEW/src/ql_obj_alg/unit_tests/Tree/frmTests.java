@@ -19,7 +19,9 @@ public class frmTests{
 	}
 	
 	private static ITest getTestAlgebraObject(String expr){
-		Builder formBuilder = Parser.getForm(expr,false);
+		Parser parser = new Parser();
+		parser.setParseErrors(false);
+		Builder formBuilder = parser.getForm(expr);
 		Tester tester = new Tester();
 		return (ITest) formBuilder.build(tester);		
 	}

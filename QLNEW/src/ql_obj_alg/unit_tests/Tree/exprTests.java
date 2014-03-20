@@ -45,7 +45,9 @@ public class exprTests {
 		assertTrue(check);		
 	}
 	private static ITest getTestAlgebraObject(String expr){
-		Builder exprBuilder = Parser.getExpressions(expr,false);
+		Parser parser = new Parser();
+		parser.setParseErrors(false);
+		Builder exprBuilder = parser.getExpressions(expr);
 		Tester tester = new Tester();
 		return (ITest) exprBuilder.build(tester);		
 	}

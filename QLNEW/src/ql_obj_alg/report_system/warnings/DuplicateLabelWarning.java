@@ -12,6 +12,11 @@ public class DuplicateLabelWarning extends Warning{
 	}
 	
 	@Override
+	public int hashCode(){
+		return toString().hashCode();
+	}
+	
+	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;

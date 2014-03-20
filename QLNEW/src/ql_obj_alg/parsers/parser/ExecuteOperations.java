@@ -40,7 +40,7 @@ import ql_obj_alg.types.TypeEnvironment;
 
 public class ExecuteOperations {
     public static void main(String[] args) throws Exception {
-    	Builder form = Parser.getForm(new FileInputStream(args[0]),true);
+    	Builder form = new Parser().getForm(new FileInputStream(args[0]));
     	ErrorReporting errorReport = new ErrorReporting();
     	if(!typeCheckerForm(form,errorReport)){
     		errorReport.printErrors();

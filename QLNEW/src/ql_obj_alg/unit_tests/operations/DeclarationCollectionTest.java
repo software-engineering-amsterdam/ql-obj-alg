@@ -45,7 +45,7 @@ public class DeclarationCollectionTest extends TestCase{
 		
 		forms.collect(tenv, report);
 			
-		assertEquals(2,report.numberOfErrors());
+		assertEquals(1,report.numberOfErrors());
 		
 		expected = new DuplicateQuestionError(question);
 	
