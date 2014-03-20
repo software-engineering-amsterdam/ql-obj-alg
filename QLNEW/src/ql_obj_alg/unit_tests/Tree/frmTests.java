@@ -19,7 +19,7 @@ public class frmTests{
 	}
 	
 	private static ITest getTestAlgebraObject(String expr){
-		Builder formBuilder = Parser.getForm(expr);
+		Builder formBuilder = Parser.getForm(expr,false);
 		Tester tester = new Tester();
 		return (ITest) formBuilder.build(tester);		
 	}

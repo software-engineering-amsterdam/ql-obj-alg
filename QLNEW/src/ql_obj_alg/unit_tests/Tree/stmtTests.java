@@ -59,7 +59,7 @@ public class stmtTests{
 	}
 		
 	private static ITest getTestAlgebraObject(String expr){
-		Builder stmtBuilder = Parser.getStatements(expr);
+		Builder stmtBuilder = Parser.getStatements(expr,false);
 		Tester tester = new Tester();
 		return (ITest) stmtBuilder.build(tester);		
 	}
