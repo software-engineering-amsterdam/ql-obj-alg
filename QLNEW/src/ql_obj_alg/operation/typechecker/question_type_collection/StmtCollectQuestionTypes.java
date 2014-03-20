@@ -3,7 +3,6 @@ package ql_obj_alg.operation.typechecker.question_type_collection;
 import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
-import ql_obj_alg.operation.noop.ExprNoop;
 import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.DuplicateQuestionError;
@@ -11,7 +10,7 @@ import ql_obj_alg.types.Type;
 import ql_obj_alg.types.TypeEnvironment;
 
 
-public class StmtCollectQuestionTypes extends ExprNoop implements
+public class StmtCollectQuestionTypes implements
 		IStmtAlg<INoop,ICollect> {
 	
 	@Override

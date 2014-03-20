@@ -12,7 +12,7 @@ import ql_obj_alg.types.TBoolean;
 import ql_obj_alg.types.Type;
 import ql_obj_alg.types.TypeEnvironment;
 
-public class StmtTypeChecker extends ExprTypeChecker implements
+public class StmtTypeChecker implements
 		IStmtAlg<IExpType, ITypeCheck> {
 
 	@Override

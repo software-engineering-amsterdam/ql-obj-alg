@@ -6,7 +6,7 @@ import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 
-public class FormTypeChecker extends StmtTypeChecker implements
+public class FormTypeChecker implements
 		IFormAlg<IExpType, ITypeCheck, ITypeCheck> {
 
 	@Override

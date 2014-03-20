@@ -8,7 +8,7 @@ import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 
-public class FormCollectQuestionTypes extends StmtCollectQuestionTypes implements
+public class FormCollectQuestionTypes implements
 		IFormAlg<INoop, ICollect, ICollect> {
 
 	@Override
