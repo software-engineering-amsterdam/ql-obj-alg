@@ -1,14 +1,14 @@
 package ql_obj_alg.report_system.error_reporting;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import ql_obj_alg.report_system.errors.GenError;
 import ql_obj_alg.report_system.warnings.Warning;
 
 public class ErrorReporting {
-	List<GenError> errors = new LinkedList<GenError>();
-	List<Warning> warnings = new LinkedList<Warning>();
+	Set<GenError> errors = new HashSet<GenError>();
+	Set<Warning> warnings = new HashSet<Warning>();
 	
 	public void addError(GenError error){
 		errors.add(error);
