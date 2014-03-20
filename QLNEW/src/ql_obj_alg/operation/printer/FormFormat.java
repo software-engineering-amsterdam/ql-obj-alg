@@ -4,10 +4,18 @@ import java.io.StringWriter;
 import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.operation.printer.boxalg.BoxAlg;
+import ql_obj_alg.operation.printer.boxalg.FormatBox;
 import ql_obj_alg.operation.printer.boxalg.IFormat;
 
-public class FormFormat extends StmtFormat implements IFormAlg<IFormatWithPrecedence,IFormat,IFormat>{
+public class FormFormat implements IFormAlg<IFormatWithPrecedence,IFormat,IFormat>{
 
+	private BoxAlg<IFormat> box;
+	
+	public FormFormat() {
+		this.box = new FormatBox();
+	}
+	
 	@Override
 	public IFormat form(final String id, final List<IFormat> s) {
 		return new IFormat(){
