@@ -1,7 +1,6 @@
 // Generated from QL.g4 by ANTLR 4.2
 
 package ql_obj_alg.parsers.antlr4_generated_parser;
-import ql_obj_alg.operation.builder.*;
 import ql_obj_alg.types.TypeFactory;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
