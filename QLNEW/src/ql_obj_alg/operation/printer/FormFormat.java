@@ -3,15 +3,10 @@ package ql_obj_alg.operation.printer;
 import java.io.StringWriter;
 import java.util.List;
 
-import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.operation.printer.boxalg.IFormat;
 
 public class FormFormat extends StmtFormat implements IFormAlg<IFormatWithPrecedence,IFormat,IFormat>{
-
-	public FormFormat(IExpAlg<IPrecedence> prec) {
-		super(prec);
-	}
 
 	@Override
 	public IFormat form(final String id, final List<IFormat> s) {

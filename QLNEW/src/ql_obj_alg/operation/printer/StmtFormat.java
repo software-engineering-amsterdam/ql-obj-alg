@@ -3,16 +3,12 @@ package ql_obj_alg.operation.printer;
 import java.io.StringWriter;
 import java.util.List;
 
-import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.printer.boxalg.IFormat;
 import ql_obj_alg.types.Type;
 
 public class StmtFormat extends ExprFormat implements IStmtAlg<IFormatWithPrecedence, IFormat> {
 
-	public StmtFormat(IExpAlg<IPrecedence> prec) {
-		super(prec);
-	}
 
 	@Override
 	public IFormat iff(final IFormatWithPrecedence cond, final List<IFormat> b) {

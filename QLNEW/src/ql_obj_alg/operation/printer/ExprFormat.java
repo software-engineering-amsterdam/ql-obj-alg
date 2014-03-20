@@ -10,21 +10,19 @@ import ql_obj_alg.operation.printer.boxalg.IFormat;
 public class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 
 	protected BoxAlg<IFormat> box;
-	protected IExpAlg<IPrecedence> prec;
 
-	public ExprFormat(IExpAlg<IPrecedence> prec) {
+	public ExprFormat() {
 		this.box = new FormatBox();
-		this.prec = prec;
 	}
 
 
 	protected static class FP implements IFormatWithPrecedence {
 		private IFormat f;
-		private IPrecedence p;
+		private int precedenceLevel;
 
-		public FP(IFormat f, IPrecedence p) {
+		public FP(IFormat f,int precedenceLevel) {
 			this.f = f;
-			this.p = p;
+			this.precedenceLevel = precedenceLevel;
 		}
 
 		@Override
@@ -34,21 +32,21 @@ public class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 		
 		@Override
 		public int prec() {
-			return p.prec();
+			return precedenceLevel;
 		}
 	}
 	protected IFormat binary(IFormatWithPrecedence l, IFormatWithPrecedence r, 
-			String op, IPrecedence myPrec) {
-		return box.H(1,parens(myPrec, l), box.L(op), parens(myPrec, r));
+			String op, int precedenceLevel) {
+		return box.H(1,parens(precedenceLevel, l), box.L(op), parens(precedenceLevel, r));
 	}
 	
-	protected IFormat unary(IFormatWithPrecedence l, String op, IPrecedence myPrec) {
-		return box.H(1,box.L(op), parens(myPrec, l));
+	protected IFormat unary(IFormatWithPrecedence l, String op, int precedenceLevel) {
+		return box.H(1,box.L(op), parens(precedenceLevel, l));
 	}
 
 
-	private IFormat parens(IPrecedence parent, IFormatWithPrecedence kid) {
-		if (kid.prec() > parent.prec()) {
+	private IFormat parens(int parent, IFormatWithPrecedence kid) {
+		if (kid.prec() > parent) {
 			return box.H(box.L("("), kid, box.L(")"));
 		}
 		return kid;
@@ -56,128 +54,115 @@ public class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 
 	@Override
 	public IFormatWithPrecedence lit(int x) {
-		return new FP(box.L(""+x),prec.lit(x));
+		return new FP(box.L(""+x),1);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence bool(boolean b) {
-		return new FP(box.L(""+b),prec.bool(b));
+		return new FP(box.L(""+b),1);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence string(String s) {
-		return new FP(box.L(s),prec.string(s));
+		return new FP(box.L(s),1);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence var(String varName) {
-		return new FP(box.L(varName),prec.string(varName));
+		return new FP(box.L(varName),1);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence mul(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.mul(a1, a2);
-		return new FP(binary(a1,a2,"*",myPrec),myPrec);
+		return new FP(binary(a1,a2,"*",4),4);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence div(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.div(a1, a2);
-		return new FP(binary(a1,a2,"/",myPrec),myPrec);
+		return new FP(binary(a1,a2,"/",4),4);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence add(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.add(a1, a2);
-		return new FP(binary(a1,a2,"+",myPrec),myPrec);
+		return new FP(binary(a1,a2,"+",5),5);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence sub(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.sub(a1, a2);
-		return new FP(binary(a1,a2,"-",myPrec),myPrec);
+		return new FP(binary(a1,a2,"-",5),5);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence eq(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.eq(a1, a2);
-		return new FP(binary(a1,a2,"==",myPrec),myPrec);
+		return new FP(binary(a1,a2,"==",5),5);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence neq(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.neq(a1, a2);
-		return new FP(binary(a1,a2,"!=",myPrec),myPrec);
+		return new FP(binary(a1,a2,"!=",8),8);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence lt(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.lt(a1, a2);
-		return new FP(binary(a1,a2,"<",myPrec),myPrec);
+		return new FP(binary(a1,a2,"<",7),7);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence leq(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.leq(a1, a2);
-		return new FP(binary(a1,a2,"<=",myPrec),myPrec);
+		return new FP(binary(a1,a2,"<=",7),7);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence gt(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.gt(a1, a2);
-		return new FP(binary(a1,a2,">",myPrec),myPrec);
+		return new FP(binary(a1,a2,">",7),7);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence geq(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.geq(a1, a2);
-		return new FP(binary(a1,a2,">=",myPrec),myPrec);
+		return new FP(binary(a1,a2,">=",7),7);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence not(IFormatWithPrecedence a) {
-		IPrecedence myPrec = prec.not(a);
-		return new FP(unary(a,"!",myPrec),myPrec);
+		return new FP(unary(a,"!",2),2);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence and(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.and(a1, a2);
-		return new FP(binary(a1,a2,"&&",myPrec),myPrec);
+		return new FP(binary(a1,a2,"&&",12),12);
 	}
 
 
 	@Override
 	public IFormatWithPrecedence or(IFormatWithPrecedence a1,
 			IFormatWithPrecedence a2) {
-		IPrecedence myPrec = prec.mul(a1, a2);
-		return new FP(binary(a1,a2,"||",myPrec),myPrec);
+		return new FP(binary(a1,a2,"||",13),13);
 	};
 
 }

@@ -23,7 +23,6 @@ import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.noop.ExprNoop;
 import ql_obj_alg.operation.noop.INoop;
-import ql_obj_alg.operation.printer.ExprPrecedence;
 import ql_obj_alg.operation.printer.FormFormat;
 import ql_obj_alg.operation.printer.boxalg.IFormat;
 import ql_obj_alg.operation.typechecker.ExprTypeChecker;
@@ -54,7 +53,7 @@ public class ExecuteOperations {
 
 	public static void printForm(Builder form) {
 		
-		FormFormat fFormat = new FormFormat(new ExprPrecedence());
+		FormFormat fFormat = new FormFormat();
 		StringWriter w = new StringWriter();
 		IFormat printingForm = (IFormat) form.build(fFormat);
 		printingForm.format(0, false, w);
