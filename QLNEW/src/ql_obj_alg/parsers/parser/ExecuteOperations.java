@@ -8,12 +8,19 @@ import java.util.List;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.createUI.FormUI;
+import ql_obj_alg.operation.createUI.ICreate;
+import ql_obj_alg.operation.createUI.ICreateF;
+import ql_obj_alg.operation.createUI.StmtUI;
 import ql_obj_alg.operation.cyclic_dependencies.ExprDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.IDependencyGraph;
 import ql_obj_alg.operation.cyclic_dependencies.IExpDependency;
 import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
+import ql_obj_alg.operation.evaluator.ExprEvaluator;
+import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
+import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.noop.ExprNoop;
 import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.operation.printer.ExprPrecedence;
@@ -36,6 +43,7 @@ public class ExecuteOperations {
     	Builder form = Parser.getForm(new FileInputStream(args[0]));
     	typeCheckerForm(form);
     	printForm(form);
+    	runUI(form);
     }
     
 
@@ -49,7 +57,7 @@ public class ExecuteOperations {
         System.out.println(w);
 	}
 	
-	public static boolean typeCheckerForm(Builder form) {
+	private static boolean typeCheckerForm(Builder form) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
 		ErrorReporting report = new ErrorReporting();
 		
@@ -91,6 +99,23 @@ public class ExecuteOperations {
 		report.printWarnings();
 		
 		return report.numberOfErrors() == 0;
+	}
+	
+	public static void runUI(Builder form){
+		if(ExecuteOperations.typeCheckerForm(form)){
+			IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
+			IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
+			IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
+
+			ValueEnvironment valEnv = new ValueEnvironment();
+			List<Object> factoryList = new ArrayList<Object>();
+			factoryList.add(expAlg);
+			factoryList.add(stmtAlg);
+			factoryList.add(formAlg);
+
+			((ICreateF)form.build(factoryList)).create(valEnv);
+
+		}
 	}
     
 }
