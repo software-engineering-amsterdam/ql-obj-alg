@@ -7,7 +7,7 @@ import ql_obj_alg.operation.printer.boxalg.BoxAlg;
 import ql_obj_alg.operation.printer.boxalg.FormatBox;
 import ql_obj_alg.operation.printer.boxalg.IFormat;
 
-class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
+public class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 
 	protected BoxAlg<IFormat> box;
 	private IExpAlg<IPrecedence> prec;
