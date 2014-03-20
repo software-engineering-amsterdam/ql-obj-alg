@@ -37,12 +37,12 @@ public class ExprFormat implements IExpAlg<IFormatWithPrecedence> {
 			return p.prec();
 		}
 	}
-	private IFormat binary(IFormatWithPrecedence l, IFormatWithPrecedence r, 
+	protected IFormat binary(IFormatWithPrecedence l, IFormatWithPrecedence r, 
 			String op, IPrecedence myPrec) {
 		return box.H(1,parens(myPrec, l), box.L(op), parens(myPrec, r));
 	}
 	
-	private IFormat unary(IFormatWithPrecedence l, String op, IPrecedence myPrec) {
+	protected IFormat unary(IFormatWithPrecedence l, String op, IPrecedence myPrec) {
 		return box.H(1,box.L(op), parens(myPrec, l));
 	}
 
