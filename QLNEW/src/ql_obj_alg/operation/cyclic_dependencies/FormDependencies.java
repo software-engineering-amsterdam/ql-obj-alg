@@ -9,7 +9,7 @@ import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGrap
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.CyclicDependencyError;
 
-public class FormDependencies extends StmtDependencies implements
+public class FormDependencies implements
 		IFormAlg<IExpDependency, IDependencyGraph, IDependencyGraph> {
 
 	ErrorReporting report;

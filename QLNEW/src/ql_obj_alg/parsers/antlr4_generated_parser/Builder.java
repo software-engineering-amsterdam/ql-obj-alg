@@ -12,27 +12,16 @@ public class Builder {
 
 	Builder(Method method, Object[] args){
 		this.method = method;
-		this.args = args;
-		
+		this.args = args;		
 	}
 
-	public Object build(Object FactoryForm, Object StmtForm, Object ExpForm){
+	public Object build(List<Object> factories){
 		try {
-			List<Object> Iargs = new ArrayList<Object>();
+			List<Object> i_args = new ArrayList<Object>();
 			for(Object arg : args){
-				if(arg instanceof List){
-					List<Object> IargList = new ArrayList<Object>();
-					for(Object arg_ : (List)arg){
-						IargList.add(((Builder)arg_).build(FactoryForm, StmtForm, ExpForm));
-					}
-					Iargs.add(IargList);
-				}else if(arg instanceof Builder){
-					Iargs.add(((Builder)arg).build(FactoryForm, StmtForm, ExpForm));
-				}else{
-					Iargs.add(arg);
-				}
+				i_args.add(buildArgument(factories, arg));
 			}
-			return invokeCorrectAlg(FactoryForm,StmtForm,ExpForm,Iargs.toArray());
+			return invokeCorrectAlg(factories,i_args.toArray());
 			
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
@@ -45,18 +34,43 @@ public class Builder {
 		return null;
 	}
 
-	private Object invokeCorrectAlg(Object FactoryForm, Object StmtForm, Object ExpForm, Object[] Iargs) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		if(hasMethod(FactoryForm))
-			return method.invoke(FactoryForm, Iargs);
-		else if(hasMethod(StmtForm))
-			return method.invoke(StmtForm, Iargs);		
-		else if(hasMethod(ExpForm))
-			return method.invoke(ExpForm, Iargs);
-		else
-			assert false : "method was not found in algebras";
-			return null;
+	private Object buildArgument(List<Object> factories, Object arg) {
+		if(arg instanceof List<?>){
+			return builderToInterfaceList(factories, (List<?>) arg);
+		}
+		else if(arg instanceof Builder){
+			return builderToInterface(factories, (Builder) arg);
+		}else{
+			return arg;
+		}
 	}
-	
+
+	private Object builderToInterface(List<Object> factories, Builder arg) {
+		return arg.build(factories);
+	}
+
+	private List<Object> builderToInterfaceList(List<Object> factories, List<?> argList) {
+		List<Object> i_argList = new ArrayList<Object>();
+		for(Object arg : argList){
+			if(arg instanceof Builder){
+				i_argList.add(builderToInterface(factories, (Builder) arg));
+			}
+			else{
+				i_argList.add(arg);
+			}
+		}
+		return i_argList;
+	}
+
+	private Object invokeCorrectAlg(List<Object> factories, Object[] i_args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		for(Object factory : factories){
+			if(hasMethod(factory))
+				return method.invoke(factory, i_args);
+		}
+		assert false : "method was not found in algebras";
+		return null;
+	}
+
 	private boolean hasMethod(Object expForm) {
 		boolean hasMethod = false;
 		Method[] methods = expForm.getClass().getMethods();
