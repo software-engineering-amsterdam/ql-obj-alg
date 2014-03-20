@@ -14,7 +14,6 @@ public interface IWidget {
 	abstract public void addAnswerableQuestionToFrame(FormFrame frame);
 	
 	abstract public void setVisible(boolean visible);
-//	abstract public boolean isUndefined();
 	
 	abstract public void addActionListener(ActionListener al);
 
