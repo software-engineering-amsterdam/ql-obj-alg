@@ -1,11 +1,11 @@
 package ql_obj_alg.unit_tests.Tree;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
 import org.antlr.v4.runtime.RecognitionException;
+import org.junit.Test;
 
-import ql_obj_alg.operation.builder.IBuildS;
+import ql_obj_alg.parsers.antlr4_generated_parser.Builder;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
@@ -61,14 +61,14 @@ public class stmtTests{
 	}
 		
 	private static ITest getTestAlgebraObject(String expr){
-		IBuildS exprBuilder = getStmtTree(expr);
+		Builder stmtBuilder = getStmtTree(expr);
 		Tester tester = new Tester();
-		return exprBuilder.build(tester,tester);		
+		return (ITest) stmtBuilder.build(tester,tester,tester);		
 	}
 	
-	private static IBuildS getStmtTree(String expr){
+	private static Builder getStmtTree(String expr){
 		QLParser qlParser = getParser(expr);
-		return qlParser.stat().stmt;
+		return (Builder)qlParser.stat().stmt;
 	}
 	
 	private static QLParser getParser(String expr) {

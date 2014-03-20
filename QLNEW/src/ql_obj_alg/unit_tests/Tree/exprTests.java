@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import ql_obj_alg.operation.builder.IBuildE;
+import ql_obj_alg.parsers.antlr4_generated_parser.Builder;
 import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
 import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
@@ -47,13 +47,14 @@ public class exprTests {
 		assertTrue(check);		
 	}
 	private static ITest getTestAlgebraObject(String expr){
-		IBuildE exprBuilder = getExpressionTree(expr);
-		return exprBuilder.build(new Tester());		
+		Builder exprBuilder = getBuilder(expr);
+		Tester tester = new Tester();
+		return (ITest) exprBuilder.build(tester,tester,tester);		
 	}
 	
-	private static IBuildE getExpressionTree(String expr){
+	private static Builder getBuilder(String expr){
 		QLParser qlParser = getParser(expr);
-		return qlParser.expr().exp;
+		return (Builder) qlParser.expr().exp;
 	}
 	
 	private static QLParser getParser(String expr) {
