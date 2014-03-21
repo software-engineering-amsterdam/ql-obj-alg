@@ -5,8 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import ql_obj_alg.parsers.antlr4_generated_parser.Builder;
+import ql_obj_alg.parsers.parser.ANTLRParserWrapper;
 import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 
@@ -45,8 +46,9 @@ public class exprTests {
 		assertTrue(check);		
 	}
 	private static ITest getTestAlgebraObject(String expr){
-		Parser parser = new Parser();
-		parser.setParseErrors(false);
+		ANTLRParserWrapper parserWrapper = new ANTLRParserWrapper();
+		parserWrapper.setParseErrors(false);
+		Parser parser = new Parser(parserWrapper);
 		Builder exprBuilder = parser.getExpressions(expr);
 		Tester tester = new Tester();
 		return (ITest) exprBuilder.build(tester);		

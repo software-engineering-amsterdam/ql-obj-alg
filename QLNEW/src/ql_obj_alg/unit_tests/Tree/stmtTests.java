@@ -5,8 +5,9 @@ import static org.junit.Assert.assertTrue;
 import org.antlr.v4.runtime.RecognitionException;
 import org.junit.Test;
 
-import ql_obj_alg.parsers.antlr4_generated_parser.Builder;
+import ql_obj_alg.parsers.parser.ANTLRParserWrapper;
 import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 
@@ -59,8 +60,9 @@ public class stmtTests{
 	}
 		
 	private static ITest getTestAlgebraObject(String expr){
-		Parser parser = new Parser();
-		parser.setParseErrors(false);		
+		ANTLRParserWrapper parserWrapper = new ANTLRParserWrapper();
+		parserWrapper.setParseErrors(false);
+		Parser parser = new Parser(parserWrapper);		
 		Builder stmtBuilder = parser.getStatements(expr);
 		Tester tester = new Tester();
 		return (ITest) stmtBuilder.build(tester);		

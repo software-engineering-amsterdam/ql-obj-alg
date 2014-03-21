@@ -1,4 +1,4 @@
-package ql_obj_alg.parsers.parser;
+package ql_obj_alg.parsers.execute;
 
 import java.io.FileInputStream;
 import java.io.StringWriter;
@@ -36,13 +36,16 @@ import ql_obj_alg.operation.typechecker.StmtTypeChecker;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
-import ql_obj_alg.parsers.antlr4_generated_parser.Builder;
+import ql_obj_alg.parsers.parser.ANTLRParserWrapper;
+import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 
 public class ExecuteOperations {
     public static void main(String[] args) throws Exception {
-    	Builder form = new Parser().getForm(new FileInputStream(args[0]));
+    	ANTLRParserWrapper parserWrapper = new ANTLRParserWrapper();
+    	Builder form = new Parser(parserWrapper).getForm(new FileInputStream(args[0]));
     	ErrorReporting errorReport = new ErrorReporting();
     	if(!typeCheckerForm(form,errorReport)){
     		errorReport.printErrors();
@@ -140,10 +143,7 @@ public class ExecuteOperations {
 	}
 	
 	private static void runUI(Builder form, ErrorReporting errorReport){
-		if(!typeCheckerForm(form,errorReport)){
-			errorReport.printErrors();
-		}
-		assert typeCheckerForm(form,errorReport) : "There are errors in the form";
+		assert typeCheckerForm(form,errorReport) : "There are type errors in the form";
 		IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);

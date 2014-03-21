@@ -20,7 +20,7 @@ public class ConflictingTypeInAssignmentError extends GenError {
 	
 	
 	public String toString(){
-		return "Conflicting types in question "+variable+" assignment, variableected "+variableected.toString()+", "+found.toString()+").";
+		return "Conflicting types in question "+variable+" assignment, "+ "(" + variableected.toString()+", "+found.toString()+").";
 	}
 	
 	public boolean equals(Object obj){

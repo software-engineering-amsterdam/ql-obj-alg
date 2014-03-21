@@ -5,21 +5,17 @@ import java.io.IOException;
 import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 
-import ql_obj_alg.parsers.antlr4_generated_parser.Builder;
-import ql_obj_alg.parsers.antlr4_generated_parser.QLLexer;
-import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
-import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
+import ql_obj_alg.parsers.parser.proxy.Builder;
 
 public class Parser {
 
-	private boolean useANTLRParseErrors = true;
-	
-	public void setParseErrors(boolean ANTLRParseErrors){
-		this.useANTLRParseErrors = ANTLRParseErrors;
+	private IParserInterface parserWrapper;
+
+	public Parser(IParserInterface parserWrapper){
+		this.parserWrapper = parserWrapper;
 	}
-	
+
 	
 	@SuppressWarnings("unchecked")
 	public <X> X makeForm(Class<X> operation, List<?> alg, FileInputStream fis){
@@ -44,7 +40,7 @@ public class Parser {
 		ANTLRInputStream inputStream;
 		try {
 			inputStream = new ANTLRInputStream(fis);
-			return getExpressions(inputStream);
+			return parserWrapper.getExpressions(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -54,25 +50,14 @@ public class Parser {
 	
 	public Builder getExpressions(String input){
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
-		return getExpressions(inputStream);
-	}
-
-    
-	private Builder getExpressions(ANTLRInputStream inputStream) {
-		QLParser qlParser = parse(inputStream);
-		if(!useANTLRParseErrors){
-			qlParser.setErrorHandler(new BailErrorStrategy());
-			qlParser.removeErrorListeners();			
-		}
-		qlParser.removeErrorListeners();
-		return (Builder) qlParser.expr().exp;
+		return parserWrapper.getExpressions(inputStream);
 	}
 
 	public Builder getStatements(FileInputStream fis){
 		ANTLRInputStream inputStream;
 		try {
 			inputStream = new ANTLRInputStream(fis);
-			return getStatements(inputStream);
+			return parserWrapper.getStatements(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -82,51 +67,24 @@ public class Parser {
 	
 	public Builder getStatements(String input){
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
-		return getStatements(inputStream);
+		return parserWrapper.getStatements(inputStream);
 	}
-
-    
-	private Builder getStatements(ANTLRInputStream inputStream) {
-		QLParser qlParser = parse(inputStream);
-		if(!useANTLRParseErrors){
-			qlParser.setErrorHandler(new BailErrorStrategy());
-			qlParser.removeErrorListeners();
-		}
-		return (Builder) qlParser.stat().stmt;
-	}	
-	
 
 	public Builder getForm(String input){
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
-		return getForm(inputStream);
+		return parserWrapper.getForm(inputStream);
 	}
 	
 	public Builder getForm(FileInputStream fis){
 		ANTLRInputStream inputStream;
 		try {
 			inputStream = new ANTLRInputStream(fis);
-			return getForm(inputStream);
+			return parserWrapper.getForm(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		assert false: "file not found error";
 		return null;
 	}	
-	
-	
-    private Builder getForm(ANTLRInputStream inputStream) {
-		QLParser qlParser = parse(inputStream);
-		if(!useANTLRParseErrors){
-			qlParser.removeErrorListeners();
-			qlParser.setErrorHandler(new BailErrorStrategy());
-		}
-		return (Builder) qlParser.form().frm;
-	}
     
-	private QLParser parse(ANTLRInputStream input){
-        QLLexer lexer = new QLLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        return new QLParser(tokens);      	
-    }
-
 }

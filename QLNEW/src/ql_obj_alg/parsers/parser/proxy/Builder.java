@@ -1,4 +1,4 @@
-package ql_obj_alg.parsers.antlr4_generated_parser;
+package ql_obj_alg.parsers.parser.proxy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
