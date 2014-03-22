@@ -21,7 +21,6 @@ import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGrap
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.noop.ExprNoop;
 import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.operation.printer.ExprFormat;
 import ql_obj_alg.operation.printer.ExprPrecedence;
@@ -122,21 +121,19 @@ public class ExecuteOperations {
 		checkTypes.check(typeEnv, report);
 	}
 
-	private static void collectQuestions(Builder form, ErrorReporting report,
+	protected static void collectQuestions(Builder form, ErrorReporting report,
 			TypeEnvironment typeEnv) {
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
-		IExpAlg<INoop> exprAlg = new ExprNoop();
 		
 		List<Object> algebras = new ArrayList<Object>();
 		algebras.add(collectForm);
 		algebras.add(collectStmt);
-		algebras.add(exprAlg);
 		
 		collectQuestions(form, report, typeEnv, algebras);
 	}
 
-	protected static void collectQuestions(Builder form, ErrorReporting report,
+	private static void collectQuestions(Builder form, ErrorReporting report,
 			TypeEnvironment typeEnv, List<Object> algebras) {
 		ICollect collectTypes = (ICollect) form.build(algebras);
 		collectTypes.collect(typeEnv,report);
