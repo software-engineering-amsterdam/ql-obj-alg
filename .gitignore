@@ -8,12 +8,18 @@
 *.so
 
 #eclipse
-QLNEW/.*
-QLNEW/lib/*
-QLNEW/bin/*
-QLNEW/.classpath
-QLNEW/.project
-QLNEW/rescources
+QL/.*
+QL/lib/*
+QL/bin/*
+QL/.classpath
+QL/.project
+QL/rescources
+
+QLWithInputCheck/.*
+QLWithInputCheck/lib/*
+QLWithInputCheck/bin/*
+QLWithInputCheck/.classpath
+QLWithInputCheck/.project
 
 QLWithModulo/.classpath
 QLWithModulo/.project
