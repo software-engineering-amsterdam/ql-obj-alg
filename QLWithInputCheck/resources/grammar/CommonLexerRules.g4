@@ -1,7 +1,7 @@
 lexer grammar CommonLexerRules;
 
 BOOL: 'true'|'false';
-PROPERTY: 'length' | 'regex';
+PROPERTY: 'length' | 'regex' | 'value';
 TYPE: 'boolean'|'string'|'integer';
 INT: [0-9]+;
 STRING: '"' (ESC | .)*? '"' ;
