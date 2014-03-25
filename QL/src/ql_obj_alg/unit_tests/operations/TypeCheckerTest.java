@@ -25,8 +25,6 @@ import ql_obj_alg.report_system.errors.GenError;
 import ql_obj_alg.report_system.errors.UndefinedQuestionError;
 import ql_obj_alg.report_system.errors.UnexpectedTypeError;
 import ql_obj_alg.report_system.errors.UnexpectedTypeInBinaryOpError;
-import ql_obj_alg.report_system.warnings.DuplicateLabelWarning;
-import ql_obj_alg.report_system.warnings.Warning;
 import ql_obj_alg.types.TBoolean;
 import ql_obj_alg.types.TInteger;
 import ql_obj_alg.types.TNumber;
@@ -37,7 +35,6 @@ public class TypeCheckerTest {
 	ErrorReporting report;
 	TypeEnvironment tenv;
 	GenError expectedError;
-	Warning expectedWarning;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -45,33 +42,9 @@ public class TypeCheckerTest {
 		tenv = new TypeEnvironment();
 		
 		expectedError = null;
-		expectedWarning = null;
 	}
 
-	@Test
-	public void testDuplicateLabels() {
-		ICollect collector = duplicateLabels(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
-
-		collector.collect(tenv,report);
-		
-		ITypeCheck form = duplicateLabels(new FormTypeChecker(),new StmtTypeChecker());
-		form.check(tenv, report);
-
-		assertEquals(1, report.numberOfWarnings());
-				
-		assertEquals(0,report.numberOfErrors());
-		
-		expectedWarning = new DuplicateLabelWarning("label");
-		assertTrue(report.containsWarning(expectedWarning));
-	}
 	
-	private static <E,S,F> F duplicateLabels(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
-
-		List<S> questions = new ArrayList<S>();
-		questions.add(s.question("id1", "label", new TBoolean()));
-		questions.add(s.question("id2", "label", new TInteger()));
-		return f.form("Form id", questions);
-	}
 	
 	@Test
 	public void testUndefinedVariable() {

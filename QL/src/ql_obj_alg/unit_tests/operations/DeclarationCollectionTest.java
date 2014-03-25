@@ -10,12 +10,17 @@ import org.junit.Test;
 
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.operation.typechecker.FormTypeChecker;
+import ql_obj_alg.operation.typechecker.ITypeCheck;
+import ql_obj_alg.operation.typechecker.StmtTypeChecker;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.DuplicateQuestionError;
 import ql_obj_alg.report_system.errors.GenError;
+import ql_obj_alg.report_system.warnings.DuplicateLabelWarning;
+import ql_obj_alg.report_system.warnings.Warning;
 import ql_obj_alg.types.TBoolean;
 import ql_obj_alg.types.TInteger;
 import ql_obj_alg.types.TString;
@@ -27,7 +32,8 @@ public class DeclarationCollectionTest extends TestCase{
 	StmtCollectQuestionTypes scd;
 	ErrorReporting report;
 	TypeEnvironment tenv;
-	GenError expected;
+	GenError expectedError;
+	Warning expectedWarning;
 	String question = "duplicated";
 
 	@Before
@@ -36,6 +42,8 @@ public class DeclarationCollectionTest extends TestCase{
 		scd = new StmtCollectQuestionTypes();
 		tenv = new TypeEnvironment();
 		report = new ErrorReporting();
+		expectedError = null;
+		expectedWarning = null;
 	}
 
 	@Test
@@ -47,9 +55,9 @@ public class DeclarationCollectionTest extends TestCase{
 			
 		assertEquals(1,report.numberOfErrors());
 		
-		expected = new DuplicateQuestionError(question);
+		expectedError = new DuplicateQuestionError(question);
 	
-		assertTrue(report.containsError(expected));		
+		assertTrue(report.containsError(expectedError));		
 	}
 	
 	private <E,S,F> F duplicateQuestionInForm(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
@@ -86,5 +94,30 @@ public class DeclarationCollectionTest extends TestCase{
 		questions.add(s.question("str", "String", new TString()));
 
 		return f.form("id", questions);
+	}
+	
+	@Test
+	public void testDuplicateLabels() {
+		ICollect collector = duplicateLabels(new FormCollectQuestionTypes(),new StmtCollectQuestionTypes());
+
+		collector.collect(tenv,report);
+		
+		ITypeCheck form = duplicateLabels(new FormTypeChecker(),new StmtTypeChecker());
+		form.check(tenv, report);
+
+		assertEquals(1, report.numberOfWarnings());
+				
+		assertEquals(0,report.numberOfErrors());
+		
+		expectedWarning = new DuplicateLabelWarning("label");
+		assertTrue(report.containsWarning(expectedWarning));
+	}
+	
+	private static <E,S,F> F duplicateLabels(IFormAlg<E,S,F> f, IStmtAlg<E,S> s){
+
+		List<S> questions = new ArrayList<S>();
+		questions.add(s.question("id1", "label", new TBoolean()));
+		questions.add(s.question("id2", "label", new TInteger()));
+		return f.form("Form id", questions);
 	}
 }

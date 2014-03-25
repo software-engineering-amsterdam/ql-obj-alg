@@ -53,11 +53,6 @@ public class StmtTypeChecker implements
 				Type t = tenv.getType(id);
 				if(t == null) 
 					assert(false) : "Missing question with id "+id+" from memory.";
-				if(tenv.containsLabel(label)){
-					report.addWarning(new DuplicateLabelWarning(label));
-				}
-				else
-					tenv.addLabel(label);
 			}
 		};
 	}

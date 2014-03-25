@@ -6,6 +6,7 @@ import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.DuplicateQuestionError;
+import ql_obj_alg.report_system.warnings.DuplicateLabelWarning;
 import ql_obj_alg.types.Type;
 import ql_obj_alg.types.TypeEnvironment;
 
@@ -46,6 +47,11 @@ public class StmtCollectQuestionTypes implements
 				else{
 					tenv.setNewTypeIfUndefined(id, type);
 				}
+				if(tenv.containsLabel(label)){
+					report.addWarning(new DuplicateLabelWarning(label));
+				}
+				else
+					tenv.addLabel(label);
 			}
 		};
 	}
@@ -61,6 +67,11 @@ public class StmtCollectQuestionTypes implements
 				else{
 					tenv.setNewTypeIfUndefined(id, type);
 				}
+				if(tenv.containsLabel(label)){
+					report.addWarning(new DuplicateLabelWarning(label));
+				}
+				else
+					tenv.addLabel(label);
 			}
 		};
 	}
