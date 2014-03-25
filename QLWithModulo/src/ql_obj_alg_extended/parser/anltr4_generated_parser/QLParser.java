@@ -5,11 +5,12 @@ import ql_obj_alg.types.TypeFactory;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.parsers.parser.proxy.BuilderHandler;
-import ql_obj_alg_extended.object_algebra_intefaces.IExpAlgWithModulo;
+import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 
 import java.util.ArrayList;
 import java.lang.reflect.Proxy;
 import java.util.List;
+
 
 
 

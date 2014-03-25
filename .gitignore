@@ -21,6 +21,13 @@ QLWithInputCheck/bin/*
 QLWithInputCheck/.classpath
 QLWithInputCheck/.project
 
+QLWithCheck/.*
+QLWithCheck/lib/*
+QLWithCheck/bin/*
+QLWithCheck/.classpath
+QLWithCheck/.project
+
+
 QLWithModulo/.classpath
 QLWithModulo/.project
 QLWithModulo/bin/*

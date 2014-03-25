@@ -29,7 +29,7 @@ import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
-import ql_obj_alg_extended.object_algebra_intefaces.IExpAlgWithModulo;
+import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 import ql_obj_alg_extended.operation.cyclic_dependencies.ExprDependenciesWithModulo;
 import ql_obj_alg_extended.operation.evaluator.ExprEvaluatorWithModulo;
 import ql_obj_alg_extended.operation.printer.ExprFormatWithModulo;

@@ -56,5 +56,6 @@ public class ValueEnvironment {
 			this.getObservable(dep).addObserver(new ValueObserver(id, e, frame, widget,this));		
 		}
 	}
+	
 }
 
