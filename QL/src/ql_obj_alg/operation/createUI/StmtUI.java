@@ -15,11 +15,11 @@ import ql_obj_alg.user_interface.widgets.FieldFactory;
 import ql_obj_alg.user_interface.widgets.IWidget;
 
 
-public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
+public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsAndEvalE,ICreate>{
 
-	private IExpAlg<IDepsAndEvalE> expAlg;
+	private V expAlg;
 
-	public StmtUI(IExpAlg<IDepsAndEvalE> expAlg){
+	public StmtUI(V expAlg){
 		this.expAlg = expAlg;
 	}
 	
@@ -94,8 +94,7 @@ public class StmtUI implements IStmtAlg<IDepsAndEvalE,ICreate>{
 				
 				valEnv.setQuestionValue(id, new VUndefined());
 				widget.setValue(e.eval(valEnv));
-				
-				valEnv.createValueObservers(id, e,frame,widget);
+				valEnv.createValueObservers(id, e, frame, widget);
 				valEnv.createVisibilityObservers(id, frame, widget,condition);			
 				widget.addComputedQuestionToFrame(frame);
 			}

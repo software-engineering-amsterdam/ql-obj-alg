@@ -21,6 +21,7 @@ import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGrap
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg.operation.noop.ExprNoop;
 import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.operation.printer.ExprFormat;
 import ql_obj_alg.operation.printer.ExprPrecedence;
@@ -125,10 +126,12 @@ public class ExecuteOperations {
 			TypeEnvironment typeEnv) {
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
+		IExpAlg<INoop> exprNoop = new ExprNoop();
 		
 		List<Object> algebras = new ArrayList<Object>();
 		algebras.add(collectForm);
 		algebras.add(collectStmt);
+		algebras.add(exprNoop);
 		
 		collectQuestions(form, report, typeEnv, algebras);
 	}
@@ -142,7 +145,7 @@ public class ExecuteOperations {
 	private static void runUI(Builder form, ErrorReporting errorReport){
 		assert typeCheckerForm(form,errorReport) : "There are type errors in the form";
 		IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
-		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
+		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI<IExpAlg<IDepsAndEvalE>>(expAlg);
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
 
 		ValueEnvironment valEnv = new ValueEnvironment();

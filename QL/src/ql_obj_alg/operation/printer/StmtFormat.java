@@ -16,6 +16,10 @@ public class StmtFormat implements IStmtAlg<IFormatWithPrecedence, IFormat> {
 	public StmtFormat() {
 		this.box = new FormatBox();
 	}
+	
+	protected BoxAlg<IFormat> getBox(){
+		return box;
+	}
 
 	@Override
 	public IFormat iff(final IFormatWithPrecedence cond, final List<IFormat> b) {

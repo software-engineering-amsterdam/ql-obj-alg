@@ -7,7 +7,7 @@ import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.value.VInteger;
 import ql_obj_alg.operation.evaluator.value.Value;
-import ql_obj_alg_extended.object_algebra_intefaces.IExpAlgWithModulo;
+import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 
 public class ExprEvaluatorWithModulo extends ExprEvaluator implements IExpAlgWithModulo<IDepsAndEvalE> {
 

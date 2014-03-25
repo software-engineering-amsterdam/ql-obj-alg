@@ -88,6 +88,8 @@ public class IntegerWidget implements IWidget{
 	public void setValue(Value v) {
 		if(!v.isUndefined()){
 			field.setValue(v.getInteger());
+		}else{
+			field.setText("");
 		}
 	}
 

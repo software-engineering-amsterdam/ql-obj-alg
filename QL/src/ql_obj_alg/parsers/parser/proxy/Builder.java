@@ -73,7 +73,7 @@ public class Builder {
 			if(hasMethod(factory))
 				return method.invoke(factory, i_args);
 		}
-		assert false : "method was not found in algebras";
+		assert false : "method was not found in algebras: " + method.getName();
 		return null;
 	}
 

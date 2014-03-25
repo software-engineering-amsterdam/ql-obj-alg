@@ -20,6 +20,10 @@ public class ExprFormat<V extends IExpAlg<IPrecedence>> implements IExpAlg<IForm
 	protected V getPrecedence(){
 		return prec;
 	}
+	
+	protected BoxAlg<IFormat> getBox(){
+		return box;
+	}
 
 	protected static class FP implements IFormatWithPrecedence {
 		private IFormat f;

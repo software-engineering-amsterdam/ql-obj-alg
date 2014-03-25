@@ -4,7 +4,7 @@ import ql_obj_alg.operation.cyclic_dependencies.ExprDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.IExpDependency;
 import ql_obj_alg.operation.cyclic_dependencies.modules.Dependencies;
 import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
-import ql_obj_alg_extended.object_algebra_intefaces.IExpAlgWithModulo;
+import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 
 public class ExprDependenciesWithModulo extends ExprDependencies implements IExpAlgWithModulo<IExpDependency>{
 

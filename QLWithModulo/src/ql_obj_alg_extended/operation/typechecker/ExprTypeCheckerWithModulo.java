@@ -7,7 +7,7 @@ import ql_obj_alg.report_system.errors.UnexpectedTypeInBinaryOpError;
 import ql_obj_alg.types.TNumber;
 import ql_obj_alg.types.Type;
 import ql_obj_alg.types.TypeEnvironment;
-import ql_obj_alg_extended.object_algebra_intefaces.IExpAlgWithModulo;
+import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 
 public class ExprTypeCheckerWithModulo extends ExprTypeChecker implements IExpAlgWithModulo<IExpType> {
 
