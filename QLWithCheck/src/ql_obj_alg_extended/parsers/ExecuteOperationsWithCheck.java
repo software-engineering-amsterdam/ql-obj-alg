@@ -26,7 +26,6 @@ import ql_obj_alg.operation.typechecker.ITypeCheck;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.parsers.execute.ExecuteOperations;
-import ql_obj_alg.parsers.parser.QLParserWrapper;
 import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
@@ -46,7 +45,7 @@ import ql_obj_alg_extended.operations.type_checker.question_type_collection.Stmt
 
 public class ExecuteOperationsWithCheck extends ExecuteOperations{
     public static void main(String[] args) throws Exception {
-    	QLParserWrapper parserWrapper = new QLParserWrapper();
+    	QLCheckParserWrapper parserWrapper = new QLCheckParserWrapper();
     	parserWrapper.parse(new FileInputStream(args[0]));
     	Builder form = parserWrapper.getForm();
     	ErrorReporting errorReport = new ErrorReporting();
