@@ -20,7 +20,7 @@ public interface IQLParserWrapper {
 	
 	void setParseErrors(boolean ANTLRParseErrors);
 
-	public <X> X makeForm(Class<X> operation, List<?> alg, FileInputStream fis);
-	public <X> X makeExpression(Class<X> operation, List<?> alg, String input);
-	public  <X> X makeStatements(Class<X> operation, List<?> alg, String input);
+	public <X> X makeForm(Class<X> operation, List<Object> alg, FileInputStream fis);
+	public <X> X makeExpression(Class<X> operation, List<Object> alg, String input);
+	public  <X> X makeStatements(Class<X> operation, List<Object> alg, String input);
 }

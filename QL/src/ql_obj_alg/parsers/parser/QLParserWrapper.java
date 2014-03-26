@@ -64,21 +64,21 @@ public class QLParserWrapper implements IQLParserWrapper{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <X> X makeForm(Class<X> operation, List<?> alg, FileInputStream fis){
+	public <X> X makeForm(Class<X> operation, List<Object> alg, FileInputStream fis){
 		parse(fis);
 		Builder builder = getForm();
 		return (X) builder.build(alg);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <X> X makeExpression(Class<X> operation, List<?> alg, String input){
+	public <X> X makeExpression(Class<X> operation, List<Object> alg, String input){
 		parse(input);
 		Builder builder = getExpressions();
 		return (X) builder.build(alg);
 	}
 
 	@SuppressWarnings("unchecked")
-	public  <X> X makeStatements(Class<X> operation, List<?> alg, String input){
+	public  <X> X makeStatements(Class<X> operation, List<Object> alg, String input){
 		parse(input);
 		Builder builder = getStatements();
 		return (X) builder.build(alg);
