@@ -25,7 +25,6 @@ import ql_obj_alg.operation.typechecker.IExpType;
 import ql_obj_alg.operation.typechecker.ITypeCheck;
 import ql_obj_alg.operation.typechecker.StmtTypeChecker;
 import ql_obj_alg.parsers.execute.ExecuteOperations;
-import ql_obj_alg.parsers.parser.Parser;
 import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
@@ -35,12 +34,13 @@ import ql_obj_alg_extended.operation.evaluator.ExprEvaluatorWithModulo;
 import ql_obj_alg_extended.operation.printer.ExprFormatWithModulo;
 import ql_obj_alg_extended.operation.printer.ExprPrecedenceWithModulo;
 import ql_obj_alg_extended.operation.typechecker.ExprTypeCheckerWithModulo;
-import ql_obj_alg_extended.parser.ANTLRParserWrapperWithModulo;
+import ql_obj_alg_extended.parser.ParserWrapperWithModulo;
 
 public class ExecuteOperationsWithModulo extends ExecuteOperations {
     public static void main(String[] args) throws Exception {
-    	ANTLRParserWrapperWithModulo parserWrapper = new ANTLRParserWrapperWithModulo();
-    	Builder form = new Parser(parserWrapper).getForm(new FileInputStream(args[0]));
+    	ParserWrapperWithModulo parserWrapper = new ParserWrapperWithModulo();
+    	parserWrapper.parse(new FileInputStream(args[0]));
+    	Builder form = parserWrapper.getForm();
     	ErrorReporting errorReport = new ErrorReporting();
     	if(!typeCheckerForm(form,errorReport)){
     		errorReport.printErrors();
