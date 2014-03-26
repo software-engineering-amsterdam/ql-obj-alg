@@ -1,6 +1,7 @@
 package ql_obj_alg.parsers.execute;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,20 +43,36 @@ import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 
 public class ExecuteOperations {
-    public static void main(String[] args) throws Exception {
-    	QLParserWrapper parserWrapper = new QLParserWrapper();
-    	parserWrapper.parse(new FileInputStream(args[0]));
-    	Builder form = parserWrapper.getForm();
+	
+	QLParserWrapper parserWrapper;
+	
+	public ExecuteOperations(String inputFile){
+		parserWrapper = new QLParserWrapper();
+		try {
+			parserWrapper.parse(new FileInputStream(inputFile));
+			parserWrapper.setFormAsRoot();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void execute(){
     	ErrorReporting errorReport = new ErrorReporting();
-    	if(!typeCheckerForm(form,errorReport)){
+    	if(!typeCheckerForm(errorReport)){
     		errorReport.printErrors();
     		errorReport.printWarnings();
-    	};
-    	printForm(form);
-    	runUI(form,errorReport);
+    	}
+    	else{
+    		printForm();
+    		runUI(errorReport);
+    	}
+	}
+    public static void main(String[] args) throws Exception {
+    	ExecuteOperations ql = new ExecuteOperations(args[0]);
+    	ql.execute();
     }
     
-	private static void printForm(Builder form) {
+	private void printForm() {
 		
 		FormFormat fFormat = new FormFormat();
 		StmtFormat sFormat = new StmtFormat();
@@ -67,27 +84,26 @@ public class ExecuteOperations {
 		algebras.add(eFormat);
 		
 		StringWriter w = new StringWriter();
-		printForm(form, algebras, w);
+		printForm(algebras, w);
 	}
 
-	protected static void printForm(Builder form, List<Object> algebras,
+	protected void printForm(List<Object> algebras,
 			StringWriter w) {
-		IFormat printingForm = (IFormat) form.build(algebras);
+		IFormat printingForm = parserWrapper.makeForm(IFormat.class, algebras);
 		printingForm.format(0, false, w);
         System.out.println(w);
 	}
 	
-	private static boolean typeCheckerForm(Builder form, ErrorReporting report) {
+	private boolean typeCheckerForm(ErrorReporting report) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
 		
-		collectQuestions(form, report, typeEnv);
-		checkTypes(form, report, typeEnv);
-		checkCyclicDependencies(form, report);
+		collectQuestions(report, typeEnv);
+		checkTypes(report, typeEnv);
+		checkCyclicDependencies(report);
 		return report.numberOfErrors() == 0;
 	}
 
-	private static void checkCyclicDependencies(Builder form,
-			ErrorReporting report) {
+	private void checkCyclicDependencies(ErrorReporting report) {
 		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
 		IStmtAlg<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependencies();
 		IExpAlg<IExpDependency> expDependencies = new ExprDependencies();
@@ -95,16 +111,15 @@ public class ExecuteOperations {
 		algebras.add(formDependencies);
 		algebras.add(stmtDependencies);
 		algebras.add(expDependencies);
-		checkCyclicDependencies(form, algebras);
+		checkCyclicDependencies(algebras);
 	}
 
-	protected static void checkCyclicDependencies(Builder form,
-			List<Object> algebras) {
-		IDependencyGraph cyclesDetection = (IDependencyGraph) form.build(algebras);
+	protected void checkCyclicDependencies(List<Object> algebras) {
+		IDependencyGraph cyclesDetection = parserWrapper.makeForm(IDependencyGraph.class, algebras);
 		cyclesDetection.dependencies(new FillDependencyGraph());
 	}
 
-	private static void checkTypes(Builder form, ErrorReporting report,
+	private void checkTypes(ErrorReporting report,
 			TypeEnvironment typeEnv) {
 		IFormAlg<IExpType,ITypeCheck,ITypeCheck> typeCheckForm = new FormTypeChecker();
 		IStmtAlg<IExpType,ITypeCheck> typeCheckStmt = new StmtTypeChecker();
@@ -113,16 +128,16 @@ public class ExecuteOperations {
 		algebras.add(typeCheckForm);
 		algebras.add(typeCheckStmt);
 		algebras.add(typeCheckExpr);
-		checkTypes(form, report, typeEnv, algebras);
+		checkTypes(report, typeEnv, algebras);
 	}
 
-	protected static void checkTypes(Builder form, ErrorReporting report,
+	protected void checkTypes(ErrorReporting report,
 			TypeEnvironment typeEnv, List<Object> algebras) {
-		ITypeCheck checkTypes = (ITypeCheck) form.build(algebras);
+		ITypeCheck checkTypes = parserWrapper.makeForm(ITypeCheck.class, algebras);
 		checkTypes.check(typeEnv, report);
 	}
 
-	private static void collectQuestions(Builder form, ErrorReporting report,
+	private void collectQuestions(ErrorReporting report,
 			TypeEnvironment typeEnv) {
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
@@ -133,17 +148,17 @@ public class ExecuteOperations {
 		algebras.add(collectStmt);
 		algebras.add(exprNoop);
 		
-		collectQuestions(form, report, typeEnv, algebras);
+		collectQuestions(report, typeEnv, algebras);
 	}
 
-	protected static void collectQuestions(Builder form, ErrorReporting report,
+	protected void collectQuestions(ErrorReporting report,
 			TypeEnvironment typeEnv, List<Object> algebras) {
-		ICollect collectTypes = (ICollect) form.build(algebras);
+		ICollect collectTypes = parserWrapper.makeForm(ICollect.class, algebras);
 		collectTypes.collect(typeEnv,report);
 	}
 	
-	private static void runUI(Builder form, ErrorReporting errorReport){
-		assert typeCheckerForm(form,errorReport) : "There are type errors in the form";
+	private void runUI(ErrorReporting errorReport){
+		assert typeCheckerForm(errorReport) : "There are type errors in the form";
 		IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI<IExpAlg<IDepsAndEvalE>>(expAlg);
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
@@ -154,12 +169,12 @@ public class ExecuteOperations {
 		algebras.add(stmtAlg);
 		algebras.add(formAlg);
 
-		createUI(form, valEnv, algebras);
+		createUI(valEnv, algebras);
 	}
 
-	protected static void createUI(Builder form, ValueEnvironment valEnv,
+	protected void createUI(ValueEnvironment valEnv,
 			List<Object> algebras) {
-		((ICreateF)form.build(algebras)).create(valEnv);
+		parserWrapper.makeForm(ICreateF.class,algebras).create(valEnv);
 	}
     
 }

@@ -16,6 +16,7 @@ public class QLParserWrapper implements IQLParserWrapper{
 
 	private boolean useANTLRParseErrors = true;
 	protected IQLParser parser;
+	Builder root;
 	
 	public void parse(ANTLRInputStream inputStream){
 		QLLexer lexer = new QLLexer(inputStream);
@@ -26,6 +27,21 @@ public class QLParserWrapper implements IQLParserWrapper{
 			qlParser.removeErrorListeners();
 		}
 		parser = qlParser;
+	}
+	
+	@Override
+	public void setFormAsRoot(){
+		root = (Builder) parser.getForm();
+	}
+	
+	@Override
+	public void setStmtAsRoot(){
+		root = (Builder) parser.getStatements();
+	}
+	
+	@Override
+	public void setExprAsRoot(){
+		root = (Builder) parser.getExpressions();
 	}
 	
 	public void parse(String input){
@@ -64,23 +80,17 @@ public class QLParserWrapper implements IQLParserWrapper{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <X> X makeForm(Class<X> operation, List<Object> alg, FileInputStream fis){
-		parse(fis);
-		Builder builder = getForm();
-		return (X) builder.build(alg);
+	public <X> X makeForm(Class<X> operation, List<Object> alg){
+		return (X) root.build(alg);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <X> X makeExpression(Class<X> operation, List<Object> alg, String input){
-		parse(input);
-		Builder builder = getExpressions();
-		return (X) builder.build(alg);
+	public <X> X makeExpression(Class<X> operation, List<Object> alg){
+		return (X) root.build(alg);
 	}
 
 	@SuppressWarnings("unchecked")
-	public  <X> X makeStatements(Class<X> operation, List<Object> alg, String input){
-		parse(input);
-		Builder builder = getStatements();
-		return (X) builder.build(alg);
+	public  <X> X makeStatements(Class<X> operation, List<Object> alg){
+		return (X) root.build(alg);
 	}
 }
