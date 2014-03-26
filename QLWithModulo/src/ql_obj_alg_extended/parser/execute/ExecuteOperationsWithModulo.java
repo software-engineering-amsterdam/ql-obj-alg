@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.createUI.FormUI;
@@ -17,6 +18,8 @@ import ql_obj_alg.operation.cyclic_dependencies.IExpDependency;
 import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
+import ql_obj_alg_extended.operation.noop.ExprNoopWithModulo;
+import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.operation.printer.ExprFormat;
 import ql_obj_alg.operation.printer.FormFormat;
 import ql_obj_alg.operation.printer.StmtFormat;
@@ -24,6 +27,9 @@ import ql_obj_alg.operation.typechecker.FormTypeChecker;
 import ql_obj_alg.operation.typechecker.IExpType;
 import ql_obj_alg.operation.typechecker.ITypeCheck;
 import ql_obj_alg.operation.typechecker.StmtTypeChecker;
+import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
+import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
+import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
 import ql_obj_alg.parsers.execute.ExecuteOperations;
 import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
@@ -55,7 +61,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		FormFormat fFormat = new FormFormat();
 		StmtFormat sFormat = new StmtFormat();
 		ExprFormat<ExprPrecedenceWithModulo> eFormat = new ExprFormatWithModulo(new ExprPrecedenceWithModulo());
-		
+
 		List<Object> algebras = new ArrayList<Object>();
 		algebras.add(fFormat);
 		algebras.add(sFormat);
@@ -63,16 +69,32 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		StringWriter w = new StringWriter();
 		printForm(form, algebras, w);
 	}
-	
+
 	private static boolean typeCheckerForm(Builder form, ErrorReporting report) {
+		System.out.println("I am in");
 		TypeEnvironment typeEnv = new TypeEnvironment();
 		
 		collectQuestions(form, report, typeEnv);
+
 		checkTypes(form, report, typeEnv);
 		checkCyclicDependencies(form, report);
 		return report.numberOfErrors() == 0;
 	}
 	
+	private static void collectQuestions(Builder form, ErrorReporting report,
+			TypeEnvironment typeEnv) {
+		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
+		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
+		IExpAlg<INoop> exprNoop = new ExprNoopWithModulo();
+		
+		List<Object> algebras = new ArrayList<Object>();
+		algebras.add(collectForm);
+		algebras.add(collectStmt);
+		algebras.add(exprNoop);
+		
+		collectQuestions(form, report, typeEnv, algebras);
+	}
+
 	private static void checkTypes(Builder form, ErrorReporting report,
 			TypeEnvironment typeEnv) {
 		IFormAlg<IExpType,ITypeCheck,ITypeCheck> typeCheckForm = new FormTypeChecker();
@@ -84,8 +106,8 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		algebras.add(typeCheckExpr);
 		checkTypes(form, report, typeEnv, algebras);
 	}
-	
-	
+
+
 	private static void checkCyclicDependencies(Builder form,
 			ErrorReporting report) {
 		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
@@ -97,7 +119,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		algebras.add(expDependencies);
 		checkCyclicDependencies(form, algebras);
 	}
-	
+
 	private static void runUI(Builder form, ErrorReporting errorReport){
 		assert typeCheckerForm(form,errorReport) : "There are type errors in the form";
 		IExpAlgWithModulo<IDepsAndEvalE> expAlg = new ExprEvaluatorWithModulo();

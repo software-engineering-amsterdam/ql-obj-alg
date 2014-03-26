@@ -15,7 +15,7 @@ public class ParserWrapperWithModulo extends QLParserWrapper {
 	public void parse(ANTLRInputStream input){
         QLLexer lexer = new QLLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        QLParser qlParser =  new QLParser(tokens);      	
+        QLParser qlParser =  new QLParser(tokens);  
 		if(!parseErrorsEnabled()){
 			qlParser.removeErrorListeners();
 			qlParser.setErrorHandler(new BailErrorStrategy());
