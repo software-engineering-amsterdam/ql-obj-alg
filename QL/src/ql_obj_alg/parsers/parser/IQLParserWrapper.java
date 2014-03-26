@@ -5,15 +5,9 @@ import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 
-import ql_obj_alg.parsers.parser.proxy.Builder;
-
 
 public interface IQLParserWrapper {
 
-	Builder getExpressions();
-	Builder getStatements();
-	Builder getForm();
-	
 	public void parse(ANTLRInputStream inputStream);
 	void parse(String input);	
 	void parse(FileInputStream inputStream);

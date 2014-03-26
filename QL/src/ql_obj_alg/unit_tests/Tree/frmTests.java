@@ -2,11 +2,13 @@ package ql_obj_alg.unit_tests.Tree;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.v4.runtime.RecognitionException;
 import org.junit.Test;
 
 import ql_obj_alg.parsers.parser.QLParserWrapper;
-import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 
@@ -22,9 +24,10 @@ public class frmTests{
 		QLParserWrapper parserWrapper = new QLParserWrapper();
 		parserWrapper.setParseErrors(false);
 		parserWrapper.parse(expr);
-		Builder formBuilder = parserWrapper.getForm();
-		Tester tester = new Tester();
-		return (ITest) formBuilder.build(tester);		
+		parserWrapper.setFormAsRoot();
+		List<Object> algebras =new ArrayList<Object>();
+		algebras.add(new Tester());
+		return parserWrapper.makeExpression(ITest.class, algebras);	
 	}
 	
 

@@ -3,10 +3,12 @@ package ql_obj_alg.unit_tests.Tree;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import ql_obj_alg.parsers.parser.QLParserWrapper;
-import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 
@@ -48,9 +50,10 @@ public class exprTests {
 		QLParserWrapper parserWrapper = new QLParserWrapper();
 		parserWrapper.setParseErrors(false);
 		parserWrapper.parse(expr);
-		Builder exprBuilder = parserWrapper.getExpressions();
-		Tester tester = new Tester();
-		return (ITest) exprBuilder.build(tester);		
+		parserWrapper.setExprAsRoot();
+		List<Object> algebras =new ArrayList<Object>();
+		algebras.add(new Tester());
+		return parserWrapper.makeExpression(ITest.class, algebras);		
 	}
 	
 	

@@ -2,11 +2,13 @@ package ql_obj_alg.unit_tests.Tree;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.v4.runtime.RecognitionException;
 import org.junit.Test;
 
 import ql_obj_alg.parsers.parser.QLParserWrapper;
-import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
 
@@ -62,9 +64,10 @@ public class stmtTests{
 		QLParserWrapper parserWrapper = new QLParserWrapper();
 		parserWrapper.setParseErrors(false);
 		parserWrapper.parse(expr);	
-		Builder stmtBuilder = parserWrapper.getStatements();
-		Tester tester = new Tester();
-		return (ITest) stmtBuilder.build(tester);		
+		parserWrapper.setStmtAsRoot();
+		List<Object> algebras =new ArrayList<Object>();
+		algebras.add(new Tester());
+		return parserWrapper.makeExpression(ITest.class, algebras);				
 	}
 	
 }

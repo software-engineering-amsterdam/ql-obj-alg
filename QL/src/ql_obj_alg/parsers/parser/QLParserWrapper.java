@@ -64,21 +64,6 @@ public class QLParserWrapper implements IQLParserWrapper{
 		return this.useANTLRParseErrors;
 	}
 	
-	@Override
-	public Builder getExpressions() {
-		return (Builder) parser.getExpressions();
-	}
-
-	@Override
-	public Builder getStatements() {
-		return (Builder) parser.getStatements();
-	}
-
-	@Override
-	public Builder getForm() {
-		return (Builder) parser.getForm();
-	}
-	
 	@SuppressWarnings("unchecked")
 	public <X> X makeForm(Class<X> operation, List<Object> alg){
 		return (X) root.build(alg);
