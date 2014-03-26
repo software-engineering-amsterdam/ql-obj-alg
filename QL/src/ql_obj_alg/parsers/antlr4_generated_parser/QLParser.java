@@ -6,24 +6,16 @@ import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.parsers.parser.IQLParser;
-import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.parsers.parser.proxy.BuilderHandler;
-
 import java.util.ArrayList;
 import java.lang.reflect.Proxy;
 import java.util.List;
-
-
-
-
-
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
-
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -67,7 +59,7 @@ public class QLParser extends Parser implements IQLParser{
 
 
 		IFormAlg formBuilder = (IFormAlg) Proxy.newProxyInstance(IFormAlg.class.getClassLoader(),new Class[]{IFormAlg.class},new BuilderHandler());
-		IStmtAlg stmtBuilder = (IStmtAlg) Proxy.newProxyInstance(IStmtAlg.class.getClassLoader(),new Class[]{IStmtAlg.class},new BuilderHandler());
+		IStmtAlg stmtBuilder = (IStmtAlg)Proxy.newProxyInstance(IStmtAlg.class.getClassLoader(),new Class[]{IStmtAlg.class},new BuilderHandler());
 		IExpAlg exprBuilder = (IExpAlg) Proxy.newProxyInstance(IExpAlg.class.getClassLoader(),new Class[]{IExpAlg.class},new BuilderHandler());
 		
 		protected List<Object> composeStmt(List<QLParser.StatContext> antlr4StmtList){
@@ -77,6 +69,21 @@ public class QLParser extends Parser implements IQLParser{
 				stmtList.add(stmt.stmt);
 			}
 			return stmtList;
+		}
+		
+		@Override
+		public Object getExpressions() {
+			return this.expr().exp;
+		}
+
+		@Override
+		public Object getStatements() {
+			return this.stat().stmt;
+		}
+
+		@Override
+		public Object getForm() {
+			return this.form().frm;
 		}
 
 
@@ -790,20 +797,5 @@ public class QLParser extends Parser implements IQLParser{
 		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
 			_decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
 		}
-	}
-	
-	@Override
-	public Builder getExpressions() {
-		return (Builder) this.expr().exp;
-	}
-
-	@Override
-	public Builder getStatements() {
-		return (Builder) this.stat().stmt;
-	}
-
-	@Override
-	public Builder getForm() {
-		return (Builder) this.form().frm;
 	}
 }
