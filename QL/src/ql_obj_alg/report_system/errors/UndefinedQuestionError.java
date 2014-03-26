@@ -8,7 +8,7 @@ public class UndefinedQuestionError extends GenError{
 	}
 	
 	public String toString(){
-		return "Duplicated variable: "+variable;
+		return "Undefined variable: "+variable;
 	}
 	
 	@Override
