@@ -122,7 +122,7 @@ public class ExecuteOperations {
 		checkTypes.check(typeEnv, report);
 	}
 
-	protected static void collectQuestions(Builder form, ErrorReporting report,
+	private static void collectQuestions(Builder form, ErrorReporting report,
 			TypeEnvironment typeEnv) {
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
@@ -136,7 +136,7 @@ public class ExecuteOperations {
 		collectQuestions(form, report, typeEnv, algebras);
 	}
 
-	private static void collectQuestions(Builder form, ErrorReporting report,
+	protected static void collectQuestions(Builder form, ErrorReporting report,
 			TypeEnvironment typeEnv, List<Object> algebras) {
 		ICollect collectTypes = (ICollect) form.build(algebras);
 		collectTypes.collect(typeEnv,report);
