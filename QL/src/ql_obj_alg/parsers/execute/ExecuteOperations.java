@@ -36,16 +36,16 @@ import ql_obj_alg.operation.typechecker.StmtTypeChecker;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
-import ql_obj_alg.parsers.parser.ANTLRParserWrapper;
-import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.parsers.parser.QLParserWrapper;
 import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 
 public class ExecuteOperations {
     public static void main(String[] args) throws Exception {
-    	ANTLRParserWrapper parserWrapper = new ANTLRParserWrapper();
-    	Builder form = new Parser(parserWrapper).getForm(new FileInputStream(args[0]));
+    	QLParserWrapper parserWrapper = new QLParserWrapper();
+    	parserWrapper.parse(new FileInputStream(args[0]));
+    	Builder form = parserWrapper.getForm();
     	ErrorReporting errorReport = new ErrorReporting();
     	if(!typeCheckerForm(form,errorReport)){
     		errorReport.printErrors();

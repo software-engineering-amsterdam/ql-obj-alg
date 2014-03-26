@@ -5,8 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.antlr.v4.runtime.RecognitionException;
 import org.junit.Test;
 
-import ql_obj_alg.parsers.parser.ANTLRParserWrapper;
-import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.parsers.parser.QLParserWrapper;
 import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.unit_tests.Tree.test_algebra.ITest;
 import ql_obj_alg.unit_tests.Tree.test_algebra.Tester;
@@ -20,10 +19,10 @@ public class frmTests{
 	}
 	
 	private static ITest getTestAlgebraObject(String expr){
-		ANTLRParserWrapper parserWrapper = new ANTLRParserWrapper();
+		QLParserWrapper parserWrapper = new QLParserWrapper();
 		parserWrapper.setParseErrors(false);
-		Parser parser = new Parser(parserWrapper);
-		Builder formBuilder = parser.getForm(expr);
+		parserWrapper.parse(expr);
+		Builder formBuilder = parserWrapper.getForm();
 		Tester tester = new Tester();
 		return (ITest) formBuilder.build(tester);		
 	}
