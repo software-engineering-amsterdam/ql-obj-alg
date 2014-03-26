@@ -43,9 +43,9 @@ import ql_obj_alg.types.TypeEnvironment;
 
 public class ExecuteOperations {
 	
-	QLParserWrapper parserWrapper;
+	public QLParserWrapper parserWrapper;
 	
-	public ExecuteOperations(String inputFile){
+	protected void load(String inputFile){
 		parserWrapper = new QLParserWrapper();
 		try {
 			parserWrapper.parse(new FileInputStream(inputFile));
@@ -67,7 +67,8 @@ public class ExecuteOperations {
     	}
 	}
     public static void main(String[] args) throws Exception {
-    	ExecuteOperations ql = new ExecuteOperations(args[0]);
+    	ExecuteOperations ql = new ExecuteOperations();
+    	ql.load(args[0]);
     	ql.execute();
     }
     
