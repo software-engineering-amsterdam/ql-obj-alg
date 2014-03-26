@@ -50,17 +50,17 @@ public class QLParserWrapper implements IQLParserWrapper{
 	
 	@Override
 	public Builder getExpressions() {
-		return parser.getExpressions();
+		return (Builder) parser.getExpressions();
 	}
 
 	@Override
 	public Builder getStatements() {
-		return parser.getStatements();
+		return (Builder) parser.getStatements();
 	}
 
 	@Override
 	public Builder getForm() {
-		return parser.getForm();
+		return (Builder) parser.getForm();
 	}
 	
 	@SuppressWarnings("unchecked")
