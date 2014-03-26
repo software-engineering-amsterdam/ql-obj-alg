@@ -1,6 +1,7 @@
 package ql_obj_alg_extended.parser.execute;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,6 @@ import ql_obj_alg.operation.cyclic_dependencies.IExpDependency;
 import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg_extended.operation.noop.ExprNoopWithModulo;
 import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.operation.printer.ExprFormat;
 import ql_obj_alg.operation.printer.FormFormat;
@@ -31,32 +31,47 @@ import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQues
 import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
 import ql_obj_alg.parsers.execute.ExecuteOperations;
-import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 import ql_obj_alg_extended.operation.cyclic_dependencies.ExprDependenciesWithModulo;
 import ql_obj_alg_extended.operation.evaluator.ExprEvaluatorWithModulo;
+import ql_obj_alg_extended.operation.noop.ExprNoopWithModulo;
 import ql_obj_alg_extended.operation.printer.ExprFormatWithModulo;
 import ql_obj_alg_extended.operation.printer.ExprPrecedenceWithModulo;
 import ql_obj_alg_extended.operation.typechecker.ExprTypeCheckerWithModulo;
 import ql_obj_alg_extended.parser.ParserWrapperWithModulo;
 
 public class ExecuteOperationsWithModulo extends ExecuteOperations {
-    public static void main(String[] args) throws Exception {
-    	ParserWrapperWithModulo parserWrapper = new ParserWrapperWithModulo();
-    	parserWrapper.parse(new FileInputStream(args[0]));
-    	Builder form = parserWrapper.getForm();
-    	ErrorReporting errorReport = new ErrorReporting();
-    	if(!typeCheckerForm(form,errorReport)){
+	
+
+	protected void load(String inputFile){
+		parserWrapper = new ParserWrapperWithModulo();
+		try {
+			parserWrapper.parse(new FileInputStream(inputFile));
+			parserWrapper.setFormAsRoot();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void execute(){
+		ErrorReporting errorReport = new ErrorReporting();
+    	if(!typeCheckerForm(errorReport)){
     		errorReport.printErrors();
     		errorReport.printWarnings();
     	};
-    	printForm(form);
-    	runUI(form,errorReport);
+    	printForm();
+    	runUI(errorReport);
+	}
+
+	public static void main(String[] args) throws Exception {
+		ExecuteOperationsWithModulo ql = new ExecuteOperationsWithModulo();
+		ql.load(args[0]);
+    	ql.execute();
     }
     
-	private static void printForm(Builder form) {
+	private void printForm() {
 
 		FormFormat fFormat = new FormFormat();
 		StmtFormat sFormat = new StmtFormat();
@@ -67,21 +82,20 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		algebras.add(sFormat);
 		algebras.add(eFormat);
 		StringWriter w = new StringWriter();
-		printForm(form, algebras, w);
+		printForm(algebras, w);
 	}
 
-	private static boolean typeCheckerForm(Builder form, ErrorReporting report) {
-		System.out.println("I am in");
+	private boolean typeCheckerForm(ErrorReporting report) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
 		
-		collectQuestions(form, report, typeEnv);
+		collectQuestions(report, typeEnv);
 
-		checkTypes(form, report, typeEnv);
-		checkCyclicDependencies(form, report);
+		checkTypes(report, typeEnv);
+		checkCyclicDependencies(report);
 		return report.numberOfErrors() == 0;
 	}
 	
-	private static void collectQuestions(Builder form, ErrorReporting report,
+	private void collectQuestions(ErrorReporting report,
 			TypeEnvironment typeEnv) {
 		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
 		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
@@ -92,10 +106,10 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		algebras.add(collectStmt);
 		algebras.add(exprNoop);
 		
-		collectQuestions(form, report, typeEnv, algebras);
+		collectQuestions(report, typeEnv, algebras);
 	}
 
-	private static void checkTypes(Builder form, ErrorReporting report,
+	private void checkTypes(ErrorReporting report,
 			TypeEnvironment typeEnv) {
 		IFormAlg<IExpType,ITypeCheck,ITypeCheck> typeCheckForm = new FormTypeChecker();
 		IStmtAlg<IExpType,ITypeCheck> typeCheckStmt = new StmtTypeChecker();
@@ -104,12 +118,11 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		algebras.add(typeCheckForm);
 		algebras.add(typeCheckStmt);
 		algebras.add(typeCheckExpr);
-		checkTypes(form, report, typeEnv, algebras);
+		checkTypes(report, typeEnv, algebras);
 	}
 
 
-	private static void checkCyclicDependencies(Builder form,
-			ErrorReporting report) {
+	private void checkCyclicDependencies(ErrorReporting report) {
 		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
 		IStmtAlg<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependencies();
 		IExpAlgWithModulo<IExpDependency> expDependencies = new ExprDependenciesWithModulo();
@@ -117,11 +130,11 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		algebras.add(formDependencies);
 		algebras.add(stmtDependencies);
 		algebras.add(expDependencies);
-		checkCyclicDependencies(form, algebras);
+		checkCyclicDependencies(algebras);
 	}
 
-	private static void runUI(Builder form, ErrorReporting errorReport){
-		assert typeCheckerForm(form,errorReport) : "There are type errors in the form";
+	private void runUI(ErrorReporting errorReport){
+		assert typeCheckerForm(errorReport) : "There are type errors in the form";
 		IExpAlgWithModulo<IDepsAndEvalE> expAlg = new ExprEvaluatorWithModulo();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
@@ -132,7 +145,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		algebras.add(stmtAlg);
 		algebras.add(formAlg);
 
-		createUI(form, valEnv, algebras);
+		createUI(valEnv, algebras);
 	}
 
 }
