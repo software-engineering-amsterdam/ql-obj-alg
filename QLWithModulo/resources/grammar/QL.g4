@@ -3,12 +3,13 @@ grammar QL;
 import CommonLexerRules,Op;
 
 @header{
-package ql_obj_alg_extended.parser;
+package ql_obj_alg_extended.parser.anltr4_generated_parser;
 import ql_obj_alg.types.TypeFactory;
+import ql_obj_alg.parsers.parser.IQLParser;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.parsers.parser.proxy.BuilderHandler;
-import ql_obj_alg_extended.object_algebra_intefaces.IExpAlgWithMod;
+import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 import java.util.ArrayList;
 import java.lang.reflect.Proxy;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 @parser::members{
 	IFormAlg formBuilder = (IFormAlg) Proxy.newProxyInstance(IFormAlg.class.getClassLoader(),new Class[]{IFormAlg.class},new BuilderHandler());
 	IStmtAlg stmtBuilder = (IStmtAlg)Proxy.newProxyInstance(IStmtAlg.class.getClassLoader(),new Class[]{IStmtAlg.class},new BuilderHandler());
-	IExpAlgWithMod exprBuilder = (IExpAlgWithMod) Proxy.newProxyInstance(IExpAlgWithMod.class.getClassLoader(),new Class[]{IExpAlgWithMod.class},new BuilderHandler());
+	IExpAlgWithModulo exprBuilder = (IExpAlgWithModulo) Proxy.newProxyInstance(IExpAlgWithModulo.class.getClassLoader(),new Class[]{IExpAlgWithModulo.class},new BuilderHandler());
 	
 	protected List<Object> composeStmt(List<QLParser.StatContext> antlr4StmtList){
 		List<Object> stmtList = new ArrayList<Object>();
@@ -27,6 +28,21 @@ import java.util.List;
 			stmtList.add(stmt.stmt);
 		}
 		return stmtList;
+	}
+
+	@Override
+	public Object getExpressions() {
+		return this.expr().exp;
+	}
+
+	@Override
+	public Object getStatements() {
+		return this.stat().stmt;
+	}
+
+	@Override
+	public Object getForm() {
+		return this.form().frm;
 	}
 
 }

@@ -2,16 +2,14 @@
 
 package ql_obj_alg_extended.parser.anltr4_generated_parser;
 import ql_obj_alg.types.TypeFactory;
+import ql_obj_alg.parsers.parser.IQLParser;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.parsers.parser.proxy.BuilderHandler;
 import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
-
 import java.util.ArrayList;
 import java.lang.reflect.Proxy;
 import java.util.List;
-
-
 
 
 import org.antlr.v4.runtime.atn.*;
@@ -19,13 +17,12 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
-
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class QLParser extends Parser {
+public class QLParser extends Parser implements IQLParser{
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
@@ -74,6 +71,21 @@ public class QLParser extends Parser {
 				stmtList.add(stmt.stmt);
 			}
 			return stmtList;
+		}
+
+		@Override
+		public Object getExpressions() {
+			return this.expr().exp;
+		}
+
+		@Override
+		public Object getStatements() {
+			return this.stat().stmt;
+		}
+
+		@Override
+		public Object getForm() {
+			return this.form().frm;
 		}
 
 
