@@ -5,11 +5,15 @@ import ql_obj_alg.types.TypeFactory;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.parsers.parser.IQLParser;
+import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.parsers.parser.proxy.BuilderHandler;
 
 import java.util.ArrayList;
 import java.lang.reflect.Proxy;
 import java.util.List;
+
+
 
 
 
@@ -25,7 +29,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class QLParser extends Parser {
+public class QLParser extends Parser implements IQLParser{
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
@@ -786,5 +790,20 @@ public class QLParser extends Parser {
 		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
 			_decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
 		}
+	}
+	
+	@Override
+	public Builder getExpressions() {
+		return (Builder) this.expr().exp;
+	}
+
+	@Override
+	public Builder getStatements() {
+		return (Builder) this.stat().stmt;
+	}
+
+	@Override
+	public Builder getForm() {
+		return (Builder) this.form().frm;
 	}
 }
