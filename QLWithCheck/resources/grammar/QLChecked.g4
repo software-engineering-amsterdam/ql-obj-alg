@@ -4,16 +4,28 @@ import CommonLexerRules,Op;
 
 @header{
 package ql_obj_alg_extended.parsers.antlr4_generated_parser;
+import ql_obj_alg.types.TypeFactory;
+import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.object_algebra_interfaces.IFormAlg;
+import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
+import ql_obj_alg.parsers.parser.IQLParser;
+import ql_obj_alg.parsers.parser.proxy.BuilderHandler;
+import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithCheck;
+import ql_obj_alg_extended.object_algebra_interfaces.IStmtAlgWithCheck;
+
 import java.util.ArrayList;
 import java.lang.reflect.Proxy;
 import java.util.List;
-import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithCheck;
-import ql_obj_alg.object_algebra_interfaces.IFormAlg;
-import ql_obj_alg.parsers.parser.proxy.BuilderHandler;
-import ql_obj_alg.parsers.antlr4_generated_parser.QLParser;
-import ql_obj_alg.types.TypeFactory;
-import ql_obj_alg_extended.object_algebra_interfaces.IStmtAlgWithCheck;
 
+import org.antlr.v4.runtime.atn.*;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
+
+import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 }
 
 @parser::members{
@@ -28,6 +40,21 @@ import ql_obj_alg_extended.object_algebra_interfaces.IStmtAlgWithCheck;
 			stmtList.add(stmt.stmt);
 		}
 		return stmtList;
+	}
+	
+	@Override
+	public Object getExpressions() {
+		return this.expr().exp;
+	}
+
+	@Override
+	public Object getStatements() {
+		return this.stat().stmt;
+	}
+
+	@Override
+	public Object getForm() {
+		return this.form().frm;
 	}
 
 }
