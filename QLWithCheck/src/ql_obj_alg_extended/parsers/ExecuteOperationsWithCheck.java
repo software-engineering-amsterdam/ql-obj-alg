@@ -26,15 +26,15 @@ import ql_obj_alg.operation.typechecker.ITypeCheck;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.parsers.execute.ExecuteOperations;
-import ql_obj_alg.parsers.parser.Parser;
+import ql_obj_alg.parsers.parser.QLParserWrapper;
 import ql_obj_alg.parsers.parser.proxy.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithCheck;
 import ql_obj_alg_extended.object_algebra_interfaces.IStmtAlgWithCheck;
 import ql_obj_alg_extended.operations.createUI.StmtUIWithCheck;
-import ql_obj_alg_extended.operations.cyclic_dependencies.StmtDependenciesWithCheck;
 import ql_obj_alg_extended.operations.cyclic_dependencies.ExprDependenciesWithCheck;
+import ql_obj_alg_extended.operations.cyclic_dependencies.StmtDependenciesWithCheck;
 import ql_obj_alg_extended.operations.evaluator.ExprEvaluatorWithCheck;
 import ql_obj_alg_extended.operations.noop.ExprNoopWithCheck;
 import ql_obj_alg_extended.operations.printer.ExprFormatWithCheck;
@@ -46,8 +46,9 @@ import ql_obj_alg_extended.operations.type_checker.question_type_collection.Stmt
 
 public class ExecuteOperationsWithCheck extends ExecuteOperations{
     public static void main(String[] args) throws Exception {
-    	Parser parser = new Parser(new ANTLRParserWrapperWithCheck());
-    	Builder form = parser.getForm(new FileInputStream(args[0]));
+    	QLParserWrapper parserWrapper = new QLParserWrapper();
+    	parserWrapper.parse(new FileInputStream(args[0]));
+    	Builder form = parserWrapper.getForm();
     	ErrorReporting errorReport = new ErrorReporting();
     	if(!typeCheckerForm(form,errorReport)){
     		errorReport.printErrors();
