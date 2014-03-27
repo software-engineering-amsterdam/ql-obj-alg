@@ -16,9 +16,9 @@ import ql_obj_alg.operation.createUI.StmtUI;
 import ql_obj_alg.operation.cyclic_dependencies.ExprDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.IDependencyGraph;
+import ql_obj_alg.operation.cyclic_dependencies.IDetectCycle;
 import ql_obj_alg.operation.cyclic_dependencies.IExpDependency;
 import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
-import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
@@ -107,19 +107,19 @@ public class ExecuteOperations {
 	}
 
 	private void checkCyclicDependencies(ErrorReporting report) {
-		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
+		IFormAlg<IExpDependency,IDependencyGraph,IDetectCycle> formDependencies = new FormDependencies();
 		IStmtAlg<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependencies();
 		IExpAlg<IExpDependency> expDependencies = new ExprDependencies();
 		List<Object> algebras = new ArrayList<Object>();
 		algebras.add(formDependencies);
 		algebras.add(stmtDependencies);
 		algebras.add(expDependencies);
-		checkCyclicDependencies(algebras);
+		checkCyclicDependencies(algebras,report);
 	}
 
-	protected void checkCyclicDependencies(List<Object> algebras) {
-		IDependencyGraph cyclesDetection = parserWrapper.makeForm(IDependencyGraph.class, algebras);
-		cyclesDetection.dependencies(new FillDependencyGraph());
+	protected void checkCyclicDependencies(List<Object> algebras, ErrorReporting report) {
+		IDetectCycle cyclesDetection = parserWrapper.makeForm(IDetectCycle.class, algebras);
+		cyclesDetection.detect(report);
 	}
 
 	private void checkTypes(ErrorReporting report,

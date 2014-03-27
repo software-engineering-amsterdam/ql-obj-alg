@@ -4,13 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Cycle {
-	List<String> cycle = new LinkedList<String>();
+	private List<String> cycle = new LinkedList<String>();
 	
 	public void add(String node){
 		cycle.add(node);
 	}
 	
 	public String toString(){
+		assert (!cycle.isEmpty()) : "A cycle cannot be empty";
 		StringBuffer output = new StringBuffer();
 		for(String node : cycle){
 			output.append(node + " -> ");
@@ -26,12 +27,12 @@ public class Cycle {
 		
 		if(obj instanceof Cycle){
 		
-			Cycle c = (Cycle) obj;
+			Cycle other = (Cycle) obj;
 			
-			if(this.cycle.size() != c.cycle.size())
+			if(this.cycle.size() != other.cycle.size())
 				return false;
 			for(String node : this.cycle){
-				if(!c.cycle.contains(node))
+				if(!other.cycle.contains(node))
 					return false;
 			}
 			return true;

@@ -5,7 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Dependencies {
-	Set<String> nodes = new HashSet<String>();
+	private Set<String> nodes;
+	
+	public Dependencies(){
+		this.nodes = new HashSet<String>();
+	}
 
 	public void setIndependent() {
 		nodes = null;
@@ -19,8 +23,6 @@ public class Dependencies {
 		return nodes.isEmpty();
 	}
 	
-	//TODO you created your own encapsulated collection but you are not using better internal naming for methods but
-	//just using the common ones.
 	public void add(String node){
 		if(!isIndependent())
 			nodes.add(node);
