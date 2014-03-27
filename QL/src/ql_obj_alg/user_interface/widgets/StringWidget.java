@@ -98,21 +98,4 @@ public class StringWidget implements IWidget{
 		text.addActionListener(al);
 	}
 	
-	@Override
-	public boolean equals(BooleanWidget other) {
-		return false;
-	}
-
-	@Override
-	public boolean equals(IntegerWidget other) {
-		return false;
-	}
-
-	@Override
-	public boolean equals(StringWidget other) {
-		if(this.id == other.id || (this.id != null && this.id.equals(other.id)))
-			return true;
-		return false;
-	}
-	
 }
