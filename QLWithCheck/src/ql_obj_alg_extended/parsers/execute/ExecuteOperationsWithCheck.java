@@ -13,6 +13,7 @@ import ql_obj_alg.operation.createUI.ICreate;
 import ql_obj_alg.operation.createUI.ICreateF;
 import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.IDependencyGraph;
+import ql_obj_alg.operation.cyclic_dependencies.IDetectCycle;
 import ql_obj_alg.operation.cyclic_dependencies.IExpDependency;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
@@ -131,7 +132,7 @@ public class ExecuteOperationsWithCheck extends ExecuteOperations{
 
 	private void checkCyclicDependencies(ErrorReporting report) {
 		
-		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
+		IFormAlg<IExpDependency,IDependencyGraph,IDetectCycle> formDependencies = new FormDependencies();
 		IStmtAlgWithCheck<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependenciesWithCheck();
 		IExpAlgWithCheck<IExpDependency> expDependencies = new ExprDependenciesWithCheck();
 
@@ -141,7 +142,7 @@ public class ExecuteOperationsWithCheck extends ExecuteOperations{
 		algebras.add(stmtDependencies);
 		algebras.add(expDependencies);
 		
-		checkCyclicDependencies(algebras);
+		checkCyclicDependencies(algebras,report);
 	}
 	
 	public void runUI(ErrorReporting errorReport){

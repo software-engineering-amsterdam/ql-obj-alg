@@ -22,7 +22,7 @@ public class StmtCollectQuestionTypesWithCheck extends StmtCollectQuestionTypes 
 					report.addError(new DuplicateQuestionError(id));
 				}
 				else{
-					tenv.setNewTypeIfUndefined(id, type);
+					tenv.setNewType(id, type);
 				}
 			}
 		};
