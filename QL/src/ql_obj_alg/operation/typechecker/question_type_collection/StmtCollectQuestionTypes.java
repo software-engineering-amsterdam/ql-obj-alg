@@ -59,8 +59,8 @@ public class StmtCollectQuestionTypes implements
 	public ICollect question(final String id, final String label, final Type type,
 			final INoop exp) {
 		return new ICollect(){
-			public void collect(TypeEnvironment tenv,ErrorReporting report){
-				question(id,label,type);
+			public void collect(TypeEnvironment typeEnv,ErrorReporting report){
+				question(id,label,type).collect(typeEnv, report);
 			}
 		};
 	}
