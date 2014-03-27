@@ -1,15 +1,15 @@
 package ql_obj_alg.operation.cyclic_dependencies;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
+import ql_obj_alg.operation.cyclic_dependencies.graph_operations.FillDependencyGraph;
 import ql_obj_alg.operation.cyclic_dependencies.modules.Dependencies;
-import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
 
 public class ExprDependencies implements IExpAlg<IExpDependency>{
 
 	@Override
 	public IExpDependency lit(int x) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
 				return new Dependencies();
 			}
 		};
@@ -18,7 +18,7 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency bool(boolean b) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
 				return new Dependencies();
 			}
 		};
@@ -27,7 +27,7 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency string(String s) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
 				return new Dependencies();
 			}
 		};
@@ -36,7 +36,7 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	@Override
 	public IExpDependency var(final String s) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
 				Dependencies newDependencies = new Dependencies();
 				newDependencies.add(s);
 				return newDependencies;
@@ -45,158 +45,130 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 	}
 
 	@Override
-	public IExpDependency mul(final IExpDependency a1,final IExpDependency a2) {
+	public IExpDependency mul(final IExpDependency lhs,final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency div(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency div(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency add(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency add(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency sub(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency sub(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency eq(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency eq(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency neq(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency neq(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency lt(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency lt(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency leq(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency leq(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency gt(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency gt(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency geq(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency geq(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 
 	@Override
-	public IExpDependency not(final IExpDependency a) {
+	public IExpDependency not(final IExpDependency exp) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
 				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a.dependency(dcd));
+				newDependencies.addAll(exp.dependency(dependencyGraph));
 				return newDependencies;
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency and(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency and(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
 	}
 
 	@Override
-	public IExpDependency or(final IExpDependency a1, final IExpDependency a2) {
+	public IExpDependency or(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-			public Dependencies dependency(FillDependencyGraph dcd){
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(a1.dependency(dcd));
-				newDependencies.addAll(a2.dependency(dcd));
-				return newDependencies;
+			public Dependencies dependency(FillDependencyGraph dependencyGraph){
+				return unionDependencies(lhs, rhs, dependencyGraph);
 			}
 		};
+	}
+	
+	protected Dependencies unionDependencies(final IExpDependency lhs,
+			final IExpDependency rhs, FillDependencyGraph dependencyGraph) {
+		Dependencies newDependencies = new Dependencies();
+		newDependencies.addAll(lhs.dependency(dependencyGraph));
+		newDependencies.addAll(rhs.dependency(dependencyGraph));
+		return newDependencies;
 	}
 }
