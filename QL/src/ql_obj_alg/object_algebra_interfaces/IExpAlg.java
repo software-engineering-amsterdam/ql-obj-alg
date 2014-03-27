@@ -6,18 +6,19 @@ public interface IExpAlg<E>{
 	E string(String s);
 	E var(String varName);
 	
-	E mul(E a1, E a2);
-	E div(E a1, E a2);
-	E add(E a1, E a2);
-	E sub(E a1, E a2);
+	E mul(E lhs, E rhs);
+	E div(E lhs, E rhs);
+	E add(E lhs, E rhs);
+	E sub(E lhs, E rhs);
 	
-	E eq(E a1, E a2);
-	E neq(E a1, E a2);
-	E lt(E a1, E a2);
-	E leq(E a1, E a2);
-	E gt(E a1, E a2);
-	E geq(E a1, E a2);
-	E not(E a);
-	E and(E a1, E a2);
-	E or(E a1, E a2);
+	E eq(E lhs, E rhs);
+	E neq(E lhs, E rhs);
+	E lt(E lhs, E rhs);
+	E leq(E lhs, E rhs);
+	E gt(E lhs, E rhs);
+	E geq(E lhs, E rhs);
+	
+	E not(E exp);
+	E and(E lhs, E rhs);
+	E or(E lhs, E rhs);
 }

@@ -14,7 +14,6 @@ import ql_obj_alg.user_interface.modules.FormFrame;
 import ql_obj_alg.user_interface.widgets.FieldFactory;
 import ql_obj_alg.user_interface.widgets.IWidget;
 
-
 public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsAndEvalE,ICreate>{
 
 	private V expAlg;
@@ -24,12 +23,12 @@ public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsA
 	}
 	
 	@Override
-	public ICreate iff(final IDepsAndEvalE cond, final List<ICreate> b) {
+	public ICreate iff(final IDepsAndEvalE cond, final List<ICreate> statements) {
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame,final ValueEnvironment valEnv,
 					IDepsAndEvalE condition) {
-				for(ICreate stmt : b){
+				for(ICreate stmt : statements){
 					stmt.create(frame,valEnv,expAlg.and(condition,cond));
 				}
 			}
@@ -37,16 +36,16 @@ public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsA
 	}
 
 	@Override
-	public ICreate iffelse(final IDepsAndEvalE cond,final List<ICreate> b1, final List<ICreate> b2) {
+	public ICreate iffelse(final IDepsAndEvalE cond,final List<ICreate> statementsIf, final List<ICreate> statementsElse) {
 		return new ICreate(){
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
 					IDepsAndEvalE condition) {
-				for(ICreate stmt : b1){
+				for(ICreate stmt : statementsIf){
 					stmt.create(frame,valEnv,expAlg.and(cond,condition));
 				}
 
-				for(ICreate stmt : b2){
+				for(ICreate stmt : statementsElse){
 					stmt.create(frame,valEnv,expAlg.and(expAlg.not(cond),condition));
 				}
 
@@ -60,12 +59,9 @@ public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsA
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
 					 final IDepsAndEvalE condition) {
-				
+				valEnv.setQuestionValue(id, new VUndefined());
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				widget.setVisible(condition.eval(valEnv).getBoolean());
-				
-				valEnv.setQuestionValue(id, new VUndefined());
-				
 				widget.addActionListener(new ActionListener(){
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
@@ -74,9 +70,8 @@ public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsA
 						frame.pack();
 					}
 				});
-				
+				widget.addAnswerableQuestionToFrame(frame);				
 				valEnv.createVisibilityObservers(id, frame, widget,condition);
-				widget.addAnswerableQuestionToFrame(frame);
 			}
 		};
 	}
@@ -88,15 +83,14 @@ public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsA
 			@Override
 			public void create(final FormFrame frame, final ValueEnvironment valEnv, 
 					final IDepsAndEvalE condition) {
-				
+				valEnv.setQuestionValue(id, new VUndefined());				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				widget.setVisible(condition.eval(valEnv).getBoolean());
-				
-				valEnv.setQuestionValue(id, new VUndefined());
 				widget.setValue(e.eval(valEnv));
+				widget.addComputedQuestionToFrame(frame);
 				valEnv.createValueObservers(id, e, frame, widget);
 				valEnv.createVisibilityObservers(id, frame, widget,condition);			
-				widget.addComputedQuestionToFrame(frame);
+
 			}
 		};
 	}

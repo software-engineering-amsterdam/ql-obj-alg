@@ -8,12 +8,13 @@ import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.user_interface.modules.FormFrame;
 
-public class FormUI implements IFormAlg<IDepsAndEvalE,ICreate,ICreateF>{
+public class FormUI<V extends IExpAlg<IDepsAndEvalE>> implements IFormAlg<IDepsAndEvalE,ICreate,ICreateF>{
 
-	private IExpAlg<IDepsAndEvalE> expAlg;
-	public FormUI(IExpAlg<IDepsAndEvalE> expAlg){
+	private V expAlg;
+	public FormUI(V expAlg){
 		this.expAlg = expAlg;
 	}
+	
 	@Override
 	public ICreateF form(final String id, final List<ICreate> s) {
 		return new ICreateF(){
