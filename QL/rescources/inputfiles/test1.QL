@@ -1,4 +1,6 @@
 form Box1HouseOwning {
-valueResidue: "Value residue:" integer
-hasSoldHouse: "Has sold house:" integer (valueResidue)
+valueResidue: "Value residue:" boolean
+if(valueResidue || !valueResidue){
+	inIf: "inside if:" boolean
+}
 }

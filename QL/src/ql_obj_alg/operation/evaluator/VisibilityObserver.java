@@ -26,8 +26,10 @@ public class VisibilityObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		boolean visible = condition.eval(valEnv).getBoolean();
-		valEnv.setQuestionValue(id, new VUndefined());
-		widget.setValue(new VUndefined());
+		if(!visible){
+			valEnv.setQuestionValue(id, new VUndefined());
+			widget.setValue(new VUndefined());
+		}
 		widget.setVisible(visible);
 		valEnv.notifyObservers(id);
 		frame.pack();

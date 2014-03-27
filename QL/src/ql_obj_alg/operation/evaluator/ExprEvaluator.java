@@ -74,221 +74,221 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 	}
 
 	@Override
-	public IDepsAndEvalE mul(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE mul(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.mul(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}	
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE div(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE div(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.div(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE add(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE add(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.add(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE sub(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE sub(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.min(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE eq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE eq(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.eq(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE neq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE neq(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.neq(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE lt(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE lt(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.lt(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE leq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE leq(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.leq(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE gt(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE gt(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.gt(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE geq(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE geq(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.geq(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE not(final IDepsAndEvalE a) {
+	public IDepsAndEvalE not(final IDepsAndEvalE exp) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v = a.eval(valEnv);
+				Value v = exp.eval(valEnv);
 				return v.not();
 			}
 
 			@Override
 			public List<String> deps() {
-				return a.deps();
+				return exp.deps();
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE and(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE and(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.and(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}
 
 	@Override
-	public IDepsAndEvalE or(final IDepsAndEvalE a1, final IDepsAndEvalE a2) {
+	public IDepsAndEvalE or(final IDepsAndEvalE lhs, final IDepsAndEvalE rhs) {
 		return new IDepsAndEvalE(){
 			@Override
 			public Value eval(ValueEnvironment valEnv) {
-				Value v1 = a1.eval(valEnv);
-				Value v2 = a2.eval(valEnv);
+				Value v1 = lhs.eval(valEnv);
+				Value v2 = rhs.eval(valEnv);
 				return v1.or(v2);
 			}
 
 			@Override
 			public List<String> deps() {
-				return unionLists(a1.deps(),a2.deps());
+				return unionLists(lhs.deps(),rhs.deps());
 			}
 		};
 	}

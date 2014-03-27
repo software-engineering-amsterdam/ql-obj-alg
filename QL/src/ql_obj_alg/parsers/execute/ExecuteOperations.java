@@ -161,7 +161,7 @@ public class ExecuteOperations {
 		assert typeCheckerForm(errorReport) : "There are type errors in the form";
 		IExpAlg<IDepsAndEvalE> expAlg = new ExprEvaluator();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI<IExpAlg<IDepsAndEvalE>>(expAlg);
-		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
+		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI<IExpAlg<IDepsAndEvalE>>(expAlg);
 
 		ValueEnvironment valEnv = new ValueEnvironment();
 		List<Object> algebras = new ArrayList<Object>();
