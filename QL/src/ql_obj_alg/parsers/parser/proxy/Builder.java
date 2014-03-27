@@ -29,11 +29,7 @@ public class Builder {
 			}
 			return invokeCorrectAlg(factories,i_args.toArray());
 			
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		assert false : "was not able to build" + method.getName();
