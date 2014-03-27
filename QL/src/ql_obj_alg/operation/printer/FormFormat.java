@@ -21,12 +21,12 @@ public class FormFormat implements IFormAlg<IFormatWithPrecedence,IFormat,IForma
 	}
 	
 	@Override
-	public IFormat form(final String id, final List<IFormat> s) {
+	public IFormat form(final String id, final List<IFormat> statements) {
 		return new IFormat(){
 			
 			@Override
 			public void format(int indent, boolean vert, StringWriter writer) {
-				box.V(box.H(1,box.L("form"),box.L(id), box.L("{")),box.I(2,s),box.L("}")).format(indent, vert, writer);
+				box.V(box.H(1,box.L("form"),box.L(id), box.L("{")),box.I(2,statements),box.L("}")).format(indent, vert, writer);
 			}
 		};
 	}
