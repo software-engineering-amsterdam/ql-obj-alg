@@ -20,72 +20,72 @@ public class ExprNoop implements IExpAlg<INoop> {
 	}
 
 	@Override
-	public INoop var(final String s) {
+	public INoop var(final String varName) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop mul(final INoop a1, final INoop a2) {
+	public INoop mul(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop div(final INoop a1, final INoop a2) {
+	public INoop div(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop add(final INoop a1, final INoop a2) {
+	public INoop add(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop sub(final INoop a1, final INoop a2) {
+	public INoop sub(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop eq(final INoop a1, final INoop a2) {
+	public INoop eq(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop neq(final INoop a1, final INoop a2) {
+	public INoop neq(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop lt(final INoop a1, final INoop a2) {
+	public INoop lt(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop leq(final INoop a1, final INoop a2) {
+	public INoop leq(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop gt(final INoop a1, final INoop a2) {
+	public INoop gt(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop geq(final INoop a1, final INoop a2) {
+	public INoop geq(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop not(final INoop a) {
+	public INoop not(final INoop exp) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop and(final INoop a1, final INoop a2) {
+	public INoop and(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 
 	@Override
-	public INoop or(final INoop a1, final INoop a2) {
+	public INoop or(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
 }

@@ -11,10 +11,11 @@ import ql_obj_alg.user_interface.widgets.ObservableWidget;
 public class ValueEnvironment {
 
 	private Map<String,Value> questions;
-	private Map<String, ObservableWidget> registry = new HashMap<String,ObservableWidget>();
+	private Map<String, ObservableWidget> registry;
 	
 	public ValueEnvironment(){
 		questions = new HashMap<String,Value>();
+		registry = new HashMap<String,ObservableWidget>();
 	}
 	
 	public Value getQuestionValue(String id){

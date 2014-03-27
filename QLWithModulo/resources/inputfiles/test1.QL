@@ -1,3 +1,4 @@
 form Box1HouseOwning {
-	valueResidue2: "Value residue2:" integer (7 % 5)
+	valueResidue: "Value residue:" integer 
+	valueResidueMod:  "value mod 10:" integer (valueResidue % 10)
 }

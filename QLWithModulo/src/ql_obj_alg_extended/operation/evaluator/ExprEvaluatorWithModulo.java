@@ -6,6 +6,7 @@ import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
 import ql_obj_alg.operation.evaluator.value.VInteger;
+import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg_extended.object_algebra_interfaces.IExpAlgWithModulo;
 
@@ -23,7 +24,10 @@ public class ExprEvaluatorWithModulo extends ExprEvaluator implements IExpAlgWit
 			public Value eval(ValueEnvironment arg0) {
 				Value v1 = lhs.eval(arg0);
 				Value v2 = rhs.eval(arg0);
-				return new VInteger(v1.getInteger() % v2.getInteger());
+				if(!v1.isUndefined() && !v2.isUndefined()){
+					return new VInteger(v1.getInteger() % v2.getInteger());
+				}
+				return new VUndefined();
 			}
 			
 		};

@@ -48,6 +48,10 @@ public class VBoolean extends VBase {
 		return new VBoolean(b || v.getBoolean());
 	}
 	
+	public Value or(VUndefined v){
+		return this;
+	}
+	
 	@Override 
 	public String toString(){
 		return ""+b;
