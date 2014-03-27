@@ -43,18 +43,14 @@ import ql_obj_alg.types.TypeEnvironment;
 
 public class ExecuteOperations {
 	
-	public QLParserWrapper parserWrapper;
+	private QLParserWrapper parserWrapper;
 	
-	protected void load(String inputFile){
-		parserWrapper = new QLParserWrapper();
-		try {
-			parserWrapper.parse(new FileInputStream(inputFile));
-			parserWrapper.setFormAsRoot();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
+    public static void main(String[] args) throws Exception {
+    	ExecuteOperations ql = new ExecuteOperations();
+    	ql.load(args[0]);
+    	ql.execute();
+    }
+    
 	public void execute(){
     	ErrorReporting errorReport = new ErrorReporting();
     	if(!typeCheckerForm(errorReport)){
@@ -66,12 +62,19 @@ public class ExecuteOperations {
     		runUI(errorReport);
     	}
 	}
-    public static void main(String[] args) throws Exception {
-    	ExecuteOperations ql = new ExecuteOperations();
-    	ql.load(args[0]);
-    	ql.execute();
-    }
     
+	protected void load(String inputFile){
+		parserWrapper = new QLParserWrapper();
+		try {
+			parserWrapper.parse(new FileInputStream(inputFile));
+			parserWrapper.setFormAsRoot();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
+   
 	private void printForm() {
 		
 		FormFormat fFormat = new FormFormat();
@@ -176,5 +179,12 @@ public class ExecuteOperations {
 			List<Object> algebras) {
 		parserWrapper.makeForm(ICreateF.class,algebras).create(valEnv);
 	}
+	
+	protected QLParserWrapper getParserWrapper(){
+		return parserWrapper;
+	}
     
+	protected void setParserWrapper(QLParserWrapper parserWrapper){
+		this.parserWrapper = parserWrapper;
+	}
 }

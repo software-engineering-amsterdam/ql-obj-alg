@@ -44,12 +44,12 @@ import ql_obj_alg_extended.parser.QLParserWrapperWithModulo;
 
 public class ExecuteOperationsWithModulo extends ExecuteOperations {
 	
-
+	
 	protected void load(String inputFile){
-		parserWrapper = new QLParserWrapperWithModulo();
+		setParserWrapper(new QLParserWrapperWithModulo());
 		try {
-			parserWrapper.parse(new FileInputStream(inputFile));
-			parserWrapper.setFormAsRoot();
+			getParserWrapper().parse(new FileInputStream(inputFile));
+			getParserWrapper().setFormAsRoot();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +137,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		assert typeCheckerForm(errorReport) : "There are type errors in the form";
 		IExpAlgWithModulo<IDepsAndEvalE> expAlg = new ExprEvaluatorWithModulo();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI<IExpAlgWithModulo<IDepsAndEvalE>>(expAlg);
-		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
+		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI<IExpAlgWithModulo<IDepsAndEvalE>>(expAlg);
 
 		ValueEnvironment valEnv = new ValueEnvironment();
 		List<Object> algebras = new ArrayList<Object>();

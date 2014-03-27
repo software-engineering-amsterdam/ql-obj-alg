@@ -77,7 +77,7 @@ public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsA
 	}
 
 	@Override
-	public ICreate question(final String id, final String label, final Type type, final IDepsAndEvalE e) {
+	public ICreate question(final String id, final String label, final Type type, final IDepsAndEvalE exp) {
 		return new ICreate(){
 
 			@Override
@@ -86,9 +86,9 @@ public class StmtUI<V extends IExpAlg<IDepsAndEvalE>> implements IStmtAlg<IDepsA
 				valEnv.setQuestionValue(id, new VUndefined());				
 				final IWidget widget = FieldFactory.createField(id,label,type);
 				widget.setVisible(condition.eval(valEnv).getBoolean());
-				widget.setValue(e.eval(valEnv));
+				widget.setValue(exp.eval(valEnv));
 				widget.addComputedQuestionToFrame(frame);
-				valEnv.createValueObservers(id, e, frame, widget);
+				valEnv.createValueObservers(id, exp, frame, widget);
 				valEnv.createVisibilityObservers(id, frame, widget,condition);			
 
 			}

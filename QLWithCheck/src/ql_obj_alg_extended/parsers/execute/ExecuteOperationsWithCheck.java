@@ -51,10 +51,10 @@ public class ExecuteOperationsWithCheck extends ExecuteOperations{
     }
     
     public void load(String inputFile){
-    	parserWrapper = new QLParserWrapperWithCheck();
+    	setParserWrapper(new QLParserWrapperWithCheck());
     	try {
-			parserWrapper.parse(new FileInputStream(inputFile));
-	    	parserWrapper.setFormAsRoot();
+			getParserWrapper().parse(new FileInputStream(inputFile));
+			getParserWrapper().setFormAsRoot();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -148,7 +148,7 @@ public class ExecuteOperationsWithCheck extends ExecuteOperations{
 		assert typeCheckerForm(errorReport) : "There are errors in the form";
 		IExpAlgWithCheck<IDepsAndEvalE> expAlg = new ExprEvaluatorWithCheck();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUIWithCheck(expAlg);
-		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
+		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI<IExpAlgWithCheck<IDepsAndEvalE>>(expAlg);
 
 		ValueEnvironment valEnv = new ValueEnvironment();
 		List<Object> algebras = new ArrayList<Object>();
