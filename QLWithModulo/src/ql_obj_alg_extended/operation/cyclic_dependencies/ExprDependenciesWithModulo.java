@@ -11,7 +11,6 @@ public class ExprDependenciesWithModulo extends ExprDependencies implements IExp
 	@Override
 	public IExpDependency mod(final IExpDependency lhs, final IExpDependency rhs) {
 		return new IExpDependency(){
-
 			@Override
 			public Dependencies dependency(FillDependencyGraph dependencyGraph) {
 				return unionDependencies(lhs,rhs,dependencyGraph);

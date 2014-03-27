@@ -5,15 +5,14 @@ hasMaintLoan: "Did you enter a loan for maintenance/reconstruction?" boolean
 //HELLOHHHH
 if (privateDebt && valueResidue) {
 	sellingPrice: "Price the house was sold for:" integer
-	if(level2){
+	if(hasMaintLoan){
 		reallyAddicted: "Private debts for the sold house:" integer(notsomuch) 
 	}
 	notsomuch: "Private debts for the sold house:" integer (reallyAddicted)
 }
 if(sellingPrice > 5 *(2+1)){
-privateDebt: "Private debts for the sold house:" integer 
-valueResidue: "Value residue:" integer
+	privateDebt: "Private debts for the sold house:" integer 
+	valueResidue: "Value residue:" integer
 }
-valueResidue: "Value residue:" integer(sellingPrice - privateDebt)
 
 }
