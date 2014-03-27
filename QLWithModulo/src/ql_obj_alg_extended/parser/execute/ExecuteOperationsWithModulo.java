@@ -61,9 +61,11 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
     	if(!typeCheckerForm(errorReport)){
     		errorReport.printErrors();
     		errorReport.printWarnings();
-    	};
-    	printForm();
-    	runUI(errorReport);
+    	}
+    	else{
+    		printForm();
+    		runUI();
+    	}
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -134,8 +136,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		checkCyclicDependencies(algebras, report);
 	}
 
-	private void runUI(ErrorReporting errorReport){
-		assert typeCheckerForm(errorReport) : "There are type errors in the form";
+	private void runUI(){
 		IExpAlgWithModulo<IDepsAndEvalE> expAlg = new ExprEvaluatorWithModulo();
 		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI<IExpAlgWithModulo<IDepsAndEvalE>>(expAlg);
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI<IExpAlgWithModulo<IDepsAndEvalE>>(expAlg);
