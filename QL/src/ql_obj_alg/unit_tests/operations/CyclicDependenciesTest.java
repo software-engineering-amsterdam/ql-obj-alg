@@ -14,10 +14,10 @@ import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.operation.cyclic_dependencies.ExprDependencies;
 import ql_obj_alg.operation.cyclic_dependencies.FormDependencies;
-import ql_obj_alg.operation.cyclic_dependencies.IDependencyGraph;
+import ql_obj_alg.operation.cyclic_dependencies.IDetectCycle;
 import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
+import ql_obj_alg.operation.cyclic_dependencies.graph_operations.FillDependencyGraph;
 import ql_obj_alg.operation.cyclic_dependencies.modules.Cycle;
-import ql_obj_alg.operation.cyclic_dependencies.modules.graph.FillDependencyGraph;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.report_system.errors.CyclicDependencyError;
 import ql_obj_alg.report_system.errors.GenError;
@@ -43,9 +43,9 @@ public class CyclicDependenciesTest{
 	@Test
 	public void testValueDependencyCycle() {
 		
-		IDependencyGraph form = valueDependencyCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+		IDetectCycle form = valueDependencyCycle(new FormDependencies(), new StmtDependencies(), new ExprDependencies());
 
-		form.dependencies(dcd);
+		form.detect(report);
 		
 		assertEquals(0, report.numberOfWarnings());
 		
@@ -67,9 +67,9 @@ public class CyclicDependenciesTest{
 	
 	@Test
 	public void testDefinitionDependencyCycle() {
-		IDependencyGraph form = definitionDependencyCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+		IDetectCycle form = definitionDependencyCycle(new FormDependencies(), new StmtDependencies(), new ExprDependencies());
 
-		form.dependencies(dcd);
+		form.detect(report);
 		
 		assertEquals(0, report.numberOfWarnings());
 		
@@ -101,9 +101,9 @@ public class CyclicDependenciesTest{
 	
 	@Test
 	public void testNestedDependencyCycle() {
-		IDependencyGraph form = nestedDependencyCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+		IDetectCycle form = nestedDependencyCycle(new FormDependencies(), new StmtDependencies(), new ExprDependencies());
 
-		form.dependencies(dcd);
+		form.detect(report);
 		
 		assertEquals(0, report.numberOfWarnings());
 		
@@ -146,9 +146,9 @@ public class CyclicDependenciesTest{
 	
 	@Test
 	public void testBothDependenciesCycle() {
-		IDependencyGraph form = bothDependenciesCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+		IDetectCycle form = bothDependenciesCycle(new FormDependencies(), new StmtDependencies(), new ExprDependencies());
 
-		form.dependencies(dcd);
+		form.detect(report);
 		
 		assertEquals(0, report.numberOfWarnings());
 		
@@ -178,9 +178,9 @@ public class CyclicDependenciesTest{
 	
 	@Test
 	public void testDefinitionDependencyNoCycle() {
-		IDependencyGraph form = definitionNoCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+		IDetectCycle form = definitionNoCycle(new FormDependencies(), new StmtDependencies(), new ExprDependencies());
 
-		form.dependencies(dcd);
+		form.detect(report);
 		
 		assertEquals(0, report.numberOfWarnings());
 		
@@ -205,9 +205,9 @@ public class CyclicDependenciesTest{
 	
 	@Test
 	public void testValueDependencyNoCycle() {
-		IDependencyGraph form = valueDependencyNoCycle(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+		IDetectCycle form = valueDependencyNoCycle(new FormDependencies(), new StmtDependencies(), new ExprDependencies());
 
-		form.dependencies(dcd);
+		form.detect(report);
 		
 		assertEquals(0, report.numberOfWarnings());
 		
@@ -222,9 +222,9 @@ public class CyclicDependenciesTest{
 	
 	@Test
 	public void testIndependent(){
-		IDependencyGraph form = independent(new FormDependencies(report), new StmtDependencies(), new ExprDependencies());
+		IDetectCycle form = independent(new FormDependencies(), new StmtDependencies(), new ExprDependencies());
 
-		form.dependencies(dcd);
+		form.detect(report);
 		
 		assertEquals(0, report.numberOfWarnings());
 		
