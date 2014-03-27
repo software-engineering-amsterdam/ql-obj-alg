@@ -5,5 +5,5 @@ import ql_obj_alg.types.Type;
 import ql_obj_alg.types.TypeEnvironment;
 
 public interface IExpType {
-	Type type(TypeEnvironment tenv,ErrorReporting report);
+	Type type(TypeEnvironment typeEnv, ErrorReporting report);
 }

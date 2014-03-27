@@ -7,18 +7,16 @@ import java.util.Set;
 
 public class TypeEnvironment {
 
-	Map<String,Type> typeEnvironment = new HashMap<String,Type>();
-	Set<String>	labels = new HashSet<String>();
+	private Map<String,Type> typeEnvironment;
+	private Set<String>	labels;
 	
-	public void setNewType(String varName, Type type){
-		typeEnvironment.put(varName, type);
+	public TypeEnvironment(){
+		typeEnvironment = new HashMap<String,Type>();
+		labels = new HashSet<String>();
 	}
-	
-	
-	public void setNewTypeIfUndefined(String varName,Type type){
-		if(getType(varName) == null){
-			setNewType(varName,type);
-		}
+	public void setNewType(String varName, Type type){
+		assert (!typeEnvironment.containsKey(varName)) : "Variable already defined.";
+		typeEnvironment.put(varName, type);
 	}
 	
 	public boolean isDefined(String varName){
