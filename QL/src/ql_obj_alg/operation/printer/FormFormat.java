@@ -15,6 +15,10 @@ public class FormFormat implements IFormAlg<IFormatWithPrecedence,IFormat,IForma
 	public FormFormat() {
 		this.box = new FormatBox();
 	}
+
+	protected BoxAlg<IFormat> getBox(){
+		return box;
+	}
 	
 	@Override
 	public IFormat form(final String id, final List<IFormat> s) {

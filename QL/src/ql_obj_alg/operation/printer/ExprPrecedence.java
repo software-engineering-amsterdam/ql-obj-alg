@@ -26,67 +26,67 @@ public class ExprPrecedence implements IExpAlg<IPrecedence>{
 	}
 
 	@Override
-	public IPrecedence mul(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence mul(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(4);
 	}
 
 	@Override
-	public IPrecedence div(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence div(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(4);
 	}
 
 	@Override
-	public IPrecedence add(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence add(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(5);
 	}
 
 	@Override
-	public IPrecedence sub(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence sub(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(5);
 	}
 
 	@Override
-	public IPrecedence eq(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence eq(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(5);
 	}
 
 	@Override
-	public IPrecedence neq(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence neq(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(8);
 	}
 
 	@Override
-	public IPrecedence lt(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence lt(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(7);
 	}
 
 	@Override
-	public IPrecedence leq(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence leq(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(7);
 	}
 
 	@Override
-	public IPrecedence gt(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence gt(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(7);
 	}
 
 	@Override
-	public IPrecedence geq(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence geq(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(7);
 	}
 
 	@Override
-	public IPrecedence not(IPrecedence a) {
+	public IPrecedence not(IPrecedence exp) {
 		return getPrecedence(2);
 	}
 
 	@Override
-	public IPrecedence and(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence and(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(12);
 	}
 
 	@Override
-	public IPrecedence or(IPrecedence a1, IPrecedence a2) {
+	public IPrecedence or(IPrecedence lhs, IPrecedence rhs) {
 		return getPrecedence(13);
 	}
 
