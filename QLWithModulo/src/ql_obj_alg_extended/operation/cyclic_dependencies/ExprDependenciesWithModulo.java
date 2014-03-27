@@ -14,10 +14,7 @@ public class ExprDependenciesWithModulo extends ExprDependencies implements IExp
 
 			@Override
 			public Dependencies dependency(FillDependencyGraph dcd) {
-				Dependencies newDependencies = new Dependencies();
-				newDependencies.addAll(lhs.dependency(dcd));
-				newDependencies.addAll(rhs.dependency(dcd));
-				return newDependencies;
+				return unionDependencies(lhs,rhs,dcd);
 			}
 			
 		};

@@ -87,9 +87,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 
 	private boolean typeCheckerForm(ErrorReporting report) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
-		
 		collectQuestions(report, typeEnv);
-
 		checkTypes(report, typeEnv);
 		checkCyclicDependencies(report);
 		return report.numberOfErrors() == 0;
@@ -114,6 +112,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		IFormAlg<IExpType,ITypeCheck,ITypeCheck> typeCheckForm = new FormTypeChecker();
 		IStmtAlg<IExpType,ITypeCheck> typeCheckStmt = new StmtTypeChecker();
 		IExpAlgWithModulo<IExpType> typeCheckExpr = new ExprTypeCheckerWithModulo();
+		
 		List<Object> algebras = new ArrayList<Object>();
 		algebras.add(typeCheckForm);
 		algebras.add(typeCheckStmt);
@@ -126,6 +125,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 		IFormAlg<IExpDependency,IDependencyGraph,IDependencyGraph> formDependencies = new FormDependencies(report);
 		IStmtAlg<IExpDependency,IDependencyGraph> stmtDependencies = new StmtDependencies();
 		IExpAlgWithModulo<IExpDependency> expDependencies = new ExprDependenciesWithModulo();
+		
 		List<Object> algebras = new ArrayList<Object>();
 		algebras.add(formDependencies);
 		algebras.add(stmtDependencies);
