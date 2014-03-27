@@ -270,7 +270,7 @@ public class VUndefined extends VBase{
 
 	@Override
 	public Value or(VBoolean v) {
-		return new VUndefined();
+		return v;
 	}
 
 	@Override
