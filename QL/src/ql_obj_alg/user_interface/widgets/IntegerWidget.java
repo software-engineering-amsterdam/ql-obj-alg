@@ -97,22 +97,5 @@ public class IntegerWidget implements IWidget{
 	public void addActionListener(ActionListener al) {
 		field.addActionListener(al);
 	}
-	
-	@Override
-	public boolean equals(BooleanWidget other) {
-		return false;
-	}
-
-	@Override
-	public boolean equals(IntegerWidget other) {
-		if(this.id == other.id || (this.id != null && this.id.equals(other.id)))
-			return true;
-		return false;
-	}
-
-	@Override
-	public boolean equals(StringWidget other) {
-		return false;
-	}
 
 }

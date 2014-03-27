@@ -17,8 +17,8 @@ import ql_obj_alg.operation.evaluator.value.Value;
 
 public class ExprEvalTests {
 
-	ExprEvaluator exprEval = null;
-	ValueEnvironment valEnv = null;
+	ExprEvaluator exprEval;
+	ValueEnvironment valEnv;
 	@Before
 	public void SetUp(){
 		exprEval = new ExprEvaluator();

@@ -17,7 +17,4 @@ public interface IWidget {
 	
 	abstract public void addActionListener(ActionListener al);
 
-	abstract public boolean equals(BooleanWidget other);
-	abstract public boolean equals(IntegerWidget other);
-	abstract public boolean equals(StringWidget other);
 }
