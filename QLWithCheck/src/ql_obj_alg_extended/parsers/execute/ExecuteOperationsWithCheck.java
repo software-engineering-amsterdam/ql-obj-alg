@@ -41,7 +41,7 @@ import ql_obj_alg_extended.operations.printer.StmtFormatWithCheck;
 import ql_obj_alg_extended.operations.type_checker.ExprTypeCheckerWithCheck;
 import ql_obj_alg_extended.operations.type_checker.StmtTypeCheckerWithCheck;
 import ql_obj_alg_extended.operations.type_checker.question_type_collection.StmtCollectQuestionTypesWithCheck;
-import ql_obj_alg_extended.parsers.QLCheckParserWrapper;
+import ql_obj_alg_extended.parsers.QLParserWrapperWithCheck;
 
 public class ExecuteOperationsWithCheck extends ExecuteOperations{
     public static void main(String[] args) throws Exception {
@@ -51,7 +51,7 @@ public class ExecuteOperationsWithCheck extends ExecuteOperations{
     }
     
     public void load(String inputFile){
-    	parserWrapper = new QLCheckParserWrapper();
+    	parserWrapper = new QLParserWrapperWithCheck();
     	try {
 			parserWrapper.parse(new FileInputStream(inputFile));
 	    	parserWrapper.setFormAsRoot();

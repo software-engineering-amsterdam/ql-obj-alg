@@ -40,13 +40,13 @@ import ql_obj_alg_extended.operation.noop.ExprNoopWithModulo;
 import ql_obj_alg_extended.operation.printer.ExprFormatWithModulo;
 import ql_obj_alg_extended.operation.printer.ExprPrecedenceWithModulo;
 import ql_obj_alg_extended.operation.typechecker.ExprTypeCheckerWithModulo;
-import ql_obj_alg_extended.parser.ParserWrapperWithModulo;
+import ql_obj_alg_extended.parser.QLParserWrapperWithModulo;
 
 public class ExecuteOperationsWithModulo extends ExecuteOperations {
 	
 
 	protected void load(String inputFile){
-		parserWrapper = new ParserWrapperWithModulo();
+		parserWrapper = new QLParserWrapperWithModulo();
 		try {
 			parserWrapper.parse(new FileInputStream(inputFile));
 			parserWrapper.setFormAsRoot();
@@ -136,7 +136,7 @@ public class ExecuteOperationsWithModulo extends ExecuteOperations {
 	private void runUI(ErrorReporting errorReport){
 		assert typeCheckerForm(errorReport) : "There are type errors in the form";
 		IExpAlgWithModulo<IDepsAndEvalE> expAlg = new ExprEvaluatorWithModulo();
-		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI(expAlg);
+		IStmtAlg<IDepsAndEvalE,ICreate> stmtAlg = new StmtUI<IExpAlgWithModulo<IDepsAndEvalE>>(expAlg);
 		IFormAlg<IDepsAndEvalE,ICreate,ICreateF> formAlg = new FormUI(expAlg);
 
 		ValueEnvironment valEnv = new ValueEnvironment();

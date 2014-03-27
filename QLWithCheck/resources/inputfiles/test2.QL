@@ -4,6 +4,6 @@ form Box1HouseOwning {
 	value5: "value5" integer (value4+1)
 
 	if(value5 > 100 && true){
-		value6: "hello" integer $ (value < 50)
+		value6: "hello" string $ (length < 50)
 	}
 }

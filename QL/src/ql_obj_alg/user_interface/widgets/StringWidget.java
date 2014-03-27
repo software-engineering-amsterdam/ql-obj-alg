@@ -88,6 +88,8 @@ public class StringWidget implements IWidget{
 	public void setValue(Value v) {
 		if(!v.isUndefined()){
 			text.setText(v.getString());
+		}else{
+			text.setText("");
 		}
 	}
 

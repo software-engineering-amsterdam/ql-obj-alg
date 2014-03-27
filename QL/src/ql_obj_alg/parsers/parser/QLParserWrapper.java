@@ -15,14 +15,18 @@ import ql_obj_alg.report_system.parse_error_strategy.BailErrorStrategy;
 public class QLParserWrapper implements IQLParserWrapper{
 
 	private boolean useANTLRParseErrors = true;
-	protected IQLParser parser;
+	private IQLParser parser;
 	Builder root;
+	
+	protected void setParser(IQLParser parser){
+		this.parser = parser;
+	}
 	
 	public void parse(ANTLRInputStream inputStream){
 		QLLexer lexer = new QLLexer(inputStream);
 	    CommonTokenStream tokens = new CommonTokenStream(lexer);
 	    QLParser qlParser = new QLParser(tokens);
-		if(!useANTLRParseErrors){
+		if(!parseErrorsEnabled()){
 			qlParser.setErrorHandler(new BailErrorStrategy());
 			qlParser.removeErrorListeners();
 		}
