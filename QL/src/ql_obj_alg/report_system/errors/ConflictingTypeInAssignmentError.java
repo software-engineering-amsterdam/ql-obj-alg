@@ -3,14 +3,14 @@ package ql_obj_alg.report_system.errors;
 import ql_obj_alg.types.Type;
 
 public class ConflictingTypeInAssignmentError extends GenError {
-	Type expected;
-	Type found;
-	String variable;
+	private Type expected;
+	private Type found;
+	private String varName;
 	
-	public ConflictingTypeInAssignmentError(Type expected, Type found, String variable){
+	public ConflictingTypeInAssignmentError(Type expected, Type found, String varName){
 		this.expected = expected;
 		this.found = found;
-		this.variable = variable;
+		this.varName = varName;
 	}
 	
 	@Override
@@ -18,25 +18,25 @@ public class ConflictingTypeInAssignmentError extends GenError {
 		return toString().hashCode();
 	}
 	
-	
+	@Override
 	public String toString(){
-		return "Conflicting types in question "+variable+" assignment, "+ "(" + expected.toString()+", "+found.toString()+").";
+		return "Conflicting types in question "+varName+" assignment, "+ "(" + expected.toString()+", "+found.toString()+").";
 	}
 	
+	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;
 		
 		if(obj instanceof ConflictingTypeInAssignmentError){
-			ConflictingTypeInAssignmentError error = (ConflictingTypeInAssignmentError) obj;
+			ConflictingTypeInAssignmentError other = (ConflictingTypeInAssignmentError) obj;
 			
-			if(this.expected == error.expected || (this.expected != null && this.expected.equals(error.expected))){
-				if(this.found == error.found || (this.found != null && this.found.equals(error.found))){
-					if(this.variable == error.variable || (this.variable != null && this.variable.equals(error.variable)))
+			if(this.expected == other.expected || (this.expected != null && this.expected.equals(other.expected))){
+				if(this.found == other.found || (this.found != null && this.found.equals(other.found))){
+					if(this.varName == other.varName || (this.varName != null && this.varName.equals(other.varName)))
 						return true;
 				}
-			}
-			
+			}		
 			return false;	
 		}
 		return false;

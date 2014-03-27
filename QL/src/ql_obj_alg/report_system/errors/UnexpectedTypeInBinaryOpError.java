@@ -4,15 +4,16 @@ import ql_obj_alg.types.Type;
 
 public class UnexpectedTypeInBinaryOpError extends UnexpectedTypeError {
 
-	Type found2;
+	private Type found2;
 
 	public UnexpectedTypeInBinaryOpError(Type expected, Type found1, Type found2, String exp) {
 		super(expected, found1, exp);
 		this.found2 = found2;
 	}
 	
+	@Override
 	public String toString(){
-		return "Unexpected type in "+exp+", "+expected.toString()+", found "+found.toString()+" and "+found2.toString()+".";
+		return "Unexpected type in "+this.getExp()+", "+this.getExpected().toString()+", found "+this.getFound().toString()+" and "+found2.toString()+".";
 	}
 	
 	@Override
@@ -20,6 +21,7 @@ public class UnexpectedTypeInBinaryOpError extends UnexpectedTypeError {
 		return toString().hashCode();
 	}
 		
+	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;
