@@ -57,7 +57,7 @@ public class StmtCollectQuestionTypes implements
 
 	@Override
 	public ICollect question(final String id, final String label, final Type type,
-			final INoop e) {
+			final INoop exp) {
 		return new ICollect(){
 			public void collect(TypeEnvironment tenv,ErrorReporting report){
 				question(id,label,type);

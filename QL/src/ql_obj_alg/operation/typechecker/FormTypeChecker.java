@@ -10,11 +10,11 @@ public class FormTypeChecker implements
 		IFormAlg<IExpType, ITypeCheck, ITypeCheck> {
 
 	@Override
-	public ITypeCheck form(final String id, final List<ITypeCheck> stmtList) {
+	public ITypeCheck form(final String id, final List<ITypeCheck> statements) {
 		return new ITypeCheck(){
-			public void check(TypeEnvironment typenv, ErrorReporting report){
-				for(ITypeCheck stmt : stmtList)
-					stmt.check(typenv,report);
+			public void check(TypeEnvironment typeEnv, ErrorReporting report){
+				for(ITypeCheck stmt : statements)
+					stmt.check(typeEnv,report);
 			}
 		};
 	}

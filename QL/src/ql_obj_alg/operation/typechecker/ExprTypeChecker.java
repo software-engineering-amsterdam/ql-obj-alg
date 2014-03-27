@@ -21,7 +21,7 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	public IExpType lit(int x) {
 		return new IExpType(){
 			@Override
-			public Type type(TypeEnvironment tenv, ErrorReporting report) {
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report) {
 				return new TInteger();
 			}
 		};
@@ -31,10 +31,9 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	public IExpType bool(boolean b) {
 		return new IExpType(){
 			@Override
-			public Type type(TypeEnvironment tenv, ErrorReporting report) {
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report) {
 				return new TBoolean();
 			}
-
 		};
 	}
 
@@ -42,18 +41,17 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	public IExpType string(String s) {
 		return new IExpType(){
 			@Override
-			public Type type(TypeEnvironment tenv, ErrorReporting report) {
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report) {
 				return new TString();
 			}
-
 		};
 	}
 
 	@Override
 	public IExpType var(final String varName) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t = tenv.getType(varName);
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type t = typeEnv.getType(varName);
 				if(t != null)
 					return t;
 				report.addError(new UndefinedQuestionError(varName));
@@ -63,67 +61,69 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	}
 
 	@Override
-	public IExpType mul(final IExpType a1,final IExpType a2) {
+	public IExpType mul(final IExpType lhs,final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report);
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isNumber() || !t2.isNumber()){
-					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), t1,t2,"/"));
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report);
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isNumber() || !typeRhs.isNumber()){
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), typeLhs, typeRhs, "/"));
 				}
-				return t1.merge(t2);
+				return typeLhs.merge(typeRhs);
 			}
 		};
 	}
 
 	@Override
-	public IExpType div(final IExpType a1, final IExpType a2) {
+	public IExpType div(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isNumber() || !t2.isNumber()){
-					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), t1,t2,"/"));
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isNumber() || !typeRhs.isNumber()){
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), typeLhs, typeRhs, "/"));
 				}
-				return t1.merge(t2);
+				return typeLhs.merge(typeRhs);
 			}
 		};
 	}
 
 	@Override
-	public IExpType add(final IExpType a1, final IExpType a2) {
+	public IExpType add(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isNumber() || !t2.isNumber()){
-					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(),t1,t2,"+"));				}
-				return t1.merge(t2);
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isNumber() || !typeRhs.isNumber()){
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), typeLhs, typeRhs, "+"));
+				}
+				return typeLhs.merge(typeRhs);
 			}
 		};
 	}
 
 	@Override
-	public IExpType sub(final IExpType a1, final IExpType a2) {
+	public IExpType sub(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isNumber() || !t2.isNumber()){
-					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(),t1,t2,"-"));				}
-				return t1.merge(t2);
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isNumber() || !typeRhs.isNumber()){
+					report.addError(new UnexpectedTypeInBinaryOpError(new TNumber(), typeLhs, typeRhs, "-"));				
+				}
+				return typeLhs.merge(typeRhs);
 			}
 		};
 	}
 
 	@Override
-	public IExpType eq(final IExpType a1, final IExpType a2) {
+	public IExpType eq(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.equals(t2)){
-					report.addError(new ConflictingTypeError(t1,t2,"=="));
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.equals(typeRhs)){
+					report.addError(new ConflictingTypeError(typeLhs, typeRhs, "=="));
 				}
 				return new TBoolean();
 			}
@@ -131,65 +131,69 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	}
 
 	@Override
-	public IExpType neq(final IExpType a1, final IExpType a2) {
+	public IExpType neq(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.equals(t2)){
-					report.addError(new ConflictingTypeError(t1,t2,"!="));				}
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.equals(typeRhs)){
+					report.addError(new ConflictingTypeError(typeLhs, typeRhs, "!="));				
+				}
 				return new TBoolean();
 			}
 		};
 	}
 
 	@Override
-	public IExpType lt(final IExpType a1, final IExpType a2) {
+	public IExpType lt(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isComparable(t2)){
-					report.addError(new ConflictingTypeError(t1,t2,"<"));				}
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isComparable(typeRhs)){
+					report.addError(new ConflictingTypeError(typeLhs, typeRhs, "<"));		
+				}
 				return new TBoolean();
 			}
 		};
 	}
 
 	@Override
-	public IExpType leq(final IExpType a1, final IExpType a2) {
+	public IExpType leq(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isComparable(t2)){
-					report.addError(new ConflictingTypeError(t1,t2,"<="));				}
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isComparable(typeRhs)){
+					report.addError(new ConflictingTypeError(typeLhs, typeRhs, "<="));		
+				}
 				return new TBoolean();
 			}
 		};
 	}
 
 	@Override
-	public IExpType gt(final IExpType a1, final IExpType a2) {
+	public IExpType gt(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isComparable(t2)){
-					report.addError(new ConflictingTypeError(t1,t2,">"));				}
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isComparable(typeRhs)){
+					report.addError(new ConflictingTypeError(typeLhs, typeRhs, ">"));
+				}
 				return new TBoolean();
 			}
 		};
 	}
 
 	@Override
-	public IExpType geq(final IExpType a1, final IExpType a2) {
+	public IExpType geq(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(t1.isComparable(t2)){
-					report.addError(new ConflictingTypeError(t1,t2,">="));
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(typeLhs.isComparable(typeRhs)){
+					report.addError(new ConflictingTypeError(typeLhs, typeRhs, ">="));
 				}
 				return new TBoolean();
 			}
@@ -200,39 +204,40 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 	@Override
 	public IExpType not(final IExpType a) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t = a.type(tenv,report); 
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type t = a.type(typeEnv, report); 
 				if(!t.isBoolean()){
-					report.addError(new UnexpectedTypeError(new TBoolean(), t,"!"));				}
+					report.addError(new UnexpectedTypeError(new TBoolean(), t, "!"));
+				}
 				return t;
 			}
 		};
 	}
 
 	@Override
-	public IExpType and(final IExpType a1, final IExpType a2) {
+	public IExpType and(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isBoolean() || !t2.isBoolean()){
-					report.addError(new UnexpectedTypeInBinaryOpError(new TBoolean(), t1,t2,"&&"));
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isBoolean() || !typeRhs.isBoolean()){
+					report.addError(new UnexpectedTypeInBinaryOpError(new TBoolean(), typeLhs, typeRhs, "&&"));
 				}
-				return t1.merge(t2);
+				return typeLhs.merge(typeRhs);
 			}
 		};
 	}
 
 	@Override
-	public IExpType or(final IExpType a1, final IExpType a2) {
+	public IExpType or(final IExpType lhs, final IExpType rhs) {
 		return new IExpType(){
-			public Type type(TypeEnvironment tenv, ErrorReporting report){
-				Type t1 = a1.type(tenv,report); 
-				Type t2 = a2.type(tenv,report);
-				if(!t1.isBoolean() || !t2.isBoolean()){
-					report.addError(new UnexpectedTypeInBinaryOpError(new TBoolean(), t1,t2,"||"));
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report){
+				Type typeLhs = lhs.type(typeEnv, report); 
+				Type typeRhs = rhs.type(typeEnv, report);
+				if(!typeLhs.isBoolean() || !typeRhs.isBoolean()){
+					report.addError(new UnexpectedTypeInBinaryOpError(new TBoolean(), typeLhs, typeRhs, "||"));
 				}
-				return t1.merge(t2);
+				return typeLhs.merge(typeRhs);
 			}
 		};
 	}
