@@ -1,14 +1,15 @@
 package ql_obj_alg.report_system.errors;
 
 public class UndefinedQuestionError extends GenError{
-	String variable;
+	private String varName;
 	
-	public UndefinedQuestionError(String variable){
-		this.variable = variable;
+	public UndefinedQuestionError(String varName){
+		this.varName = varName;
 	}
 	
+	@Override
 	public String toString(){
-		return "Undefined variable: "+variable;
+		return "Undefined varName: "+varName;
 	}
 	
 	@Override
@@ -22,9 +23,8 @@ public class UndefinedQuestionError extends GenError{
 			return false;
 		
 		if(obj instanceof UndefinedQuestionError){
-			UndefinedQuestionError error = (UndefinedQuestionError) obj;
-			
-			if(this.variable == error.variable || (this.variable != null && this.variable.equals(error.variable)))
+			UndefinedQuestionError error = (UndefinedQuestionError) obj;	
+			if(this.varName == error.varName || (this.varName != null && this.varName.equals(error.varName)))
 				return true;
 		}
 		return false;

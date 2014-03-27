@@ -1,15 +1,21 @@
 package ql_obj_alg.report_system.error_reporting;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ql_obj_alg.report_system.errors.GenError;
 import ql_obj_alg.report_system.warnings.Warning;
 
 public class ErrorReporting {
-	Set<GenError> errors = new HashSet<GenError>();
-	Set<Warning> warnings = new HashSet<Warning>();
+	private List<GenError> errors;
+	private Set<Warning> warnings;
 	
+	public ErrorReporting(){
+		errors = new ArrayList<GenError>();
+		warnings = new HashSet<Warning>();
+	}
 	public void addError(GenError error){
 		errors.add(error);
 	}

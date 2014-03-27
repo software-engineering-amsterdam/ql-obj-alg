@@ -2,14 +2,15 @@ package ql_obj_alg.report_system.errors;
 
 
 public class DuplicateQuestionError extends GenError {
-	String variable;
+	private String varName;
 	
 	public DuplicateQuestionError(String variable){
-		this.variable = variable;
+		this.varName = variable;
 	}
 	
+	@Override
 	public String toString(){
-		return "Duplicate declaration of question "+variable+".";
+		return "Duplicate declaration of question "+varName+".";
 	}
 	
 	@Override
@@ -17,14 +18,14 @@ public class DuplicateQuestionError extends GenError {
 		return toString().hashCode();
 	}
 		
+	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;
 		
 		if(obj instanceof DuplicateQuestionError){
-			DuplicateQuestionError error = (DuplicateQuestionError) obj;
-			
-			if(this.variable == error.variable || (this.variable != null && this.variable.equals(error.variable)))
+			DuplicateQuestionError error = (DuplicateQuestionError) obj;			
+			if(this.varName == error.varName || (this.varName != null && this.varName.equals(error.varName)))
 				return true;
 		}
 		return false;

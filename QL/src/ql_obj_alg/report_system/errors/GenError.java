@@ -6,13 +6,19 @@ public class GenError {
 		return "Unknown error";
 	}
 	
-	
+	@Override
 	public int hashCode(){
 		return toString().hashCode();
 	}
 	
 	@Override
 	public boolean equals(Object obj){
-		return obj.equals(this);
+		if(obj == null)
+			return false;
+		
+		if(obj instanceof GenError){
+			return true;
+		}
+		return false;
 	}
 }

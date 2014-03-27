@@ -3,13 +3,13 @@ package ql_obj_alg.report_system.errors;
 import ql_obj_alg.types.Type;
 
 public class UnexpectedTypeError extends GenError {
-	Type expected;
-	Type found;
-	String exp;
+	private Type expected;
+	private Type found;
+	private String exp;
 	
-	public UnexpectedTypeError(Type t1, Type t2, String exp){
-		this.expected = t1;
-		this.found = t2;
+	public UnexpectedTypeError(Type expected, Type found, String exp){
+		this.expected = expected;
+		this.found = found;
 		this.exp = exp;
 	}
 	
@@ -17,11 +17,13 @@ public class UnexpectedTypeError extends GenError {
 	public int hashCode(){
 		return toString().hashCode();
 	}
-		
+	
+	@Override
 	public String toString(){
 		return "Unexpected type in "+exp+", "+expected.toString()+", "+found.toString()+".";
 	}
 	
+	@Override
 	public boolean equals(Object obj){
 		if(obj == null)
 			return false;
@@ -34,10 +36,21 @@ public class UnexpectedTypeError extends GenError {
 					if(this.exp == error.exp || (this.exp != null && this.exp.equals(error.exp)))
 						return true;
 				}
-			}
-			
+			}		
 			return false;	
 		}
 		return false;
+	}
+	
+	public Type getExpected(){
+		return this.expected;
+	}
+	
+	public Type getFound(){
+		return this.found;
+	}
+	
+	public String getExp(){
+		return this.exp;
 	}
 }
