@@ -4,7 +4,7 @@ package box;
 import java.io.StringWriter;
 import java.util.List;
 
-public class FormatBox extends DesugarBox<IFormat> {
+public class FormatBox implements BoxAlg<IFormat> {
 	
 	private static void indent(int indent, StringWriter writer) {
 		spaces(indent, writer);

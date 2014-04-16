@@ -2,8 +2,6 @@ package ql.form;
 
 import java.util.List;
 
-import ql.IBind;
-import ql.ICheck;
 import ql.ICheckAndBind;
 import ql.ICheckAndTypeOf;
 import ql.ITypeOf;
@@ -48,18 +46,14 @@ public class Check  implements QLAlg<ICheckAndBind, ICheckAndBind, ICheckAndType
 			
 			@Override
 			public boolean check(TEnv env, Errors errors) {
-				boolean r = true;
-				for (ICheck c: body) {
-					r &= c.check(env, errors);
-				}
-				return r;
+				return body.stream().reduce(true, 
+						(it, x) -> x.check(env, errors), 
+						(x, y) -> x && y);
 			}
 
 			@Override
 			public void bind(TEnv env, Errors errors) {
-				for (IBind b: body) {
-					b.bind(env, errors);
-				}
+				body.forEach((x -> x.bind(env, errors)));
 			}
 		};
 	}
@@ -69,19 +63,14 @@ public class Check  implements QLAlg<ICheckAndBind, ICheckAndBind, ICheckAndType
 		return new ICheckAndBind() {
 			@Override
 			public boolean check(TEnv env, Errors errors) {
-				boolean r = true;
-				r &= cond.check(env, errors);
-				for (ICheck c: body) {
-					r &= c.check(env, errors);
-				}
-				return r;
+				return body.stream().reduce(cond.check(env, errors), 
+						(it, x) -> x.check(env, errors), 
+						(x, y) -> x && y);
 			}
 
 			@Override
 			public void bind(TEnv env, Errors errors) {
-				for (IBind b: body) {
-					b.bind(env, errors);
-				}
+				body.forEach((x -> x.bind(env, errors)));
 			}
 		};
 	}
