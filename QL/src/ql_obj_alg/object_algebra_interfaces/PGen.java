@@ -13,6 +13,17 @@ import org.antlr.v4.Tool;
 import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.ast.GrammarRootAST;
 
+/*
+ * TODO: proper precedence
+ * - group alts that have same precedence (not MAXINT) together.
+ * - extract infix 'literals" and create token l1=BINOP_<precedence>
+ * - Add a token definition for it
+ * - as semantic action do:
+ *    ($op.text.equals("*")) ? builder.mul(l0, l2) : (... ));
+ * 
+ * TODO: <assoc=left> and <assoc=right> (non-assoc is not supported by antlr4)
+ */
+
 public class PGen {
 	private static final String BUILDER = "builder";
 	
