@@ -189,4 +189,9 @@ public class Tester implements IFormAlg<ITest,ITest,ITest>,IStmtAlg<ITest,ITest>
 		};
 	}
 
+	@Override
+	public ITest bracket(ITest e) {
+		return null;
+	}
+
 }

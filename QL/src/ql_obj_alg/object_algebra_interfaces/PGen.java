@@ -24,7 +24,7 @@ import org.antlr.v4.tool.ast.GrammarRootAST;
  * 
  * TODO: <assoc=left> and <assoc=right> (non-assoc is not supported by antlr4)
  * 
- * TODO: add import static of token classes.
+ * TODO: package name and add import static * of token classes and builder class.
  */
 
 public class PGen {
@@ -162,7 +162,7 @@ public class PGen {
 				if (anno == null) {
 					Token tk = m.getAnnotation(Token.class);
 					if (tk == null) {
-						System.err.println("Warning: method without syntax anno: " + m);
+						System.err.println("Warning: method without syntax/token anno: " + m);
 						continue;
 					}
 					tokens.put(m.getName().toUpperCase(), tk.value());
