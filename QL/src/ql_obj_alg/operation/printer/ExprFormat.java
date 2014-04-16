@@ -185,6 +185,12 @@ public class ExprFormat<V extends IExpAlg<IPrecedence>> implements IExpAlg<IForm
 			IFormatWithPrecedence rhs) {
 		IPrecedence myPrec = prec.mul(lhs, rhs);
 		return new FP(binary(lhs,rhs,"||",myPrec),myPrec);
+	}
+
+	@Override
+	public IFormatWithPrecedence bracket(IFormatWithPrecedence e) {
+		IPrecedence myPrec = prec.bracket(e);
+		return new FP(box.H(box.L("("), e, box.L(")")), myPrec);
 	};
 
 }

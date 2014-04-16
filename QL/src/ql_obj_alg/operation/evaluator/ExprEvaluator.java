@@ -297,4 +297,20 @@ public class ExprEvaluator implements IExpAlg<IDepsAndEvalE>{
 		list1.addAll(list2);
 		return list1;		
 	}
+
+	@Override
+	public IDepsAndEvalE bracket(IDepsAndEvalE e) {
+		return new IDepsAndEvalE() {
+			
+			@Override
+			public Value eval(ValueEnvironment valEnv) {
+				return e.eval(valEnv);
+			}
+			
+			@Override
+			public List<String> deps() {
+				return e.deps();
+			}
+		};
+	}
 }

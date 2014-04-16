@@ -88,4 +88,9 @@ public class ExprNoop implements IExpAlg<INoop> {
 	public INoop or(final INoop lhs, final INoop rhs) {
 		return new INoop() {};
 	}
+
+	@Override
+	public INoop bracket(INoop e) {
+		return new INoop() {};
+	}
 }

@@ -241,4 +241,20 @@ public class ExprNormalizer implements IExpAlg<INormalizeE> {
 			};
 		}
 
+		@Override
+		public INormalizeE bracket(INormalizeE e) {
+			return new INormalizeE() {
+				
+				@Override
+				public boolean unconditioned() {
+					return false;
+				}
+				
+				@Override
+				public <E> E build(IExpAlg<E> expAlg) {
+					return expAlg.bracket(e.build(expAlg));
+				}
+			};
+		}
+
 	}

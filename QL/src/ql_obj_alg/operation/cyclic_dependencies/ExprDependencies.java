@@ -171,4 +171,18 @@ public class ExprDependencies implements IExpAlg<IExpDependency>{
 		newDependencies.addAll(rhs.dependency(dependencyGraph));
 		return newDependencies;
 	}
+
+	@Override
+	public IExpDependency bracket(IExpDependency e) {
+		return new IExpDependency() {
+
+			@Override
+			public Dependencies dependency(FillDependencyGraph dependencyGraph) {
+				Dependencies newDependencies = new Dependencies();
+				newDependencies.addAll(e.dependency(dependencyGraph));
+				return newDependencies;
+			}
+			
+		};
+	}
 }

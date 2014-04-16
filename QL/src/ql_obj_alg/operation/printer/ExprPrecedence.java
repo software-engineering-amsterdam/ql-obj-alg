@@ -98,4 +98,15 @@ public class ExprPrecedence implements IExpAlg<IPrecedence>{
 			}	
 		};
 	}
+
+	@Override
+	public IPrecedence bracket(IPrecedence e) {
+		return new IPrecedence() {
+			
+			@Override
+			public int prec() {
+				return 0;
+			}
+		};
+	}
 }

@@ -254,4 +254,15 @@ public class ExprTypeChecker implements IExpAlg<IExpType>{
 			}
 		};
 	}
+
+	@Override
+	public IExpType bracket(IExpType e) {
+		return new IExpType() {
+			
+			@Override
+			public Type type(TypeEnvironment typeEnv, ErrorReporting report) {
+				return e.type(typeEnv, report);
+			}
+		};
+	}
 }
