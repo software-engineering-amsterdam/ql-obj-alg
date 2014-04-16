@@ -9,6 +9,7 @@ import ql_obj_alg.operation.evaluator.value.VString;
 import ql_obj_alg.operation.evaluator.value.VUndefined;
 import ql_obj_alg.operation.evaluator.value.Value;
 import ql_obj_alg.user_interface.modules.FormFrame;
+import ql_obj_alg.user_interface.widgets.IWidget;
 
 public class StringWidget implements IWidget{
 
