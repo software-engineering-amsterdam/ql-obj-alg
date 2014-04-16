@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.antlr.v4.Tool;
 import org.antlr.v4.tool.Grammar;
@@ -22,6 +23,8 @@ import org.antlr.v4.tool.ast.GrammarRootAST;
  *    ($op.text.equals("*")) ? builder.mul(l0, l2) : (... ));
  * 
  * TODO: <assoc=left> and <assoc=right> (non-assoc is not supported by antlr4)
+ * 
+ * TODO: add import static of token classes.
  */
 
 public class PGen {
@@ -70,7 +73,7 @@ public class PGen {
 				}
 				else if (isToken(s)) {
 					prod += getLabel(labelCounter, s) + "=" + s + " ";
-					args += "$" + getLabel(labelCounter, s) + ".text,";
+					args += s.toLowerCase() + "($" + getLabel(labelCounter, s) + ".text),";
 					labelCounter += 1;
 				}
 				else {
@@ -98,7 +101,8 @@ public class PGen {
 	
 	public void buildGrammar(Writer w) {
 		List<Alt> alts =  new ArrayList<Alt>();
-		addProductions(alts);
+		Map<String,String> tokens = new HashMap<>();
+		addProductions(tokens, alts);
 		Map<String, List<Alt>> grammar =  new HashMap<String, List<Alt>>();
 		addRules(alts, grammar);
 		StringBuilder sb = new StringBuilder();
@@ -124,9 +128,13 @@ public class PGen {
 				}
 				sb.append(ntAlts.get(i) + "\n");
 			}
-			sb.append("  ;\n");
+			sb.append("  ;\n\n");
 		}
 
+		for (Entry<String,String> entry: tokens.entrySet()) {
+			sb.append(entry.getKey() + ": " + entry.getValue() + ";\n");
+		}
+		
 		System.out.println(sb.toString());
 		Tool t = new org.antlr.v4.Tool();
 		GrammarRootAST g = t.parseGrammarFromString(sb.toString());
@@ -144,7 +152,7 @@ public class PGen {
 		}
 	}
 
-	private void addProductions(List<Alt> alts) {
+	private void addProductions(Map<String,String> tokens, List<Alt> alts) {
 		for (Class<?> cls: algebras) {
 			Method[] ms = cls.getMethods();
 			for (Method m: ms) {
@@ -152,7 +160,12 @@ public class PGen {
 				Type[] ts = m.getGenericParameterTypes();
 				Syntax anno = m.getAnnotation(Syntax.class);
 				if (anno == null) {
-					System.err.println("Warning: method without Alternative anno: " + m);
+					Token tk = m.getAnnotation(Token.class);
+					if (tk == null) {
+						System.err.println("Warning: method without syntax anno: " + m);
+						continue;
+					}
+					tokens.put(m.getName().toUpperCase(), tk.value());
 					continue;
 				}
 				String alt = anno.value();
@@ -196,7 +209,7 @@ public class PGen {
 	}
 	
 	public static void main(String[] args) {
-		PGen pgen = new PGen(IExpAlg.class, IStmtAlg.class, IFormAlg.class);
+		PGen pgen = new PGen(Tokens.class, IExpAlg.class, IStmtAlg.class, IFormAlg.class);
 		pgen.buildGrammar(null);
 	}
 

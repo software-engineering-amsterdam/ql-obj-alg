@@ -5,7 +5,7 @@ public interface IExpAlg<E>{
 	@Syntax("'(' _ ')'")
 	E bracket(E e);
 	
-	@Syntax("INT")
+	@Syntax("INTEGER")
 	E lit(int x);
 	
 	@Syntax("BOOL")
