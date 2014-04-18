@@ -43,7 +43,7 @@ public class NormalAlt extends Alt implements Conventions {
 		for (String s: syms) {
 			if (isNonTerminal(s)) {
 				prod += labelFor(labelCounter, s) + "=" + s + " ";
-				args += "$" + labelFor(labelCounter, s) + "." + valueName(s) + ",";
+				args += "(Builder)($" + labelFor(labelCounter, s) + "." + valueName(s) + "),";
 				labelCounter += 1;
 			}
 			else if (isRegular(s)) {
@@ -61,7 +61,7 @@ public class NormalAlt extends Alt implements Conventions {
 				prod += s + " ";
 			}
 		}
-		prod += " {$" + valueName(getNT()) + " = " + BUILDER + "." + cons + "(" 
+		prod += " {$" + valueName(getNT()) + " = (Builder)" + BUILDER + "." + cons + "(" 
 					+ args.substring(0, args.length() - 1) + ");}";
 		return prod;
 	}

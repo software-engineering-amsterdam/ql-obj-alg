@@ -33,7 +33,7 @@ public class InfixAlt extends Alt {
 		String l2 = labelFor(1, getNT());
 		prod += l2 + "=" + getNT() + " ";
 		
-		prod += " {$" + valueName(getNT()) + " = " + buildBuildExp(l1, opLabel, l2) + ";}";
+		prod += " {$" + valueName(getNT()) + " = (Builder)" + buildBuildExp(l1, opLabel, l2) + ";}";
 		return prod;
 	}
 
@@ -43,7 +43,7 @@ public class InfixAlt extends Alt {
 		for (String token: tokenConsMap.keySet()) {
 			assert isLiteral(token);
 			exp = "($" + label + ".text.equals(\"" + token.substring(1, token.length() - 1) + "\") ? " 
-			  + BUILDER + "." + tokenConsMap.get(token) + "($" + l1 + "." + valueName(getNT()) + ", $" + l2 + "." + valueName(getNT()) + ") : " + exp + ")";
+			  + BUILDER + "." + tokenConsMap.get(token) + "((Builder)($" + l1 + "." + valueName(getNT()) + "), (Builder)($" + l2 + "." + valueName(getNT()) + ")) : " + exp + ")";
 		}
 		return exp;
 	}

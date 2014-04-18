@@ -10,7 +10,8 @@ public interface Tokens {
 	@Token("'\"' (('\\\\' [btnr\"\\\\]) | .)*? '\"'")
 	public static String string(String x) {
 		// todo: unescaping
-		return x.substring(1, x.length() - 1);
+		return x;
+		//return x.substring(1, x.length() - 1);
 	}
 	
 	@Token("[0-9]+")

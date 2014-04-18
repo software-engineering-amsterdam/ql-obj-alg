@@ -96,7 +96,7 @@ public class Rules implements Conventions {
 		addParserMembers(sb);
 
 		for (String nt: rules.keySet()) {
-			sb.append(nt + " returns [Object " + valueName(nt) + "]:\n");
+			sb.append(nt + " returns [Builder " + valueName(nt) + "]:\n");
 			List<Alt> ntAlts = rules.get(nt);
 			int numOfAlts = ntAlts.size();
 			for (int i = 0; i < numOfAlts; i++) {
@@ -123,11 +123,11 @@ public class Rules implements Conventions {
 	}
 
 	private void addLiftMethod(StringBuilder sb) {
-		sb.append("private static java.util.List<Object> lift(String name, java.util.List<?> ctxs) {\n");
-		sb.append(" java.util.List<Object> l = new java.util.ArrayList<Object>();\n");
+		sb.append("private static java.util.List<Builder> lift(String name, java.util.List<?> ctxs) {\n");
+		sb.append(" java.util.List<Builder> l = new java.util.ArrayList<Builder>();\n");
 		sb.append("	for (Object ctx: ctxs) {\n");
 		sb.append("		try {\n");
-		sb.append("			l.add(ctx.getClass().getField(name).get(ctx));\n");
+		sb.append("			l.add((Builder)ctx.getClass().getField(name).get(ctx));\n");
 		sb.append("		} catch (Throwable e) {\n");
 		sb.append("			throw new RuntimeException(e);\n");
 		sb.append("		}\n");
@@ -139,6 +139,7 @@ public class Rules implements Conventions {
 	private void addHeader(StringBuilder sb) {
 		sb.append("@header{\n");
 		sb.append("package " + pkg + ";\n");
+		sb.append("import " + BUILDER_TYPE + ";\n");
 		sb.append("import static " + tokens.getName() + ".*;\n");
 		sb.append("}\n");
 	}

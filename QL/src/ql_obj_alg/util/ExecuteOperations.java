@@ -1,7 +1,8 @@
-package ql_obj_alg.parsers.execute;
+package ql_obj_alg.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +38,20 @@ import ql_obj_alg.operation.typechecker.StmtTypeChecker;
 import ql_obj_alg.operation.typechecker.question_type_collection.FormCollectQuestionTypes;
 import ql_obj_alg.operation.typechecker.question_type_collection.ICollect;
 import ql_obj_alg.operation.typechecker.question_type_collection.StmtCollectQuestionTypes;
-import ql_obj_alg.parsers.parser.QLParserWrapper;
+import ql_obj_alg.parsers.TheParser;
+import ql_obj_alg.pgen.Builder;
 import ql_obj_alg.report_system.error_reporting.ErrorReporting;
 import ql_obj_alg.types.TypeEnvironment;
 
 public class ExecuteOperations {
-	
-	private QLParserWrapper parserWrapper;
 	
     public static void main(String[] args) throws Exception {
     	ExecuteOperations ql = new ExecuteOperations();
     	ql.load(args[0]);
     	ql.execute();
     }
+
+	private Builder builder;
     
 	public void execute(){
     	ErrorReporting errorReport = new ErrorReporting();
@@ -64,11 +66,11 @@ public class ExecuteOperations {
 	}
     
 	protected void load(String inputFile){
-		parserWrapper = new QLParserWrapper();
 		try {
-			parserWrapper.parse(new FileInputStream(inputFile));
-			parserWrapper.setFormAsRoot();
+			builder = TheParser.parse(new FileInputStream(inputFile));
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -92,7 +94,7 @@ public class ExecuteOperations {
 
 	protected void printForm(List<Object> algebras,
 			StringWriter w) {
-		IFormat printingForm = parserWrapper.makeForm(IFormat.class, algebras);
+		IFormat printingForm = builder.build(algebras);
 		printingForm.format(0, false, w);
         System.out.println(w);
 	}
@@ -118,7 +120,7 @@ public class ExecuteOperations {
 	}
 
 	protected void checkCyclicDependencies(List<Object> algebras, ErrorReporting report) {
-		IDetectCycle cyclesDetection = parserWrapper.makeForm(IDetectCycle.class, algebras);
+		IDetectCycle cyclesDetection = builder.build(algebras);
 		cyclesDetection.detect(report);
 	}
 
@@ -136,7 +138,7 @@ public class ExecuteOperations {
 
 	protected void checkTypes(ErrorReporting report,
 			TypeEnvironment typeEnv, List<Object> algebras) {
-		ITypeCheck checkTypes = parserWrapper.makeForm(ITypeCheck.class, algebras);
+		ITypeCheck checkTypes = builder.build(algebras);
 		checkTypes.check(typeEnv, report);
 	}
 
@@ -156,7 +158,7 @@ public class ExecuteOperations {
 
 	protected void collectQuestions(ErrorReporting report,
 			TypeEnvironment typeEnv, List<Object> algebras) {
-		ICollect collectTypes = parserWrapper.makeForm(ICollect.class, algebras);
+		ICollect collectTypes = builder.build(algebras);
 		collectTypes.collect(typeEnv,report);
 	}
 	
@@ -177,14 +179,7 @@ public class ExecuteOperations {
 
 	protected void createUI(ValueEnvironment valEnv,
 			List<Object> algebras) {
-		parserWrapper.makeForm(ICreateF.class,algebras).create(valEnv);
+		builder.<ICreateF>build(algebras).create(valEnv);
 	}
 	
-	protected QLParserWrapper getParserWrapper(){
-		return parserWrapper;
-	}
-    
-	protected void setParserWrapper(QLParserWrapper parserWrapper){
-		this.parserWrapper = parserWrapper;
-	}
 }

@@ -6,6 +6,6 @@ import ql_obj_alg.pgen.annos.Syntax;
 
 public interface IFormAlg<E, S, F> {
 	
-	@Syntax("'form' ID '{' _+ '}'")
+	@Syntax("'form' ID '{' _* '}'")
 	F form(String id, List<S> statements);
 }
