@@ -1,8 +1,8 @@
-package ql_obj_alg.pgen;
+package ql_obj_alg.pgen.util;
 
 import java.util.List;
 
-import static ql_obj_alg.pgen.Conventions.*;
+import static ql_obj_alg.pgen.util.Conventions.*;
 
 public class NormalAlt extends AbstractAlt implements Conventions {
 
@@ -42,19 +42,19 @@ public class NormalAlt extends AbstractAlt implements Conventions {
 		
 		for (String s: syms) {
 			if (isNonTerminal(s)) {
-				prod += getLabel(labelCounter, s) + "=" + s + " ";
-				args += "$" + getLabel(labelCounter, s) + "." + valueName(s) + ",";
+				prod += labelFor(labelCounter, s) + "=" + s + " ";
+				args += "$" + labelFor(labelCounter, s) + "." + valueName(s) + ",";
 				labelCounter += 1;
 			}
 			else if (isRegular(s)) {
 				String n = s.substring(0, s.length() - 1);
-				prod += getLabel(labelCounter, n) + "+=" + s + " ";
-				args += "lift(\"" + valueName(n) + "\", $" + getLabel(labelCounter, n)  + "),";
+				prod += labelFor(labelCounter, n) + "+=" + s + " ";
+				args += "lift(\"" + valueName(n) + "\", $" + labelFor(labelCounter, n)  + "),";
 				labelCounter += 1;
 			}
 			else if (isToken(s)) {
-				prod += getLabel(labelCounter, s) + "=" + s + " ";
-				args += s.toLowerCase() + "($" + getLabel(labelCounter, s) + ".text),";
+				prod += labelFor(labelCounter, s) + "=" + s + " ";
+				args += s.toLowerCase() + "($" + labelFor(labelCounter, s) + ".text),";
 				labelCounter += 1;
 			}
 			else {

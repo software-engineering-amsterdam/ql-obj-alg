@@ -1,4 +1,4 @@
-package ql_obj_alg.pgen;
+package ql_obj_alg.pgen.util;
 
 public interface Conventions {
 	static final String BUILDER = "builder";
@@ -20,7 +20,7 @@ public interface Conventions {
 		return s.matches("^[a-z][a-zA-Z]*[*+?]$");
 	}
 	
-	static String getLabel(int n, String sym) {
+	static String labelFor(int n, String sym) {
 		return sym + "_" + n;
 	}
 	

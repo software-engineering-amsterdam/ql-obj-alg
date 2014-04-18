@@ -1,4 +1,4 @@
-package ql_obj_alg.pgen;
+package ql_obj_alg.pgen.util;
 
 
 public interface IAlt extends Comparable<IAlt> {

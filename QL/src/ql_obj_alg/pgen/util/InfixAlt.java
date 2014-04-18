@@ -1,7 +1,8 @@
-package ql_obj_alg.pgen;
+package ql_obj_alg.pgen.util;
 
 import java.util.Map;
-import static ql_obj_alg.pgen.Conventions.*;
+
+import static ql_obj_alg.pgen.util.Conventions.*;
 
 public class InfixAlt extends AbstractAlt {
 	private Map<String, String> tokenConsMap;
@@ -17,7 +18,7 @@ public class InfixAlt extends AbstractAlt {
 		String prod = "";
 		
 		// LHS
-		String l1 = getLabel(0, getNT());
+		String l1 = labelFor(0, getNT());
 		prod += l1 + "=" + getNT() + " ";
 		
 		String op = "(";
@@ -29,7 +30,7 @@ public class InfixAlt extends AbstractAlt {
 		prod += opLabel + "=" + op + " ";
 		
 		// RHS
-		String l2 = getLabel(1, getNT());
+		String l2 = labelFor(1, getNT());
 		prod += l2 + "=" + getNT() + " ";
 		
 		prod += " {$" + valueName(getNT()) + " = " + buildBuildExp(l1, opLabel, l2) + ";}";

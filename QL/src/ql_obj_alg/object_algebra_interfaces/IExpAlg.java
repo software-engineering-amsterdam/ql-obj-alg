@@ -1,7 +1,7 @@
 package ql_obj_alg.object_algebra_interfaces;
 
-import ql_obj_alg.pgen.Level;
-import ql_obj_alg.pgen.Syntax;
+import ql_obj_alg.pgen.annos.Level;
+import ql_obj_alg.pgen.annos.Syntax;
 
 public interface IExpAlg<E>{
 

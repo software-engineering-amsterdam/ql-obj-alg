@@ -1,13 +1,12 @@
-package ql_obj_alg.pgen;
+package ql_obj_alg.pgen.util;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ql_obj_alg.pgen.Conventions.*;
+import static ql_obj_alg.pgen.util.Conventions.*;
 
 public class Rules implements Conventions {
 	private Map<String, List<IAlt>> rules;

@@ -1,7 +1,7 @@
 package ql_obj_alg.pgen;
 
-import static ql_obj_alg.pgen.Conventions.isPlaceholder;
-import static ql_obj_alg.pgen.Conventions.isToken;
+import static ql_obj_alg.pgen.util.Conventions.isPlaceholder;
+import static ql_obj_alg.pgen.util.Conventions.isToken;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -15,18 +15,19 @@ import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.ast.GrammarRootAST;
 
 import ql_obj_alg.object_algebra_interfaces.IAllAlg;
-import ql_obj_alg.object_algebra_interfaces.IExpAlg;
-import ql_obj_alg.object_algebra_interfaces.IFormAlg;
-import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.object_algebra_interfaces.Tokens;
+import ql_obj_alg.pgen.annos.Level;
+import ql_obj_alg.pgen.annos.Skip;
+import ql_obj_alg.pgen.annos.Syntax;
+import ql_obj_alg.pgen.annos.Token;
+import ql_obj_alg.pgen.util.Conventions;
+import ql_obj_alg.pgen.util.NormalAlt;
+import ql_obj_alg.pgen.util.Rules;
 
 
 /*
  * TODO: <assoc=left> and <assoc=right> (non-assoc is not supported by antlr4)
- * 
- * TODO: package name and add import static * of token classes and builder class.
  */
-
 
 
 public class PGen {
@@ -106,7 +107,7 @@ public class PGen {
 					realSyms.add(s);
 				}
 				Level precAnno = m.getAnnotation(Level.class);
-				int prec = Integer.MAX_VALUE;
+				int prec = Conventions.MAX_PRECEDENCE;
 				if (precAnno != null) {
 					prec = precAnno.value();
 				}
@@ -125,7 +126,7 @@ public class PGen {
 	}
 	
 	public static void main(String[] args) {
-		PGen pgen = new PGen(Tokens.class, IAllAlg.class, IExpAlg.class, IStmtAlg.class, IFormAlg.class);
+		PGen pgen = new PGen(Tokens.class, IAllAlg.class, IAllAlg.class);
 		pgen.generate("QL", "ql_obj_alg.parsers", "src/ql_obj_alg/parsers/QLParser.java");
 	}
 
