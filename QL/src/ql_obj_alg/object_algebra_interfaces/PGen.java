@@ -191,7 +191,7 @@ public class PGen {
 			prod += opLabel + "=" + op + " ";
 			
 			// RHS
-			String l2= getLabel(0, getNT());
+			String l2 = getLabel(1, getNT());
 			prod += l2 + "=" + getNT() + " ";
 			
 			prod += " {$" + valueName(getNT()) + " = " + buildBuildExp(l1, opLabel, l2) + ";}";
