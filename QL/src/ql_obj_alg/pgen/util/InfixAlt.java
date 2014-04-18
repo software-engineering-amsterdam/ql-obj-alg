@@ -4,7 +4,7 @@ import java.util.Map;
 
 import static ql_obj_alg.pgen.util.Conventions.*;
 
-public class InfixAlt extends AbstractAlt {
+public class InfixAlt extends Alt {
 	private Map<String, String> tokenConsMap;
 
 	public InfixAlt(String nt, int prec, Map<String,String> tokenConsMap) {

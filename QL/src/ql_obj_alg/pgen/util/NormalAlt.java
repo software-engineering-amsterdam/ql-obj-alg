@@ -4,7 +4,7 @@ import java.util.List;
 
 import static ql_obj_alg.pgen.util.Conventions.*;
 
-public class NormalAlt extends AbstractAlt implements Conventions {
+public class NormalAlt extends Alt implements Conventions {
 
 	private List<String> syms;
 	private String cons;

@@ -9,7 +9,7 @@ import java.util.Map;
 import static ql_obj_alg.pgen.util.Conventions.*;
 
 public class Rules implements Conventions {
-	private Map<String, List<IAlt>> rules;
+	private Map<String, List<Alt>> rules;
 	private String name;
 	private String pkg;
 	private Class<?> tokens;
@@ -20,10 +20,10 @@ public class Rules implements Conventions {
 		this.pkg = pkg;
 		this.tokens = tokens;
 		this.builder = builder;
-		this.rules = new HashMap<String, List<IAlt>>();
+		this.rules = new HashMap<String, List<Alt>>();
 	}
 	
-	public void addAlt(IAlt a) {
+	public void addAlt(Alt a) {
 		if (!rules.containsKey(a.getNT())) {
 			rules.put(a.getNT(), new ArrayList<>());
 		}
@@ -36,9 +36,9 @@ public class Rules implements Conventions {
 		}
 	}
 
-	private List<IAlt> groupByLevel(List<IAlt> alts) {
-		Map<Integer, List<IAlt>> leveled = new HashMap<>();
-		for (IAlt a: alts) {
+	private List<Alt> groupByLevel(List<Alt> alts) {
+		Map<Integer, List<Alt>> leveled = new HashMap<>();
+		for (Alt a: alts) {
 			if (!leveled.containsKey(a.getLevel())) {
 				leveled.put(a.getLevel(), new ArrayList<>());
 			}
@@ -54,10 +54,10 @@ public class Rules implements Conventions {
 		return sortAlternatives(leveled);
 	}
 
-	private void collapseLevel(Map<Integer, List<IAlt>> leveled, Integer level) {
+	private void collapseLevel(Map<Integer, List<Alt>> leveled, Integer level) {
 		NormalAlt last = null;
 		Map<String, String> map = new HashMap<>();
-		for (IAlt ia: leveled.get(level)) {
+		for (Alt ia: leveled.get(level)) {
 			NormalAlt a = (NormalAlt)ia;
 			assertValidInfix(last, a);
 			last = a;
@@ -66,12 +66,12 @@ public class Rules implements Conventions {
 		leveled.put(level, Arrays.asList(new InfixAlt(last.getNT(), level, map)));
 	}
 
-	private List<IAlt> sortAlternatives(Map<Integer, List<IAlt>> leveled) {
-		List<IAlt> all = new ArrayList<>();
+	private List<Alt> sortAlternatives(Map<Integer, List<Alt>> leveled) {
+		List<Alt> all = new ArrayList<>();
 		for (Integer level: leveled.keySet()) {
 			all.addAll(leveled.get(level));
 		}
-		IAlt[] array = all.toArray(new IAlt[]{});
+		Alt[] array = all.toArray(new Alt[]{});
 		Arrays.sort(array);
 		return Arrays.asList(array);
 	}
@@ -97,7 +97,7 @@ public class Rules implements Conventions {
 
 		for (String nt: rules.keySet()) {
 			sb.append(nt + " returns [Object " + valueName(nt) + "]:\n");
-			List<IAlt> ntAlts = rules.get(nt);
+			List<Alt> ntAlts = rules.get(nt);
 			int numOfAlts = ntAlts.size();
 			for (int i = 0; i < numOfAlts; i++) {
 				if (i != 0) {
