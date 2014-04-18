@@ -3,14 +3,12 @@ package ql_obj_alg.pgen;
 import static ql_obj_alg.pgen.Conventions.isPlaceholder;
 import static ql_obj_alg.pgen.Conventions.isToken;
 
-import java.io.Writer;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.antlr.v4.Tool;
 import org.antlr.v4.tool.Grammar;
@@ -21,7 +19,6 @@ import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.object_algebra_interfaces.Tokens;
-import ql_obj_alg.parsers.parser.proxy.Builder;
 
 
 /*
@@ -34,58 +31,55 @@ import ql_obj_alg.parsers.parser.proxy.Builder;
 
 public class PGen {
 	private Class<?>[] algebras;
-	private String name;
-	private String pkg;
 	private Class<?> tokensClass;
 	private Class<?> builderClass;
 
-	public PGen(String name, String pkg, Class<?> tokens, Class<?> builder, Class<?> ...algebras) {
-		this.name = name;
-		this.pkg = pkg;
+	public PGen(Class<?> tokens, Class<?> builder, Class<?> ...algebras) {
 		this.tokensClass = tokens;
 		this.builderClass = builder;
 		this.algebras = algebras;
 	}
 	
-	
-	public void buildGrammar(Writer w) {
+	public void generate(String name, String pkg, String path) {
 		Map<String,String> tokens = new HashMap<>();
 		Rules rules = new Rules(name, pkg, tokensClass, builderClass);
 		addProductions(rules);
-		addTokens(tokens);
 		
 		StringBuilder sb = new StringBuilder();
 		rules.groupByLevel();
 		rules.generate(sb);
-
-		for (Entry<String,String> entry: tokens.entrySet()) {
-			sb.append(entry.getKey() + ": " + entry.getValue() + ";\n");
-		}
+		generateTokens(tokens, sb);
 		
 		System.out.println(sb.toString());
+		
 		Tool t = new org.antlr.v4.Tool();
 		GrammarRootAST g = t.parseGrammarFromString(sb.toString());
-		System.out.println(g);
 		Grammar theG = t.createGrammar(g);
 		t.gen_listener = false;
 		t.gen_visitor = false;
-		theG.fileName = "src/ql_obj_alg/parsers/QLParser.java";
+		t.gen_dependencies = false;
+		theG.fileName = path;
 		t.process(theG, true);
 	}
-	
 
-	private void addTokens(Map<String,String> tokens) {
+	private void generateTokens(Map<String, String> tokens, StringBuilder sb) {
 		Method[] ms = tokensClass.getMethods();
 		for (Method m: ms) {
 			Token tk = m.getAnnotation(Token.class);
 			if (tk == null) {
-				System.err.println("Warning: method without token anno: " + m);
 				continue;
 			}
-			tokens.put(m.getName().toUpperCase(), tk.value());
+
+			sb.append(m.getName().toUpperCase() + ": " + tk.value());
+			Skip sk = m.getAnnotation(Skip.class);
+			if (sk != null) {
+				sb.append(" -> skip");
+			}
+			sb.append(";\n");
 		}
 	}
 	
+
 	private void addProductions(Rules rules) {
 		for (Class<?> cls: algebras) {
 			Method[] ms = cls.getMethods();
@@ -131,8 +125,8 @@ public class PGen {
 	}
 	
 	public static void main(String[] args) {
-		PGen pgen = new PGen("QL", "ql_obj_alg.parsers", Tokens.class, IAllAlg.class, IExpAlg.class, IStmtAlg.class, IFormAlg.class);
-		pgen.buildGrammar(null);
+		PGen pgen = new PGen(Tokens.class, IAllAlg.class, IExpAlg.class, IStmtAlg.class, IFormAlg.class);
+		pgen.generate("QL", "ql_obj_alg.parsers", "src/ql_obj_alg/parsers/QLParser.java");
 	}
 
 }

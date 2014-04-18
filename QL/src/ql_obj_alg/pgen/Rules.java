@@ -124,8 +124,8 @@ public class Rules implements Conventions {
 	}
 
 	private void addLiftMethod(StringBuilder sb) {
-		sb.append("private static List<Object> lift(String name, List<?> ctxs) {\n");
-		sb.append("  List<Object> l = new ArrayList<Object>();\n");
+		sb.append("private static java.util.List<Object> lift(String name, java.util.List<?> ctxs) {\n");
+		sb.append(" java.util.List<Object> l = new java.util.ArrayList<Object>();\n");
 		sb.append("	for (Object ctx: ctxs) {\n");
 		sb.append("		try {\n");
 		sb.append("			l.add(ctx.getClass().getField(name).get(ctx));\n");

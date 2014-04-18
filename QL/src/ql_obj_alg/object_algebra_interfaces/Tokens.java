@@ -1,5 +1,6 @@
 package ql_obj_alg.object_algebra_interfaces;
 
+import ql_obj_alg.pgen.Skip;
 import ql_obj_alg.pgen.Token;
 import ql_obj_alg.types.Type;
 import ql_obj_alg.types.TypeFactory;
@@ -32,5 +33,10 @@ public interface Tokens {
 		return TypeFactory.createType(x);
 	}
 	
+	@Token("[ \\t\\r\\n]+") @Skip
+	void ws();
+	
+	@Token("'//' .*? '\\n'") @Skip
+	void comment();
 
 }
