@@ -5,12 +5,21 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static ql_obj_alg.pgen.Conventions.*;
 
 public class Rules implements Conventions {
 	private Map<String, List<IAlt>> rules;
+	private String name;
+	private String pkg;
+	private Class<?> tokens;
+	private Class<?> builder;
 
-	public Rules() {
+	public Rules(String name, String pkg, Class<?> tokens, Class<?> builder) {
+		this.name = name;
+		this.pkg = pkg;
+		this.tokens = tokens;
+		this.builder = builder;
 		this.rules = new HashMap<String, List<IAlt>>();
 	}
 	
@@ -82,7 +91,10 @@ public class Rules implements Conventions {
 	}
 	
 	public void generate(StringBuilder sb) {
-		sb.append("grammar Foo;\n"); // TODO: name
+		sb.append("grammar " + name + ";\n"); 
+		addHeader(sb);
+		addParserMembers(sb);
+
 		for (String nt: rules.keySet()) {
 			sb.append(nt + " returns [Object " + valueName(nt) + "]:\n");
 			List<IAlt> ntAlts = rules.get(nt);
@@ -98,6 +110,20 @@ public class Rules implements Conventions {
 			}
 			sb.append("  ;\n\n");
 		}
+	}
+
+	private void addParserMembers(StringBuilder sb) {
+		sb.append("@parser::members{\n");
+		sb.append("private " + builder.getName() + " " + BUILDER + ";\n");
+		sb.append("public void setBuilder(" + builder.getName() + " " + BUILDER + ") { this." + BUILDER + " = " + BUILDER + "; }\n");
+		sb.append("}\n");
+	}
+
+	private void addHeader(StringBuilder sb) {
+		sb.append("@header{\n");
+		sb.append("package " + pkg + ";\n");
+		sb.append("import static " + tokens.getName() + ".*;\n");
+		sb.append("}\n");
 	}
 	
 }

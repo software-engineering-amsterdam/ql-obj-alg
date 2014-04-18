@@ -32,6 +32,4 @@ public interface Conventions {
 		return "_" + nt;
 	}
 	
-	
-
 }

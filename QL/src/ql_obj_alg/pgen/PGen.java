@@ -16,10 +16,12 @@ import org.antlr.v4.Tool;
 import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.ast.GrammarRootAST;
 
+import ql_obj_alg.object_algebra_interfaces.IAllAlg;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.object_algebra_interfaces.Tokens;
+import ql_obj_alg.parsers.parser.proxy.Builder;
 
 
 /*
@@ -32,20 +34,25 @@ import ql_obj_alg.object_algebra_interfaces.Tokens;
 
 public class PGen {
 	private Class<?>[] algebras;
+	private String name;
+	private String pkg;
+	private Class<?> tokensClass;
+	private Class<?> builderClass;
 
-	public PGen(Class<?> ...algebras) {
+	public PGen(String name, String pkg, Class<?> tokens, Class<?> builder, Class<?> ...algebras) {
+		this.name = name;
+		this.pkg = pkg;
+		this.tokensClass = tokens;
+		this.builderClass = builder;
 		this.algebras = algebras;
 	}
 	
 	
 	public void buildGrammar(Writer w) {
-		List<NormalAlt> alts =  new ArrayList<NormalAlt>();
 		Map<String,String> tokens = new HashMap<>();
-		addProductions(tokens, alts);
-		Rules rules = new Rules();
-		for (NormalAlt a: alts) {
-			rules.addAlt(a);
-		}
+		Rules rules = new Rules(name, pkg, tokensClass, builderClass);
+		addProductions(rules);
+		addTokens(tokens);
 		
 		StringBuilder sb = new StringBuilder();
 		rules.groupByLevel();
@@ -60,11 +67,26 @@ public class PGen {
 		GrammarRootAST g = t.parseGrammarFromString(sb.toString());
 		System.out.println(g);
 		Grammar theG = t.createGrammar(g);
-		t.process(theG, false);
+		t.gen_listener = false;
+		t.gen_visitor = false;
+		theG.fileName = "src/ql_obj_alg/parsers/QLParser.java";
+		t.process(theG, true);
 	}
 	
 
-	private void addProductions(Map<String,String> tokens, List<NormalAlt> alts) {
+	private void addTokens(Map<String,String> tokens) {
+		Method[] ms = tokensClass.getMethods();
+		for (Method m: ms) {
+			Token tk = m.getAnnotation(Token.class);
+			if (tk == null) {
+				System.err.println("Warning: method without token anno: " + m);
+				continue;
+			}
+			tokens.put(m.getName().toUpperCase(), tk.value());
+		}
+	}
+	
+	private void addProductions(Rules rules) {
 		for (Class<?> cls: algebras) {
 			Method[] ms = cls.getMethods();
 			for (Method m: ms) {
@@ -72,12 +94,7 @@ public class PGen {
 				Type[] ts = m.getGenericParameterTypes();
 				Syntax anno = m.getAnnotation(Syntax.class);
 				if (anno == null) {
-					Token tk = m.getAnnotation(Token.class);
-					if (tk == null) {
-						System.err.println("Warning: method without syntax/token anno: " + m);
-						continue;
-					}
-					tokens.put(m.getName().toUpperCase(), tk.value());
+					System.err.println("Warning: method without syntax/token anno: " + m);
 					continue;
 				}
 				String alt = anno.value();
@@ -99,7 +116,7 @@ public class PGen {
 				if (precAnno != null) {
 					prec = precAnno.value();
 				}
-				alts.add(new NormalAlt(typeToNonTerminal(ret), prec, m.getName(), realSyms));
+				rules.addAlt(new NormalAlt(typeToNonTerminal(ret), prec, m.getName(), realSyms));
 			}
 		}
 	}
@@ -114,7 +131,7 @@ public class PGen {
 	}
 	
 	public static void main(String[] args) {
-		PGen pgen = new PGen(Tokens.class, IExpAlg.class, IStmtAlg.class, IFormAlg.class);
+		PGen pgen = new PGen("QL", "ql_obj_alg.parsers", Tokens.class, IAllAlg.class, IExpAlg.class, IStmtAlg.class, IFormAlg.class);
 		pgen.buildGrammar(null);
 	}
 

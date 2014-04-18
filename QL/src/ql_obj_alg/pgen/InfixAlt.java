@@ -42,7 +42,7 @@ public class InfixAlt extends AbstractAlt {
 		for (String token: tokenConsMap.keySet()) {
 			assert isLiteral(token);
 			exp = "($" + label + ".text.equals(\"" + token.substring(1, token.length() - 1) + "\") ? " 
-			  + BUILDER + "." + tokenConsMap.get(token) + "(" + l1 + ", " + l2 + ") : " + exp + ")";
+			  + BUILDER + "." + tokenConsMap.get(token) + "($" + l1 + "." + valueName(getNT()) + ", $" + l2 + "." + valueName(getNT()) + ") : " + exp + ")";
 		}
 		return exp;
 	}
