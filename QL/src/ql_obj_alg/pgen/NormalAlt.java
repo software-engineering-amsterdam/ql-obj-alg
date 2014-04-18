@@ -49,7 +49,7 @@ public class NormalAlt extends AbstractAlt implements Conventions {
 			else if (isRegular(s)) {
 				String n = s.substring(0, s.length() - 1);
 				prod += getLabel(labelCounter, n) + "+=" + s + " ";
-				args += "lift($" + getLabel(labelCounter, n)  + "),";
+				args += "lift(\"" + valueName(n) + "\", $" + getLabel(labelCounter, n)  + "),";
 				labelCounter += 1;
 			}
 			else if (isToken(s)) {

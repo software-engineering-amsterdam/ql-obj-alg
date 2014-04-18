@@ -1,5 +1,6 @@
 package ql_obj_alg.pgen;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -116,7 +117,24 @@ public class Rules implements Conventions {
 		sb.append("@parser::members{\n");
 		sb.append("private " + builder.getName() + " " + BUILDER + ";\n");
 		sb.append("public void setBuilder(" + builder.getName() + " " + BUILDER + ") { this." + BUILDER + " = " + BUILDER + "; }\n");
+		
+		addLiftMethod(sb);
+		
 		sb.append("}\n");
+	}
+
+	private void addLiftMethod(StringBuilder sb) {
+		sb.append("private static List<Object> lift(String name, List<?> ctxs) {\n");
+		sb.append("  List<Object> l = new ArrayList<Object>();\n");
+		sb.append("	for (Object ctx: ctxs) {\n");
+		sb.append("		try {\n");
+		sb.append("			l.add(ctx.getClass().getField(name).get(ctx));\n");
+		sb.append("		} catch (Throwable e) {\n");
+		sb.append("			throw new RuntimeException(e);\n");
+		sb.append("		}\n");
+		sb.append("	}\n");
+		sb.append("	return l;\n");
+		sb.append("}\n");		
 	}
 
 	private void addHeader(StringBuilder sb) {
