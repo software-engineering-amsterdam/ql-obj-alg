@@ -1,9 +1,11 @@
-package ql_obj_alg.object_algebra_interfaces;
+package ql_obj_alg.pgen;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Level {
-	int value();
+public @interface Token {
+
+	String value();
+
 }
