@@ -22,12 +22,12 @@ public class QLParser extends Parser {
 		T__21=1, T__20=2, T__19=3, T__18=4, T__17=5, T__16=6, T__15=7, T__14=8, 
 		T__13=9, T__12=10, T__11=11, T__10=12, T__9=13, T__8=14, T__7=15, T__6=16, 
 		T__5=17, T__4=18, T__3=19, T__2=20, T__1=21, T__0=22, TYPE=23, ID=24, 
-		STRING=25, INTEGER=26, BOOL=27, WS=28, COMMENT=29;
+		WS=25, INTEGER=26, BOOL=27, STRING=28, COMMENT=29;
 	public static final String[] tokenNames = {
 		"<INVALID>", "'/'", "'!='", "':'", "'{'", "'||'", "'>='", "'&&'", "'=='", 
 		"'<'", "'}'", "'='", "'>'", "'if'", "'<='", "'!'", "'else'", "'('", "')'", 
-		"'*'", "'+'", "'form'", "'-'", "TYPE", "ID", "STRING", "INTEGER", "BOOL", 
-		"WS", "COMMENT"
+		"'*'", "'+'", "'form'", "'-'", "TYPE", "ID", "WS", "INTEGER", "BOOL", 
+		"STRING", "COMMENT"
 	};
 	public static final int
 		RULE_s = 0, RULE_e = 1, RULE_f = 2;
@@ -71,14 +71,14 @@ public class QLParser extends Parser {
 	}
 	public static class SContext extends ParserRuleContext {
 		public Builder _s;
-		public Token ID_0;
-		public Token STRING_1;
-		public Token TYPE_2;
-		public EContext e_3;
 		public EContext e_0;
 		public SContext s;
 		public List<SContext> s_1 = new ArrayList<SContext>();
 		public List<SContext> s_2 = new ArrayList<SContext>();
+		public Token ID_0;
+		public Token STRING_1;
+		public Token TYPE_2;
+		public EContext e_3;
 		public TerminalNode ID() { return getToken(QLParser.ID, 0); }
 		public EContext e() {
 			return getRuleContext(EContext.class,0);
@@ -108,49 +108,23 @@ public class QLParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(6); ((SContext)_localctx).ID_0 = match(ID);
-				setState(7); match(3);
-				setState(8); ((SContext)_localctx).STRING_1 = match(STRING);
-				setState(9); ((SContext)_localctx).TYPE_2 = match(TYPE);
-				setState(10); match(11);
-				setState(11); match(17);
-				setState(12); ((SContext)_localctx).e_3 = e(0);
-				setState(13); match(18);
-				((SContext)_localctx)._s =  (Builder)builder.question(id((((SContext)_localctx).ID_0!=null?((SContext)_localctx).ID_0.getText():null)),string((((SContext)_localctx).STRING_1!=null?((SContext)_localctx).STRING_1.getText():null)),type((((SContext)_localctx).TYPE_2!=null?((SContext)_localctx).TYPE_2.getText():null)),(Builder)(((SContext)_localctx).e_3._e));
-				}
-				break;
-
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(16); ((SContext)_localctx).ID_0 = match(ID);
-				setState(17); match(3);
-				setState(18); ((SContext)_localctx).STRING_1 = match(STRING);
-				setState(19); ((SContext)_localctx).TYPE_2 = match(TYPE);
-				((SContext)_localctx)._s =  (Builder)builder.question(id((((SContext)_localctx).ID_0!=null?((SContext)_localctx).ID_0.getText():null)),string((((SContext)_localctx).STRING_1!=null?((SContext)_localctx).STRING_1.getText():null)),type((((SContext)_localctx).TYPE_2!=null?((SContext)_localctx).TYPE_2.getText():null)));
-				}
-				break;
-
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(21); match(13);
-				setState(22); match(17);
-				setState(23); ((SContext)_localctx).e_0 = e(0);
-				setState(24); match(18);
-				setState(28);
+				setState(6); match(13);
+				setState(7); match(17);
+				setState(8); ((SContext)_localctx).e_0 = e(0);
+				setState(9); match(18);
+				setState(13);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(25); ((SContext)_localctx).s = s();
+						setState(10); ((SContext)_localctx).s = s();
 						((SContext)_localctx).s_1.add(((SContext)_localctx).s);
 						}
 						} 
 					}
-					setState(30);
+					setState(15);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 				}
@@ -158,45 +132,71 @@ public class QLParser extends Parser {
 				}
 				break;
 
-			case 4:
-				enterOuterAlt(_localctx, 4);
+			case 2:
+				enterOuterAlt(_localctx, 2);
 				{
-				setState(33); match(13);
-				setState(34); match(17);
-				setState(35); ((SContext)_localctx).e_0 = e(0);
-				setState(36); match(18);
-				setState(40);
+				setState(18); match(13);
+				setState(19); match(17);
+				setState(20); ((SContext)_localctx).e_0 = e(0);
+				setState(21); match(18);
+				setState(25);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==13 || _la==ID) {
 					{
 					{
-					setState(37); ((SContext)_localctx).s = s();
+					setState(22); ((SContext)_localctx).s = s();
 					((SContext)_localctx).s_1.add(((SContext)_localctx).s);
 					}
 					}
-					setState(42);
+					setState(27);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(43); match(16);
-				setState(47);
+				setState(28); match(16);
+				setState(32);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(44); ((SContext)_localctx).s = s();
+						setState(29); ((SContext)_localctx).s = s();
 						((SContext)_localctx).s_2.add(((SContext)_localctx).s);
 						}
 						} 
 					}
-					setState(49);
+					setState(34);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 				}
 				((SContext)_localctx)._s =  (Builder)builder.iffelse((Builder)(((SContext)_localctx).e_0._e),lift("_s", ((SContext)_localctx).s_1),lift("_s", ((SContext)_localctx).s_2));
+				}
+				break;
+
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(37); ((SContext)_localctx).ID_0 = match(ID);
+				setState(38); match(3);
+				setState(39); ((SContext)_localctx).STRING_1 = match(STRING);
+				setState(40); ((SContext)_localctx).TYPE_2 = match(TYPE);
+				setState(41); match(11);
+				setState(42); match(17);
+				setState(43); ((SContext)_localctx).e_3 = e(0);
+				setState(44); match(18);
+				((SContext)_localctx)._s =  (Builder)builder.question(id((((SContext)_localctx).ID_0!=null?((SContext)_localctx).ID_0.getText():null)),string((((SContext)_localctx).STRING_1!=null?((SContext)_localctx).STRING_1.getText():null)),type((((SContext)_localctx).TYPE_2!=null?((SContext)_localctx).TYPE_2.getText():null)),(Builder)(((SContext)_localctx).e_3._e));
+				}
+				break;
+
+			case 4:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(47); ((SContext)_localctx).ID_0 = match(ID);
+				setState(48); match(3);
+				setState(49); ((SContext)_localctx).STRING_1 = match(STRING);
+				setState(50); ((SContext)_localctx).TYPE_2 = match(TYPE);
+				((SContext)_localctx)._s =  (Builder)builder.question(id((((SContext)_localctx).ID_0!=null?((SContext)_localctx).ID_0.getText():null)),string((((SContext)_localctx).STRING_1!=null?((SContext)_localctx).STRING_1.getText():null)),type((((SContext)_localctx).TYPE_2!=null?((SContext)_localctx).TYPE_2.getText():null)));
 				}
 				break;
 			}
@@ -215,8 +215,8 @@ public class QLParser extends Parser {
 	public static class EContext extends ParserRuleContext {
 		public Builder _e;
 		public EContext e_0;
-		public Token STRING_0;
 		public Token BOOL_0;
+		public Token STRING_0;
 		public Token INTEGER_0;
 		public Token ID_0;
 		public Token op_100;
@@ -264,16 +264,16 @@ public class QLParser extends Parser {
 				((EContext)_localctx)._e =  (Builder)builder.not((Builder)(((EContext)_localctx).e_0._e));
 				}
 				break;
-			case STRING:
-				{
-				setState(59); ((EContext)_localctx).STRING_0 = match(STRING);
-				((EContext)_localctx)._e =  (Builder)builder.string(string((((EContext)_localctx).STRING_0!=null?((EContext)_localctx).STRING_0.getText():null)));
-				}
-				break;
 			case BOOL:
 				{
-				setState(61); ((EContext)_localctx).BOOL_0 = match(BOOL);
+				setState(59); ((EContext)_localctx).BOOL_0 = match(BOOL);
 				((EContext)_localctx)._e =  (Builder)builder.bool(bool((((EContext)_localctx).BOOL_0!=null?((EContext)_localctx).BOOL_0.getText():null)));
+				}
+				break;
+			case STRING:
+				{
+				setState(61); ((EContext)_localctx).STRING_0 = match(STRING);
+				((EContext)_localctx)._e =  (Builder)builder.string(string((((EContext)_localctx).STRING_0!=null?((EContext)_localctx).STRING_0.getText():null)));
 				}
 				break;
 			case 17:
@@ -492,26 +492,26 @@ public class QLParser extends Parser {
 
 	public static final String _serializedATN =
 		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\37w\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
-		"\3\2\3\2\3\2\3\2\3\2\7\2\35\n\2\f\2\16\2 \13\2\3\2\3\2\3\2\3\2\3\2\3\2"+
-		"\3\2\7\2)\n\2\f\2\16\2,\13\2\3\2\3\2\7\2\60\n\2\f\2\16\2\63\13\2\3\2\3"+
-		"\2\5\2\67\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\5\3K\n\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\7\3f\n\3\f\3"+
-		"\16\3i\13\3\3\4\3\4\3\4\3\4\7\4o\n\4\f\4\16\4r\13\4\3\4\3\4\3\4\3\4\2"+
-		"\3\4\5\2\4\6\2\5\4\2\3\3\25\25\4\2\26\26\30\30\7\2\4\4\b\b\n\13\16\16"+
-		"\20\20\u0084\2\66\3\2\2\2\4J\3\2\2\2\6j\3\2\2\2\b\t\7\32\2\2\t\n\7\5\2"+
-		"\2\n\13\7\33\2\2\13\f\7\31\2\2\f\r\7\r\2\2\r\16\7\23\2\2\16\17\5\4\3\2"+
-		"\17\20\7\24\2\2\20\21\b\2\1\2\21\67\3\2\2\2\22\23\7\32\2\2\23\24\7\5\2"+
-		"\2\24\25\7\33\2\2\25\26\7\31\2\2\26\67\b\2\1\2\27\30\7\17\2\2\30\31\7"+
-		"\23\2\2\31\32\5\4\3\2\32\36\7\24\2\2\33\35\5\2\2\2\34\33\3\2\2\2\35 \3"+
-		"\2\2\2\36\34\3\2\2\2\36\37\3\2\2\2\37!\3\2\2\2 \36\3\2\2\2!\"\b\2\1\2"+
-		"\"\67\3\2\2\2#$\7\17\2\2$%\7\23\2\2%&\5\4\3\2&*\7\24\2\2\')\5\2\2\2(\'"+
-		"\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2\2\2+-\3\2\2\2,*\3\2\2\2-\61\7\22\2"+
-		"\2.\60\5\2\2\2/.\3\2\2\2\60\63\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\64"+
-		"\3\2\2\2\63\61\3\2\2\2\64\65\b\2\1\2\65\67\3\2\2\2\66\b\3\2\2\2\66\22"+
-		"\3\2\2\2\66\27\3\2\2\2\66#\3\2\2\2\67\3\3\2\2\289\b\3\1\29:\7\21\2\2:"+
-		";\5\4\3\b;<\b\3\1\2<K\3\2\2\2=>\7\33\2\2>K\b\3\1\2?@\7\35\2\2@K\b\3\1"+
+		"\3\4\4\t\4\3\2\3\2\3\2\3\2\3\2\7\2\16\n\2\f\2\16\2\21\13\2\3\2\3\2\3\2"+
+		"\3\2\3\2\3\2\3\2\7\2\32\n\2\f\2\16\2\35\13\2\3\2\3\2\7\2!\n\2\f\2\16\2"+
+		"$\13\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
+		"\3\2\5\2\67\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\5\3K\n\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\7\3f\n\3\f"+
+		"\3\16\3i\13\3\3\4\3\4\3\4\3\4\7\4o\n\4\f\4\16\4r\13\4\3\4\3\4\3\4\3\4"+
+		"\2\3\4\5\2\4\6\2\5\4\2\3\3\25\25\4\2\26\26\30\30\7\2\4\4\b\b\n\13\16\16"+
+		"\20\20\u0084\2\66\3\2\2\2\4J\3\2\2\2\6j\3\2\2\2\b\t\7\17\2\2\t\n\7\23"+
+		"\2\2\n\13\5\4\3\2\13\17\7\24\2\2\f\16\5\2\2\2\r\f\3\2\2\2\16\21\3\2\2"+
+		"\2\17\r\3\2\2\2\17\20\3\2\2\2\20\22\3\2\2\2\21\17\3\2\2\2\22\23\b\2\1"+
+		"\2\23\67\3\2\2\2\24\25\7\17\2\2\25\26\7\23\2\2\26\27\5\4\3\2\27\33\7\24"+
+		"\2\2\30\32\5\2\2\2\31\30\3\2\2\2\32\35\3\2\2\2\33\31\3\2\2\2\33\34\3\2"+
+		"\2\2\34\36\3\2\2\2\35\33\3\2\2\2\36\"\7\22\2\2\37!\5\2\2\2 \37\3\2\2\2"+
+		"!$\3\2\2\2\" \3\2\2\2\"#\3\2\2\2#%\3\2\2\2$\"\3\2\2\2%&\b\2\1\2&\67\3"+
+		"\2\2\2\'(\7\32\2\2()\7\5\2\2)*\7\36\2\2*+\7\31\2\2+,\7\r\2\2,-\7\23\2"+
+		"\2-.\5\4\3\2./\7\24\2\2/\60\b\2\1\2\60\67\3\2\2\2\61\62\7\32\2\2\62\63"+
+		"\7\5\2\2\63\64\7\36\2\2\64\65\7\31\2\2\65\67\b\2\1\2\66\b\3\2\2\2\66\24"+
+		"\3\2\2\2\66\'\3\2\2\2\66\61\3\2\2\2\67\3\3\2\2\289\b\3\1\29:\7\21\2\2"+
+		":;\5\4\3\b;<\b\3\1\2<K\3\2\2\2=>\7\35\2\2>K\b\3\1\2?@\7\36\2\2@K\b\3\1"+
 		"\2AB\7\23\2\2BC\5\4\3\2CD\7\24\2\2DE\b\3\1\2EK\3\2\2\2FG\7\34\2\2GK\b"+
 		"\3\1\2HI\7\32\2\2IK\b\3\1\2J8\3\2\2\2J=\3\2\2\2J?\3\2\2\2JA\3\2\2\2JF"+
 		"\3\2\2\2JH\3\2\2\2Kg\3\2\2\2LM\f\7\2\2MN\t\2\2\2NO\5\4\3\bOP\b\3\1\2P"+
@@ -521,7 +521,7 @@ public class QLParser extends Parser {
 		"\2eL\3\2\2\2eQ\3\2\2\2eV\3\2\2\2e[\3\2\2\2e`\3\2\2\2fi\3\2\2\2ge\3\2\2"+
 		"\2gh\3\2\2\2h\5\3\2\2\2ig\3\2\2\2jk\7\27\2\2kl\7\32\2\2lp\7\6\2\2mo\5"+
 		"\2\2\2nm\3\2\2\2or\3\2\2\2pn\3\2\2\2pq\3\2\2\2qs\3\2\2\2rp\3\2\2\2st\7"+
-		"\f\2\2tu\b\4\1\2u\7\3\2\2\2\n\36*\61\66Jegp";
+		"\f\2\2tu\b\4\1\2u\7\3\2\2\2\n\17\33\"\66Jegp";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

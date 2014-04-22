@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
@@ -23,8 +24,6 @@ import ql_obj_alg.operation.cyclic_dependencies.StmtDependencies;
 import ql_obj_alg.operation.evaluator.ExprEvaluator;
 import ql_obj_alg.operation.evaluator.IDepsAndEvalE;
 import ql_obj_alg.operation.evaluator.ValueEnvironment;
-import ql_obj_alg.operation.noop.ExprNoop;
-import ql_obj_alg.operation.noop.INoop;
 import ql_obj_alg.operation.printer.ExprFormat;
 import ql_obj_alg.operation.printer.ExprPrecedence;
 import ql_obj_alg.operation.printer.FormFormat;
@@ -101,8 +100,9 @@ public class ExecuteOperations {
 	
 	private boolean typeCheckerForm(ErrorReporting report) {
 		TypeEnvironment typeEnv = new TypeEnvironment();
-		
-		collectQuestions(report, typeEnv);
+		IFormAlg<Object,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
+		IStmtAlg<Object,ICollect> collectStmt = new StmtCollectQuestionTypes();
+		collectQuestions(report, typeEnv, Arrays.asList(collectForm, collectStmt));
 		checkTypes(report, typeEnv);
 		checkCyclicDependencies(report);
 		return report.numberOfErrors() == 0;
@@ -142,19 +142,19 @@ public class ExecuteOperations {
 		checkTypes.check(typeEnv, report);
 	}
 
-	private void collectQuestions(ErrorReporting report,
-			TypeEnvironment typeEnv) {
-		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
-		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
-		IExpAlg<INoop> exprNoop = new ExprNoop();
-		
-		List<Object> algebras = new ArrayList<Object>();
-		algebras.add(collectForm);
-		algebras.add(collectStmt);
-		algebras.add(exprNoop);
-		
-		collectQuestions(report, typeEnv, algebras);
-	}
+//	private void collectQuestions(ErrorReporting report,
+//			TypeEnvironment typeEnv) {
+//		IFormAlg<INoop,ICollect,ICollect> collectForm = new FormCollectQuestionTypes();
+//		IStmtAlg<INoop,ICollect> collectStmt = new StmtCollectQuestionTypes();
+//		//IExpAlg<INoop> exprNoop = new ExprNoop();
+//		
+//		List<Object> algebras = new ArrayList<Object>();
+//		algebras.add(collectForm);
+//		algebras.add(collectStmt);
+//		//algebras.add(exprNoop);
+//		
+//		collectQuestions(report, typeEnv, algebras);
+//	}
 
 	protected void collectQuestions(ErrorReporting report,
 			TypeEnvironment typeEnv, List<Object> algebras) {

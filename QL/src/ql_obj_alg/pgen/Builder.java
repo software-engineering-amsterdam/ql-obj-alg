@@ -29,7 +29,7 @@ public class Builder {
 	}
 
 	
-	Builder(Method method, Object[] args){
+	private Builder(Method method, Object[] args){
 		this.method = method;
 		this.args = args;		
 	}
