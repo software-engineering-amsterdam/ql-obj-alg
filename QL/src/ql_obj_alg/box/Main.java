@@ -1,4 +1,4 @@
-package ql_obj_alg.operation.printer.boxalg;
+package ql_obj_alg.box;
 
 import java.io.StringWriter;
 

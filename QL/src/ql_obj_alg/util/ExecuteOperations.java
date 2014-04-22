@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ql_obj_alg.box.IFormat;
 import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IFormAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
@@ -28,7 +29,6 @@ import ql_obj_alg.operation.printer.ExprFormat;
 import ql_obj_alg.operation.printer.ExprPrecedence;
 import ql_obj_alg.operation.printer.FormFormat;
 import ql_obj_alg.operation.printer.StmtFormat;
-import ql_obj_alg.operation.printer.boxalg.IFormat;
 import ql_obj_alg.operation.typechecker.ExprTypeChecker;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
 import ql_obj_alg.operation.typechecker.IExpType;

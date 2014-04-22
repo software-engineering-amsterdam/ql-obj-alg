@@ -9,12 +9,12 @@ import java.io.UnsupportedEncodingException;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
+import ql_obj_alg.box.IFormat;
 import ql_obj_alg.object_algebra_interfaces.IAllAlg;
 import ql_obj_alg.operation.printer.ExprFormat;
 import ql_obj_alg.operation.printer.ExprPrecedence;
 import ql_obj_alg.operation.printer.FormFormat;
 import ql_obj_alg.operation.printer.StmtFormat;
-import ql_obj_alg.operation.printer.boxalg.IFormat;
 import ql_obj_alg.operation.typechecker.ExprTypeChecker;
 import ql_obj_alg.operation.typechecker.FormTypeChecker;
 import ql_obj_alg.operation.typechecker.ITypeCheck;
