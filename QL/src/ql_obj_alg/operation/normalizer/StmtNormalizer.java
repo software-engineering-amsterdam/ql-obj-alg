@@ -7,29 +7,21 @@ import ql_obj_alg.object_algebra_interfaces.IExpAlg;
 import ql_obj_alg.object_algebra_interfaces.IStmtAlg;
 import ql_obj_alg.types.Type;
 
-public class StmtNormalizer implements IStmtAlg<INormalizeE, INormalizeS> {
+public class StmtNormalizer<Exp> implements IStmtAlg<Exp, INormalizeS<Exp>> {
 	
-	ExprNormalizer exprNormalizer = new ExprNormalizer();
+	IExpAlg<Exp> expAlg;
 
 	@Override
-	public INormalizeS iff(final INormalizeE cond, final List<INormalizeS> b) {
-		return new INormalizeS(){
+	public INormalizeS<Exp> iff(final Exp cond, final List<INormalizeS<Exp>> b) {
+		return new INormalizeS<Exp>(){
 
 			@Override
-			public <E, S> List<S> normalize(IExpAlg<E> expAlg,
-					IStmtAlg<E, S> stmtAlg, INormalizeE conditions) {
+			public <S> List<S> normalize(IExpAlg<Exp> expAlg, IStmtAlg<Exp, S> stmtAlg, Exp conditions) {
 				List<S> normalized = new ArrayList<S>();
 				
-				INormalizeE newConditional;
+				Exp newConditional = expAlg.and(cond, conditions);
 				
-				if(conditions.unconditioned()){
-					newConditional = cond;
-				}
-				else{
-					newConditional = exprNormalizer.and(cond, conditions);
-				}
-				
-				for(INormalizeS stmt : b){
+				for(INormalizeS<Exp> stmt : b){
 					normalized.addAll(stmt.normalize(expAlg, stmtAlg, newConditional));
 				}
 				return normalized;
@@ -39,32 +31,22 @@ public class StmtNormalizer implements IStmtAlg<INormalizeE, INormalizeS> {
 	}
 
 	@Override
-	public INormalizeS iffelse(final INormalizeE cond, final List<INormalizeS> b1,
-			final List<INormalizeS> b2) {
-		return new INormalizeS(){
+	public INormalizeS<Exp> iffelse(final Exp cond, final List<INormalizeS<Exp>> b1,
+			final List<INormalizeS<Exp>> b2) {
+		return new INormalizeS<Exp>(){
 
 			@Override
-			public <E, S> List<S> normalize(IExpAlg<E> expAlg,
-					IStmtAlg<E, S> stmtAlg, INormalizeE conditions) {
+			public <S> List<S> normalize(IExpAlg<Exp> expAlg, IStmtAlg<Exp, S> stmtAlg, Exp conditions) {
 				List<S> normalized = new ArrayList<S>();
 				
-				INormalizeE newConditional;
-				INormalizeE elseConditional;
+				Exp newConditional = expAlg.and(cond, conditions);
+				Exp elseConditional = expAlg.and(expAlg.not(cond), conditions);
 				
-				if(conditions.unconditioned()){
-					newConditional = cond;
-					elseConditional = exprNormalizer.not(cond);
-				}
-				else{
-					newConditional = exprNormalizer.and(cond, conditions);
-					elseConditional = exprNormalizer.and(exprNormalizer.not(cond), conditions);
-				}
-				
-				for(INormalizeS stmt : b1){
+				for(INormalizeS<Exp> stmt : b1){
 					normalized.addAll(stmt.normalize(expAlg, stmtAlg, newConditional));
 				}
 				
-				for(INormalizeS stmt : b2){
+				for(INormalizeS<Exp> stmt : b2){
 					normalized.addAll(stmt.normalize(expAlg, stmtAlg, elseConditional));
 				}
 				
@@ -75,53 +57,38 @@ public class StmtNormalizer implements IStmtAlg<INormalizeE, INormalizeS> {
 	}
 
 	@Override
-	public INormalizeS question(final String id, final String label, final Type type) {
-		return new INormalizeS(){
+	public INormalizeS<Exp> question(final String id, final String label, final Type type) {
+		return new INormalizeS<Exp>(){
 
 			@Override
-			public <E, S> List<S> normalize(IExpAlg<E> expAlg,
-					IStmtAlg<E, S> stmtAlg, INormalizeE conditions) {
-				
+			public <S> List<S> normalize(IExpAlg<Exp> expAlg, IStmtAlg<Exp, S> stmtAlg, Exp conditions) {
 				List<S> normalized = new ArrayList<S>();
-				
-				if(conditions.unconditioned()){
-					normalized.add(stmtAlg.question(id, label, type));
-				}
-				else{
-					List<S> question = new ArrayList<S>();
-					question.add(stmtAlg.question(id, label, type));
-					normalized.add(stmtAlg.iff(conditions.build(expAlg), question));
-				}
-				
+
+				List<S> questions = new ArrayList<S>();
+				questions.add(stmtAlg.question(id, label, type));
+				normalized.add(stmtAlg.iff(conditions, questions));
 				return normalized;
 			}
 			
 		};
 	}
-
+	
 	@Override
-	public INormalizeS question(final String id, final String label, final Type type, final INormalizeE e) {
-		return new INormalizeS(){
+	public INormalizeS<Exp> question(final String id, final String label, final Type type, final Exp e) {
+		return new INormalizeS<Exp>(){
 
 			@Override
-			public <E, S> List<S> normalize(IExpAlg<E> expAlg,
-					IStmtAlg<E, S> stmtAlg, INormalizeE conditions) {
-				
+			public <S> List<S> normalize(IExpAlg<Exp> expAlg, IStmtAlg<Exp, S> stmtAlg, Exp conditions) {
 				List<S> normalized = new ArrayList<S>();
-				
-				if(conditions.unconditioned()){
-					normalized.add(stmtAlg.question(id, label, type, e.build(expAlg)));
-				}
-				else{
-					List<S> question = new ArrayList<S>();
-					question.add(stmtAlg.question(id, label, type, e.build(expAlg)));
-					normalized.add(stmtAlg.iff(conditions.build(expAlg), question));
-				}
-				
+
+				List<S> questions = new ArrayList<S>();
+				questions.add(stmtAlg.question(id, label, type, e));
+				normalized.add(stmtAlg.iff(conditions, questions));
 				return normalized;
 			}
 			
 		};
 	}
+
 
 }
